@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Language - Complete Tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+        }
+
+        .presentation-container {
+            max-width: 1200px;
+            width: 95%;
+            margin: 20px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .slide {
+            padding: 50px 60px;
+            min-height: 700px;
+            display: none;
+            position: relative;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide h1 {
+            color: #2c3e50;
+            font-size: 3em;
+            margin-bottom: 40px;
+            text-align: center;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .slide h2 {
+            color: #e74c3c;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .slide h3 {
+            color: #27ae60;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            margin-top: 35px;
+            font-weight: 600;
+            border-left: 6px solid #27ae60;
+            padding-left: 20px;
+        }
+
+        .slide p {
+            font-size: 1.3em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: left;
+            color: #2c3e50;
+        }
+
+        .slide ul {
+            font-size: 1.3em;
+            line-height: 2;
+            margin-left: 40px;
+            margin-bottom: 25px;
+        }
+
+        .slide li {
+            margin-bottom: 15px;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 30px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin: 25px 0;
+            overflow-x: auto;
+            border-left: 6px solid #3498db;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .output-block {
+            background: #27ae60;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            margin: 15px 0;
+            border-left: 6px solid #229954;
+        }
+
+        .highlight {
+            background: #f39c12;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .important-box {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .tip-box {
+            background: #e8f5e8;
+            border: 3px solid #27ae60;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .nav-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 25px;
+            right: 40px;
+            background: #34495e;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-slide h1 {
+            font-size: 4.5em;
+            margin-bottom: 30px;
+            border: none;
+            color: white;
+            animation: slideIn 1s ease-out;
+        }
+
+        .title-slide p {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .simple-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 1.2em;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .simple-table th, .simple-table td {
+            border: 2px solid #ddd;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .simple-table th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .simple-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .simple-table tr:hover {
+            background: #e3f2fd;
+        }
+
+        .concept-box {
+            background: #fff3cd;
+            border: 3px solid #ffc107;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 12px;
+            font-size: 1.3em;
+            text-align: center;
+            font-weight: 600;
+            color: #856404;
+        }
+
+        .step-box {
+            background: #f8f9fa;
+            border-left: 8px solid #6c757d;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .step-number {
+            background: #6c757d;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .visual-example {
+            background: #f0f8ff;
+            border: 3px dashed #3498db;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">15</span>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>C Programming Language</h1>
+            <p>📚 Complete Beginner's Guide</p>
+            <p>🎯 From Zero to Hero</p>
+            <p>💻 With Simple Examples</p>
+        </div>
+
+        <!-- Slide 2: What is C? -->
+        <div class="slide">
+            <h1>What is C Programming?</h1>
+            
+            <div class="concept-box">
+                💡 C is a Simple, Powerful Programming Language
+            </div>
+            
+            <div class="step-box">
+                <span class="step-number">1</span>
+                <strong>Created by Dennis Ritchie in 1972</strong>
+            </div>
+            
+            <div class="step-box">
+                <span class="step-number">2</span>
+                <strong>Used to build Operating Systems (like Windows, Linux)</strong>
+            </div>
+            
+            <div class="step-box">
+                <span class="step-number">3</span>
+                <strong>Foundation for many modern languages (C++, Java, Python)</strong>
+            </div>
+            
+            <div class="important-box">
+                🚀 Learning C = Understanding How Computers Really Work!
+            </div>
+        </div>
+
+        <!-- Slide 3: Why Learn C? -->
+        <div class="slide">
+            <h1>Why Should You Learn C?</h1>
+            
+            <h3>🎯 Key Benefits</h3>
+            
+            <div class="visual-example">
+                <h3>🏗️ Strong Foundation</h3>
+                <p>Learning C makes other languages easy to learn</p>
+            </div>
+            
+            <div class="visual-example">
+                <h3>⚡ Fast Performance</h3>
+                <p>C programs run very fast and use less memory</p>
+            </div>
+            
+            <div class="visual-example">
+                <h3>🔧 System Programming</h3>
+                <p>Build operating systems, drivers, embedded systems</p>
+            </div>
+            
+            <div class="visual-example">
+                <h3>🌍 Universal</h3>
+                <p>Works on any computer - Windows, Mac, Linux</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: First C Program -->
+        <div class="slide">
+            <h1>Your First C Program</h1>
+            
+            <div class="concept-box">
+                📝 Let's Write "Hello World" Program
+            </div>
+            
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+
+int main() {
+    printf("Hello, World!");
+    return 0;
+}
+            </div>
+            
+            <div class="output-block">
+                📤 Output: Hello, World!
+            </div>
+            
+            <h3>🔍 Understanding Each Line</h3>
+            <ul>
+                <li><span class="highlight">#include &lt;stdio.h&gt;</span> → Includes input/output functions</li>
+                <li><span class="highlight">int main()</span> → Main function (program starts here)</li>
+                <li><span class="highlight">printf()</span> → Prints text on screen</li>
+                <li><span class="highlight">return 0;</span> → Program ends successfully</li>
+            </ul>
+        </div>
+
+        <!-- Slide 5: Program Structure -->
+        <div class="slide">
+            <h1>C Program Structure</h1>
+            
+            <div class="concept-box">
+                🏗️ Every C Program Has This Structure
+            </div>
+            
+            <div class="code-block">
+// 1. Include header files
+#include &lt;stdio.h&gt;
+
+// 2. Main function
+int main() {
+    // 3. Program statements
+    printf("This is my program!");
+    
+    // 4. Return statement
+    return 0;
+}
+            </div>
+            
+            <div class="step-box">
+                <span class="step-number">1</span>
+                <strong>Header Files:</strong> Include libraries for functions
+            </div>
+            
+            <div class="step-box">
+                <span class="step-number">2</span>
+                <strong>Main Function:</strong> Where program execution begins
+            </div>
+            
+            <div class="step-box">
+                <span class="step-number">3</span>
+                <strong>Statements:</strong> Instructions for the computer
+            </div>
+            
+            <div class="step-box">
+                <span class="step-number">4</span>
+                <strong>Return:</strong> Tells if program ran successfully
+            </div>
+        </div>
+
+        <!-- Slide 6: Data Types -->
+        <div class="slide">
+            <h1>Data Types in C</h1>
+            
+            <div class="concept-box">
+                📊 Different Types of Data We Can Store
+            </div>
+            
+            <table class="simple-table">
+                <tr>
+                    <th>Data Type</th>
+                    <th>What It Stores</th>
+                    <th>Example</th>
+                    <th>Memory Size</th>
+                </tr>
+                <tr>
+                    <td><strong>int</strong></td>
+                    <td>Whole Numbers</td>
+                    <td>25, -10, 0</td>
+                    <td>4 bytes</td>
+                </tr>
+                <tr>
+                    <td><strong>float</strong></td>
+                    <td>Decimal Numbers</td>
+                    <td>3.14, -2.5</td>
+                    <td>4 bytes</td>
+                </tr>
+                <tr>
+                    <td><strong>double</strong></td>
+                    <td>Large Decimal Numbers</td>
+                    <td>3.14159265</td>
+                    <td>8 bytes</td>
+                </tr>
+                <tr>
+                    <td><strong>char</strong></td>
+                    <td>Single Character</td>
+                    <td>'A', 'x', '5'</td>
+                    <td>1 byte</td>
+                </tr>
+            </table>
+            
+            <div class="tip-box">
+                💡 <strong>Remember:</strong> Choose the right data type for your data!
+            </div>
+        </div>
+
+        <!-- Slide 7: Variables -->
+        <div class="slide">
+            <h1>Variables - Storing Data</h1>
+            
+            <div class="concept-box">
+                📦 Variables are like boxes that store data
+            </div>
+            
+            <h3>📝 How to Create Variables</h3>
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+
+int main() {
+    // Creating variables
+    int age = 25;           // Integer variable
+    float height = 5.9;     // Float variable
+    char grade = 'A';       // Character variable
+    
+    // Printing variables
+    printf("Age: %d years\n", age);
+    printf("Height: %.1f feet\n", height);
+    printf("Grade: %c\n", grade);
+    
+    return 0;
+}
+            </div>
+            
+            <div class="output-block">
+                📤 Output:<br>
+                Age: 25 years<br>
+                Height: 5.9 feet<br>
+                Grade: A
+            </div>
+            
+            <div class="important-box">
+                🎯 Variable = Name + Data Type + Value
+            </div>
+        </div>
+
+        <!-- Slide 8: Operators -->
+        <div class="slide">
+            <h1>Operators - Doing Math</h1>
+            
+            <div class="concept-box">
+                ➕ Operators help us perform operations
+            </div>
+            
+            <h3>🧮 Arithmetic Operators</h3>
+            <table class="simple-table">
+                <tr>
+                    <th>Operator</th>
+                    <th>Name</th>
+                    <th>Example</th>
+                    <th>Result</th>
+                </tr>
+                <tr>
+                    <td><strong>+</strong></td>
+                    <td>Addition</td>
+                    <td>5 + 3</td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td><strong>-</strong></td>
+                    <td>Subtraction</td>
+                    <td>5 - 3</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td><strong>*</strong></td>
+                    <td>Multiplication</td>
+                    <td>5 * 3</td>
+                    <td>15</td>
+                </tr>
+                <tr>
+                    <td><strong>/</strong></td>
+                    <td>Division</td>
+                    <td>10 / 2</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td><strong>%</strong></td>
+                    <td>Remainder</td>
+                    <td>10 % 3</td>
+                    <td>1</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Slide 9: Operators Example -->
+        <div class="slide">
+            <h1>Operators in Action</h1>
+            
+            <div class="concept-box">
+                🎯 Let's Calculate with Operators
+            </div>
+            
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+
+int main() {
+    int a = 10;
+    int b = 3;
+    
+    printf("a = %d, b = %d\n\n", a, b);
+    
+    printf("a + b = %d\n", a + b);    // Addition
+    printf("a - b = %d\n", a - b);    // Subtraction
+    printf("a * b = %d\n", a * b);    // Multiplication
+    printf("a / b = %d\n", a / b);    // Division
+    printf("a %% b = %d\n", a % b);   // Remainder
+    
+    return 0;
+}
+            </div>
+            
+            <div class="output-block">
+                📤 Output:<br>
+                a = 10, b = 3<br><br>
+                a + b = 13<br>
+                a - b = 7<br>
+                a * b = 30<br>
+                a / b = 3<br>
+                a % b = 1
+            </div>
+        </div>
+
+        <!-- Slide 10: Input and Output -->
+        <div class="slide">
+            <h1>Input and Output</h1>
+            
+            <div class="concept-box">
+                💬 Talking to the User
+            </div>
+            
+            <h3>📤 Output Functions</h3>
+            <ul>
+                <li><span class="highlight">printf()</span> - Print formatted text</li>
+                <li><span class="highlight">puts()</span> - Print a string</li>
+            </ul>
+            
+            <h3>📥 Input Functions</h3>
+            <ul>
+                <li><span class="highlight">scanf()</span> - Read formatted input</li>
+                <li><span class="highlight">getchar()</span> - Read a single character</li>
+            </ul>
+            
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+
+int main() {
+    char name[50];
+    int age;
+    
+    // Taking input from user
+    printf("Enter your name: ");
+    scanf("%s", name);
+    
+    printf("Enter your age: ");
+    scanf("%d", &age);
+    
+    // Displaying output
+    printf("\nHello %s!\n", name);
+    printf("You are %d years old.\n", age);
+    
+    return 0;
+}
+            </div>
+        </div>
+
+        <!-- Slide 11: Decision Making -->
+        <div class="slide">
+            <h1>Making Decisions</h1>
+            
+            <div class="concept-box">
+                🤔 Teaching Computer to Make Choices
+            </div>
+            
+            <h3>🎯 if Statement</h3>
+            <div class="code-block">
+if (condition) {
+    // Do this if condition is true
+}
+            </div>
+            
+            <h3>🎯 if-else Statement</h3>
+            <div class="code-block">
+if (condition) {
+    // Do this if condition is true
+} else {
+    // Do this if condition is false
+}
+            </div>
+            
+            <div class="visual-example">
+                <h3>🔍 Comparison Operators</h3>
+                <p><span class="highlight">==</span> Equal to | <span class="highlight">!=</span> Not equal | <span class="highlight">&gt;</span> Greater than | <span class="highlight">&lt;</span> Less than</p>
+            </div>
+        </div>
+
+        <!-- Slide 12: Decision Making Example -->
+        <div class="slide">
+            <h1>Decision Making Example</h1>
+            
+            <div class="concept-box">
+                🎓 Grade Calculator Program
+            </div>
+            
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+
+int main() {
+    int marks;
+    
+    printf("Enter your marks: ");
+    scanf("%d", &marks);
+    
+    if (marks >= 90) {
+        printf("Grade: A+ (Excellent!)\n");
+    } else if (marks >= 80) {
+        printf("Grade: A (Very Good!)\n");
+    } else if (marks >= 70) {
+        printf("Grade: B (Good!)\n");
+    } else if (marks >= 60) {
+        printf("Grade: C (Average)\n");
+    } else {
+        printf("Grade: F (Need to improve)\n");
+    }
+    
+    return 0;
+}
+            </div>
+            
+            <div class="output-block">
+                📤 Sample Output:<br>
+                Enter your marks: 85<br>
+                Grade: A (Very Good!)
+            </div>
+        </div>
+
+        <!-- Slide 13: Functions -->
+        <div class="slide">
+            <h1>Functions - Reusable Code</h1>
+            
+            <div class="concept-box">
+                🔧 Functions are like Tools - Use them Anywhere!
+            </div>
+            
+            <h3>🎯 Why Use Functions?</h3>
+            <ul>
+                <li>✅ Avoid writing same code again and again</li>
+                <li>✅ Make code organized and clean</li>
+                <li>✅ Easy to find and fix problems</li>
+                <li>✅ Share code with others</li>
+            </ul>
+            
+            <h3>📝 Function Structure</h3>
+            <div class="code-block">
+return_type function_name(parameters) {
+    // Function body
+    return value;
+}
+            </div>
+            
+            <div class="visual-example">
+                <h3>🔄 Function Flow</h3>
+                <p>Call Function → Execute Code → Return Result</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Functions Example -->
+        <div class="slide">
+            <h1>Functions in Action</h1>
+            
+            <div class="concept-box">
+                🧮 Simple Calculator with Functions
+            </div>
+            
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+
+// Function to add two numbers
+int add(int x, int y) {
+    return x + y;
+}
+
+// Function to multiply two numbers
+int multiply(int x, int y) {
+    return x * y;
+}
+
+int main() {
+    int num1 = 5, num2 = 3;
+    
+    int sum = add(num1, num2);
+    int product = multiply(num1, num2);
+    
+    printf("Numbers: %d and %d\n", num1, num2);
+    printf("Sum: %d\n", sum);
+    printf("Product: %d\n", product);
+    
+    return 0;
+}
+            </div>
+            
+            <div class="output-block">
+                📤 Output:<br>
+                Numbers: 5 and 3<br>
+                Sum: 8<br>
+                Product: 15
+            </div>
+        </div>
+
+        <!-- Slide 15: Arrays -->
+        <div class="slide">
+            <h1>Arrays - Storing Multiple Values</h1>
+            
+            <div class="concept-box">
+                📚 Arrays are like Shelves with Multiple Boxes
+            </div>
+            
+            <h3>🎯 What is an Array?</h3>
+            <p>An array stores multiple values of the same type in one variable.</p>
+            
+            <h3>📝 Creating Arrays</h3>
+            <div class="code-block">
+// Method 1: Declare then assign
+int numbers[5];
+numbers[0] = 10;
+numbers[1] = 20;
+
+// Method 2: Initialize while declaring
+int numbers[5] = {10, 20, 30, 40, 50};
+
+// Method 3: Auto size
+int numbers[] = {10, 20, 30, 40, 50};
+            </div>
+            
+            <div class="visual-example">
+                <h3>📍 Array Indexing</h3>
+                <p>Array Index: [0] [1] [2] [3] [4]</p>
+                <p>Array Values: 10  20  30  40  50</p>
+            </div>
+            
+            <div class="important-box">
+                ⚠️ Remember: Array indexing starts from 0!
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">⬅️ Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ➡️</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+        
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (direction === -1 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight') {
+                changeSlide(1);
+            }
+        });
+        
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
