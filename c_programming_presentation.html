@@ -832,7 +832,388 @@ int numbers[] = {10, 20, 30, 40, 50};
         </div>
 
     </div>
+  <!-- Slide 15: Arrays -->
+        <div class="slide">
+            <h1>Arrays - Storing Multiple Values</h1>
+            
+            <div class="concept-box">
+                📚 Arrays are like Shelves with Multiple Boxes
+            </div>
+            
+            <h3>🎯 What is an Array?</h3>
+            <p>An array stores multiple values of the same type in one variable.</p>
+            
+            <h3>📝 Creating Arrays</h3>
+            <div class="code-block">
+// Method 1: Declare then assign
+int numbers[5];
+numbers[0] = 10;
+numbers[1] = 20;
 
+// Method 2: Initialize while declaring
+int numbers[5] = {10, 20, 30, 40, 50};
+
+// Method 3: Auto size
+int numbers[] = {10, 20, 30, 40, 50};
+            </div>
+            
+            <div class="visual-example">
+                <h3>📍 Array Indexing</h3>
+                <p>Array Index: [0] [1] [2] [3] [4]</p>
+                <p>Array Values: 10  20  30  40  50</p>
+            </div>
+            
+            <div class="important-box">
+                ⚠️ Remember: Array indexing starts from 0!
+            </div>
+        </div>
+
+        <!-- Slide 16: Strings -->
+        <div class="slide">
+            <h1>Strings - Text Manipulation</h1>
+            
+            <div class="concept-box">
+                📝 Strings are Arrays of Characters
+            </div>
+            
+            <h3>🎯 What is a String?</h3>
+            <p>A string is a sequence of characters terminated by a null character '\0'.</p>
+            
+            <h3>📝 Creating Strings</h3>
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    // Method 1: Character array
+    char name1[20] = "John";
+    
+    // Method 2: String literal
+    char name2[] = "Alice";
+    
+    // Method 3: Character by character
+    char name3[10];
+    name3[0] = 'B';
+    name3[1] = 'o';
+    name3[2] = 'b';
+    name3[3] = '\0';  // Null terminator
+    
+    printf("Name 1: %s\n", name1);
+    printf("Name 2: %s\n", name2);
+    printf("Name 3: %s\n", name3);
+    
+    return 0;
+}
+            </div>
+            
+            <div class="output-block">
+                📤 Output:<br>
+                Name 1: John<br>
+                Name 2: Alice<br>
+                Name 3: Bob
+            </div>
+        </div>
+
+        <!-- Slide 17: String Functions -->
+        <div class="slide">
+            <h1>String Functions</h1>
+            
+            <div class="concept-box">
+                🔧 Built-in Functions for String Operations
+            </div>
+            
+            <table class="simple-table">
+                <tr>
+                    <th>Function</th>
+                    <th>Purpose</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><strong>strlen()</strong></td>
+                    <td>Find string length</td>
+                    <td>strlen("Hello") = 5</td>
+                </tr>
+                <tr>
+                    <td><strong>strcpy()</strong></td>
+                    <td>Copy strings</td>
+                    <td>strcpy(dest, src)</td>
+                </tr>
+                <tr>
+                    <td><strong>strcat()</strong></td>
+                    <td>Concatenate strings</td>
+                    <td>strcat(str1, str2)</td>
+                </tr>
+                <tr>
+                    <td><strong>strcmp()</strong></td>
+                    <td>Compare strings</td>
+                    <td>strcmp(str1, str2)</td>
+                </tr>
+            </table>
+            
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main() {
+    char str1[50] = "Hello";
+    char str2[50] = "World";
+    char str3[100];
+    
+    printf("Length of str1: %ld\n", strlen(str1));
+    
+    strcpy(str3, str1);  // Copy str1 to str3
+    strcat(str3, " ");   // Add space
+    strcat(str3, str2);  // Add str2
+    
+    printf("Combined: %s\n", str3);
+    
+    return 0;
+}
+            </div>
+        </div>
+
+        <!-- Slide 18: Pointers -->
+        <div class="slide">
+            <h1>Pointers - Memory Addresses</h1>
+            
+            <div class="concept-box">
+                📍 Pointers Store Memory Addresses
+            </div>
+            
+            <h3>🎯 What is a Pointer?</h3>
+            <p>A pointer is a variable that stores the memory address of another variable.</p>
+            
+            <div class="visual-example">
+                <h3>🏠 Memory Analogy</h3>
+                <p>Variable = House | Pointer = House Address</p>
+            </div>
+            
+            <h3>📝 Pointer Syntax</h3>
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+
+int main() {
+    int number = 42;        // Regular variable
+    int *ptr;               // Pointer declaration
+    
+    ptr = &number;          // Store address of number
+    
+    printf("Value of number: %d\n", number);
+    printf("Address of number: %p\n", &number);
+    printf("Value of ptr: %p\n", ptr);
+    printf("Value pointed by ptr: %d\n", *ptr);
+    
+    return 0;
+}
+            </div>
+            
+            <div class="important-box">
+                🔑 & = Address of | * = Value at address
+            </div>
+        </div>
+
+        <!-- Slide 19: Pointer Example -->
+        <div class="slide">
+            <h1>Pointers in Action</h1>
+            
+            <div class="concept-box">
+                🎯 Swapping Numbers Using Pointers
+            </div>
+            
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+
+// Function to swap two numbers using pointers
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    int x = 10, y = 20;
+    
+    printf("Before swap:\n");
+    printf("x = %d, y = %d\n", x, y);
+    
+    swap(&x, &y);  // Pass addresses
+    
+    printf("\nAfter swap:\n");
+    printf("x = %d, y = %d\n", x, y);
+    
+    return 0;
+}
+            </div>
+            
+            <div class="output-block">
+                📤 Output:<br>
+                Before swap:<br>
+                x = 10, y = 20<br><br>
+                After swap:<br>
+                x = 20, y = 10
+            </div>
+            
+            <div class="tip-box">
+                💡 <strong>Tip:</strong> Pointers allow functions to modify original variables!
+            </div>
+        </div>
+
+        <!-- Slide 20: Preprocessors -->
+        <div class="slide">
+            <h1>Preprocessors - Code Processing</h1>
+            
+            <div class="concept-box">
+                ⚙️ Preprocessors Process Code Before Compilation
+            </div>
+            
+            <h3>🎯 Common Preprocessor Directives</h3>
+            <table class="simple-table">
+                <tr>
+                    <th>Directive</th>
+                    <th>Purpose</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td><strong>#include</strong></td>
+                    <td>Include header files</td>
+                    <td>#include &lt;stdio.h&gt;</td>
+                </tr>
+                <tr>
+                    <td><strong>#define</strong></td>
+                    <td>Define constants</td>
+                    <td>#define PI 3.14159</td>
+                </tr>
+                <tr>
+                    <td><strong>#ifdef</strong></td>
+                    <td>Conditional compilation</td>
+                    <td>#ifdef DEBUG</td>
+                </tr>
+                <tr>
+                    <td><strong>#ifndef</strong></td>
+                    <td>If not defined</td>
+                    <td>#ifndef MAX_SIZE</td>
+                </tr>
+            </table>
+            
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+
+#define PI 3.14159
+#define MAX_SIZE 100
+#define SQUARE(x) ((x) * (x))
+
+int main() {
+    float radius = 5.0;
+    float area = PI * SQUARE(radius);
+    
+    printf("Radius: %.1f\n", radius);
+    printf("Area: %.2f\n", area);
+    printf("Max size: %d\n", MAX_SIZE);
+    
+    return 0;
+}
+            </div>
+        </div>
+
+        <!-- Slide 21: File Handling -->
+        <div class="slide">
+            <h1>File Handling - Reading & Writing Files</h1>
+            
+            <div class="concept-box">
+                📁 Working with Files in C
+            </div>
+            
+            <h3>🎯 File Operations</h3>
+            <ul>
+                <li><span class="highlight">fopen()</span> - Open a file</li>
+                <li><span class="highlight">fclose()</span> - Close a file</li>
+                <li><span class="highlight">fprintf()</span> - Write to file</li>
+                <li><span class="highlight">fscanf()</span> - Read from file</li>
+                <li><span class="highlight">fgets()</span> - Read line from file</li>
+            </ul>
+            
+            <h3>📝 File Modes</h3>
+            <table class="simple-table">
+                <tr>
+                    <th>Mode</th>
+                    <th>Purpose</th>
+                </tr>
+                <tr>
+                    <td><strong>"r"</strong></td>
+                    <td>Read only</td>
+                </tr>
+                <tr>
+                    <td><strong>"w"</strong></td>
+                    <td>Write only (overwrites)</td>
+                </tr>
+                <tr>
+                    <td><strong>"a"</strong></td>
+                    <td>Append (add to end)</td>
+                </tr>
+                <tr>
+                    <td><strong>"r+"</strong></td>
+                    <td>Read and write</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Slide 22: File Handling Example -->
+        <div class="slide">
+            <h1>File Handling Example</h1>
+            
+            <div class="concept-box">
+                📝 Student Records Management
+            </div>
+            
+            <div class="code-block">
+#include &lt;stdio.h&gt;
+
+int main() {
+    FILE *file;
+    char name[50];
+    int age;
+    
+    // Writing to file
+    file = fopen("student.txt", "w");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    
+    fprintf(file, "John Doe\n");
+    fprintf(file, "Age: 20\n");
+    fprintf(file, "Grade: A\n");
+    fclose(file);
+    
+    printf("Data written to file successfully!\n");
+    
+    // Reading from file
+    file = fopen("student.txt", "r");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    
+    printf("\nReading from file:\n");
+    char line[100];
+    while (fgets(line, sizeof(line), file)) {
+        printf("%s", line);
+    }
+    
+    fclose(file);
+    return 0;
+}
+            </div>
+            
+            <div class="output-block">
+                📤 Output:<br>
+                Data written to file successfully!<br><br>
+                Reading from file:<br>
+                John Doe<br>
+                Age: 20<br>
+                Grade: A
+            </div>
+        </div>
     <div class="navigation">
         <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">⬅️ Previous</button>
         <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ➡️</button>
