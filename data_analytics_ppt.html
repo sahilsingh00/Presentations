@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analytics Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .presentation-container {
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            min-height: 500px;
+            text-align: center;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .slide h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .slide h2 {
+            color: #34495e;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .slide h3 {
+            color: #3498db;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .slide p, .slide li {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .slide ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .example-box {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .code-box {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .output-box {
+            background: #e8f5e8;
+            border: 2px solid #27ae60;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .controls {
+            background: #34495e;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .slide-counter {
+            color: white;
+            font-size: 1.1em;
+            margin: 0 20px;
+        }
+
+        .title-slide {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+        }
+
+        .title-slide h1 {
+            color: white;
+            font-size: 3em;
+        }
+
+        .title-slide p {
+            color: #ddd;
+            font-size: 1.3em;
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <div class="icon">📊</div>
+            <h1>Data Analytics Fundamentals</h1>
+            <p>A Comprehensive Guide to Data Cleaning, Analysis, and Visualization</p>
+            <br>
+            <p style="font-size: 1em;">Tools & Technologies: Excel, SQL, R, Python, Power BI, Tableau</p>
+        </div>
+
+        <!-- Slide 2: Overview -->
+        <div class="slide">
+            <h2>📋 Course Overview</h2>
+            <ul>
+                <li><strong>Data Cleaning & Preparation:</strong> Excel and SQL fundamentals</li>
+                <li><strong>Statistical Analysis:</strong> R and Python libraries (pandas, NumPy, SciPy)</li>
+                <li><strong>Data Visualization:</strong> Power BI and Tableau</li>
+                <li><strong>Python for Analytics:</strong> pandas, NumPy, Matplotlib</li>
+            </ul>
+            <div class="example-box">
+                <strong>Learning Goal:</strong> Transform raw data into actionable insights through systematic analysis and compelling visualizations.
+            </div>
+        </div>
+
+        <!-- Slide 3: Excel Introduction -->
+        <div class="slide">
+            <h2>📊 Introduction to Excel</h2>
+            <p><strong>What is Excel?</strong> Microsoft Excel is a spreadsheet application used for data organization, calculation, and basic analysis.</p>
+            
+            <h3>Key Features:</h3>
+            <ul>
+                <li>Spreadsheet interface with rows and columns</li>
+                <li>Built-in formulas and functions</li>
+                <li>Charts and basic visualization tools</li>
+                <li>Data filtering and sorting capabilities</li>
+            </ul>
+            
+            <div class="example-box">
+                <strong>Example:</strong> A sales dataset with columns for Date, Product, Quantity, and Revenue. Excel can calculate totals, averages, and create charts automatically.
+            </div>
+        </div>
+
+        <!-- Slide 4: Excel Data Operations -->
+        <div class="slide">
+            <h2>🔧 Excel Data Operations</h2>
+            
+            <h3>Common Functions:</h3>
+            <div class="code-box">
+=SUM(A1:A10)        // Adds values in cells A1 through A10
+=AVERAGE(B1:B20)    // Calculates average of B1 through B20
+=VLOOKUP(C1,A:B,2,FALSE)  // Looks up value in table
+=IF(D1>100,"High","Low")   // Conditional logic
+            </div>
+            
+            <div class="output-box">
+                <strong>Output Example:</strong><br>
+                SUM result: 1,250<br>
+                AVERAGE result: 62.5<br>
+                Conditional result: "High" or "Low"
+            </div>
+        </div>
+
+        <!-- Slide 5: SQL Introduction -->
+        <div class="slide">
+            <h2>🗄️ Introduction to SQL</h2>
+            <p><strong>What is SQL?</strong> Structured Query Language - a programming language for managing and querying databases.</p>
+            
+            <h3>Core Concepts:</h3>
+            <ul>
+                <li><strong>Tables:</strong> Store data in rows and columns</li>
+                <li><strong>Queries:</strong> Commands to retrieve/manipulate data</li>
+                <li><strong>Relationships:</strong> Connect tables through keys</li>
+            </ul>
+            
+            <div class="code-box">
+SELECT product_name, price 
+FROM products 
+WHERE price > 50
+ORDER BY price DESC;
+            </div>
+            
+            <div class="output-box">
+                <strong>Output:</strong> Returns all products with price > $50, sorted from highest to lowest price.
+            </div>
+        </div>
+
+        <!-- Slide 6: Data Importing & Cleaning -->
+        <div class="slide">
+            <h2>🧹 Data Importing & Cleaning</h2>
+            
+            <h3>Excel Cleaning Techniques:</h3>
+            <ul>
+                <li><strong>Remove Duplicates:</strong> Data → Remove Duplicates</li>
+                <li><strong>Text to Columns:</strong> Split data using delimiters</li>
+                <li><strong>Find & Replace:</strong> Clean inconsistent data</li>
+                <li><strong>Data Validation:</strong> Ensure data quality</li>
+            </ul>
+            
+            <h3>SQL Cleaning Example:</h3>
+            <div class="code-box">
+-- Remove duplicates
+SELECT DISTINCT customer_id, customer_name 
+FROM customers;
+
+-- Handle null values
+SELECT * FROM orders 
+WHERE order_date IS NOT NULL;
+            </div>
+        </div>
+
+        <!-- Slide 7: Data Transformation -->
+        <div class="slide">
+            <h2>🔄 Data Transformation</h2>
+            
+            <h3>Excel Transformations:</h3>
+            <ul>
+                <li><strong>Pivot Tables:</strong> Summarize and reorganize data</li>
+                <li><strong>Power Query:</strong> Advanced data transformation</li>
+                <li><strong>Formulas:</strong> Create calculated columns</li>
+            </ul>
+            
+            <h3>SQL Transformations:</h3>
+            <div class="code-box">
+-- Group data and calculate aggregates
+SELECT region, COUNT(*) as total_sales, 
+       AVG(amount) as avg_amount
+FROM sales 
+GROUP BY region;
+
+-- Create new calculated columns
+SELECT *, (quantity * price) as total_value
+FROM order_items;
+            </div>
+        </div>
+
+        <!-- Slide 8: R Introduction -->
+        <div class="slide">
+            <h2>📈 Introduction to R</h2>
+            <p><strong>What is R?</strong> A programming language specifically designed for statistical computing and data analysis.</p>
+            
+            <h3>Key Strengths:</h3>
+            <ul>
+                <li>Powerful statistical functions</li>
+                <li>Excellent data visualization</li>
+                <li>Large community and packages</li>
+                <li>Built for data analysis</li>
+            </ul>
+            
+            <div class="code-box">
+# Basic R example
+data <- c(1, 2, 3, 4, 5)
+mean_value <- mean(data)
+std_dev <- sd(data)
+print(paste("Mean:", mean_value))
+            </div>
+            
+            <div class="output-box">
+                <strong>Output:</strong> "Mean: 3"
+            </div>
+        </div>
+
+        <!-- Slide 9: Python Libraries -->
+        <div class="slide">
+            <h2>🐍 Python Libraries Overview</h2>
+            
+            <h3>Essential Libraries:</h3>
+            <ul>
+                <li><strong>pandas:</strong> Data manipulation and analysis</li>
+                <li><strong>NumPy:</strong> Numerical computing</li>
+                <li><strong>SciPy:</strong> Scientific computing</li>
+                <li><strong>Matplotlib:</strong> Data visualization</li>
+            </ul>
+            
+            <div class="code-box">
+import pandas as pd
+import numpy as np
+
+# Create a DataFrame
+data = {'Name': ['Alice', 'Bob', 'Charlie'],
+        'Age': [25, 30, 35],
+        'Salary': [50000, 60000, 70000]}
+df = pd.DataFrame(data)
+print(df.head())
+            </div>
+        </div>
+
+        <!-- Slide 10: pandas Example -->
+        <div class="slide">
+            <h2>🐼 pandas in Action</h2>
+            
+            <div class="code-box">
+import pandas as pd
+
+# Load data
+df = pd.read_csv('sales_data.csv')
+
+# Basic operations
+print(df.info())                    # Data info
+print(df.describe())                # Statistics
+df_clean = df.dropna()              # Remove null values
+df_grouped = df.groupby('region').sum()  # Group by region
+            </div>
+            
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                - Data info: columns, data types, memory usage<br>
+                - Describe: count, mean, std, min, max for numeric columns<br>
+                - Clean dataset without missing values<br>
+                - Aggregated data by region
+            </div>
+        </div>
+
+        <!-- Slide 11: NumPy Example -->
+        <div class="slide">
+            <h2>🔢 NumPy Fundamentals</h2>
+            
+            <div class="code-box">
+import numpy as np
+
+# Create arrays
+arr = np.array([1, 2, 3, 4, 5])
+matrix = np.array([[1, 2], [3, 4]])
+
+# Mathematical operations
+result = np.sqrt(arr)               # Square root
+mean_val = np.mean(arr)             # Calculate mean
+reshaped = arr.reshape(5, 1)        # Reshape array
+            </div>
+            
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                - arr: [1 2 3 4 5]<br>
+                - result: [1.0 1.41 1.73 2.0 2.24]<br>
+                - mean_val: 3.0<br>
+                - reshaped: 5x1 column vector
+            </div>
+        </div>
+
+        <!-- Slide 12: SciPy Example -->
+        <div class="slide">
+            <h2>🔬 SciPy for Advanced Analysis</h2>
+            
+            <div class="code-box">
+from scipy import stats
+import numpy as np
+
+# Statistical tests
+data1 = np.random.normal(0, 1, 100)
+data2 = np.random.normal(1, 1, 100)
+
+# T-test
+t_stat, p_value = stats.ttest_ind(data1, data2)
+
+# Correlation
+correlation, p_val = stats.pearsonr(data1[:50], data2[:50])
+
+print(f"T-test p-value: {p_value}")
+print(f"Correlation: {correlation}")
+            </div>
+            
+            <div class="output-box">
+                <strong>Output:</strong><br>
+                T-test p-value: 0.0001 (significant difference)<br>
+                Correlation: -0.23 (weak negative correlation)
+            </div>
+        </div>
+
+        <!-- Slide 13: Power BI Introduction -->
+        <div class="slide">
+            <h2>⚡ Introduction to Power BI</h2>
+            <p><strong>What is Power BI?</strong> Microsoft's business intelligence tool for creating interactive dashboards and reports.</p>
+            
+            <h3>Key Components:</h3>
+            <ul>
+                <li><strong>Power BI Desktop:</strong> Create reports and dashboards</li>
+                <li><strong>Power BI Service:</strong> Share and collaborate online</li>
+                <li><strong>Power BI Mobile:</strong> View reports on mobile devices</li>
+            </ul>
+            
+            <div class="example-box">
+                <strong>Example Use Case:</strong> A retail company creates a dashboard showing daily sales, top products, regional performance, and customer demographics - all updating automatically from their database.
+            </div>
+        </div>
+
+        <!-- Slide 14: Tableau Introduction -->
+        <div class="slide">
+            <h2>📊 Introduction to Tableau</h2>
+            <p><strong>What is Tableau?</strong> A powerful data visualization platform that helps people see and understand their data.</p>
+            
+            <h3>Key Features:</h3>
+            <ul>
+                <li>Drag-and-drop interface</li>
+                <li>Real-time data connections</li>
+                <li>Interactive dashboards</li>
+                <li>Advanced analytics capabilities</li>
+            </ul>
+            
+            <div class="example-box">
+                <strong>Example:</strong> Connect to a sales database, drag 'Date' to columns and 'Sales' to rows, and Tableau automatically creates a time series chart showing sales trends.
+            </div>
+        </div>
+
+        <!-- Slide 15: Creating Visualizations -->
+        <div class="slide">
+            <h2>📈 Creating Charts & Dashboards</h2>
+            
+            <h3>Common Chart Types:</h3>
+            <ul>
+                <li><strong>Bar Charts:</strong> Compare categories</li>
+                <li><strong>Line Charts:</strong> Show trends over time</li>
+                <li><strong>Pie Charts:</strong> Show proportions</li>
+                <li><strong>Scatter Plots:</strong> Show relationships</li>
+                <li><strong>Heat Maps:</strong> Show intensity/density</li>
+            </ul>
+            
+            <div class="example-box">
+                <strong>Dashboard Example:</strong> An executive dashboard showing KPIs (revenue, profit, customer count) with drill-down capabilities to see regional and product-level details.
+            </div>
+        </div>
+
+        <!-- Slide 16: Matplotlib Example -->
+        <div class="slide">
+            <h2>📊 Matplotlib Visualization</h2>
+            
+            <div class="code-box">
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Create sample data
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+# Create plot
+plt.figure(figsize=(10, 6))
+plt.plot(x, y, 'b-', linewidth=2, label='sin(x)')
+plt.title('Sine Wave', fontsize=16)
+plt.xlabel('X values')
+plt.ylabel('Y values')
+plt.legend()
+plt.grid(True)
+plt.show()
+            </div>
+            
+            <div class="output-box">
+                <strong>Output:</strong> A beautiful sine wave graph with title, labels, legend, and grid - perfect for presentations and reports.
+            </div>
+        </div>
+
+        <!-- Slide 17: Complete Python Example -->
+        <div class="slide">
+            <h2>🔗 Complete Python Analytics Example</h2>
+            
+            <div class="code-box">
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load and explore data
+df = pd.read_csv('sales_data.csv')
+print(f"Dataset shape: {df.shape}")
+
+# Clean data
+df_clean = df.dropna()
+df_clean['total_revenue'] = df_clean['quantity'] * df_clean['price']
+
+# Analyze
+monthly_sales = df_clean.groupby('month')['total_revenue'].sum()
+
+# Visualize
+plt.figure(figsize=(12, 6))
+monthly_sales.plot(kind='bar')
+plt.title('Monthly Sales Revenue')
+plt.show()
+            </div>
+            
+            <div class="output-box">
+                <strong>Result:</strong> Clean dataset, calculated revenue, and a bar chart showing monthly sales trends.
+            </div>
+        </div>
+
+        <!-- Slide 18: Best Practices -->
+        <div class="slide">
+            <h2>✅ Best Practices Summary</h2>
+            
+            <h3>Data Cleaning:</h3>
+            <ul>
+                <li>Always backup original data</li>
+                <li>Document your cleaning steps</li>
+                <li>Check for duplicates and missing values</li>
+                <li>Validate data types and formats</li>
+            </ul>
+            
+            <h3>Analysis:</h3>
+            <ul>
+                <li>Start with exploratory data analysis</li>
+                <li>Use appropriate statistical tests</li>
+                <li>Consider data distribution and outliers</li>
+                <li>Document assumptions and limitations</li>
+            </ul>
+            
+            <h3>Visualization:</h3>
+            <ul>
+                <li>Choose appropriate chart types</li>
+                <li>Keep it simple and clear</li>
+                <li>Use consistent colors and formatting</li>
+                <li>Always include titles and labels</li>
+            </ul>
+        </div>
+
+        <!-- Slide 19: Next Steps -->
+        <div class="slide">
+            <h2>🚀 Next Steps & Learning Path</h2>
+            
+            <h3>Beginner to Intermediate:</h3>
+            <ul>
+                <li>Practice with real datasets (Kaggle, government data)</li>
+                <li>Complete online courses (Coursera, edX, DataCamp)</li>
+                <li>Build portfolio projects</li>
+            </ul>
+            
+            <h3>Advanced Topics:</h3>
+            <ul>
+                <li>Machine Learning (scikit-learn, TensorFlow)</li>
+                <li>Big Data tools (Apache Spark, Hadoop)</li>
+                <li>Cloud platforms (AWS, Azure, GCP)</li>
+                <li>Advanced statistics and modeling</li>
+            </ul>
+            
+            <div class="example-box">
+                <strong>Project Idea:</strong> Analyze your city's public transportation data to identify patterns, predict delays, and create an interactive dashboard for commuters.
+            </div>
+        </div>
+
+        <!-- Slide 20: Thank You -->
+        <div class="slide title-slide">
+            <div class="icon">🎯</div>
+            <h1>Thank You!</h1>
+            <p>Ready to Transform Data into Insights</p>
+            <br>
+            <p style="font-size: 1em;">Remember: The best way to learn data analytics is by doing. Start with a simple project and gradually build your skills!</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button class="btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <span class="slide-counter">
+                Slide <span id="currentSlide">1</span> of <span id="totalSlides">20</span>
+            </span>
+            <button class="btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            
+            document.getElementById('currentSlide').textContent = index + 1;
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            const newIndex = currentSlideIndex + direction;
+            if (newIndex >= 0 && newIndex < totalSlides) {
+                currentSlideIndex = newIndex;
+                showSlide(currentSlideIndex);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
