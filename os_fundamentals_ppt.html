@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operating Systems Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .presentation-container {
+            width: 90%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            min-height: 600px;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #34495e;
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        h3 {
+            color: #2980b9;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        p, li {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .example-box {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .example-box h4 {
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #34495e;
+            color: white;
+        }
+
+        .nav-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #2980b9;
+        }
+
+        .nav-button:disabled {
+            background: #7f8c8d;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            font-size: 1.1em;
+        }
+
+        .title-slide {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .title-slide h1 {
+            font-size: 3em;
+            border: none;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .title-slide p {
+            font-size: 1.3em;
+            color: #ecf0f1;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .functions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .function-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            transition: transform 0.3s;
+        }
+
+        .function-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .function-card h4 {
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Operating Systems Fundamentals</h1>
+            <p>A Complete Guide to OS Concepts</p>
+            <p style="margin-top: 20px; font-size: 1.1em;">Understanding the Foundation of Computer Systems</p>
+        </div>
+
+        <!-- Slide 2: Definition -->
+        <div class="slide">
+            <h2>What is an Operating System?</h2>
+            <div class="definition-box">
+                <h3>Definition</h3>
+                <p>An Operating System (OS) is a software that manages computer hardware and provides services for computer programs. It acts as a bridge between users and computer hardware.</p>
+            </div>
+            <div class="example-box">
+                <h4>🔍 Simple Example:</h4>
+                <p>Think of an OS like a restaurant manager:</p>
+                <ul>
+                    <li>Takes orders from customers (user programs)</li>
+                    <li>Manages kitchen staff (hardware resources)</li>
+                    <li>Ensures food is served properly (program execution)</li>
+                    <li>Handles multiple customers at once (multitasking)</li>
+                </ul>
+            </div>
+            <p><strong>Common Examples:</strong> Windows, macOS, Linux, Android, iOS</p>
+        </div>
+
+        <!-- Slide 3: OS Role -->
+        <div class="slide">
+            <h2>Operating System's Role</h2>
+            <h3>Primary Roles:</h3>
+            <ul>
+                <li><strong>Resource Manager:</strong> Allocates CPU, memory, and storage</li>
+                <li><strong>Interface Provider:</strong> Creates user-friendly interaction</li>
+                <li><strong>Security Guard:</strong> Protects system and user data</li>
+                <li><strong>Traffic Controller:</strong> Manages program execution</li>
+            </ul>
+            <div class="example-box">
+                <h4>🔍 Real-World Example:</h4>
+                <p>When you open multiple apps on your phone:</p>
+                <ul>
+                    <li>OS decides which app gets CPU time</li>
+                    <li>Allocates memory to each app</li>
+                    <li>Prevents apps from interfering with each other</li>
+                    <li>Manages screen display and touch input</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 4: OS Operations -->
+        <div class="slide">
+            <h2>Operating System Operations</h2>
+            <h3>Key Operations:</h3>
+            <ul>
+                <li><strong>Process Management:</strong> Creating, scheduling, and terminating processes</li>
+                <li><strong>Memory Management:</strong> Allocating and deallocating memory</li>
+                <li><strong>File System Management:</strong> Organizing and accessing files</li>
+                <li><strong>I/O Management:</strong> Controlling input/output devices</li>
+                <li><strong>Security & Protection:</strong> User authentication and access control</li>
+            </ul>
+            <div class="example-box">
+                <h4>🔍 Example - Opening a Word Document:</h4>
+                <p>1. OS loads Word program into memory<br>
+                2. Creates a process for Word application<br>
+                3. Allocates memory for the document<br>
+                4. Manages keyboard and mouse input<br>
+                5. Controls display output to screen</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Functions -->
+        <div class="slide">
+            <h2>Functions of Operating System</h2>
+            <div class="functions-grid">
+                <div class="function-card">
+                    <h4>Process Management</h4>
+                    <p>Controls program execution and multitasking</p>
+                </div>
+                <div class="function-card">
+                    <h4>Memory Management</h4>
+                    <p>Allocates RAM efficiently among programs</p>
+                </div>
+                <div class="function-card">
+                    <h4>File Management</h4>
+                    <p>Organizes files and folders on storage</p>
+                </div>
+                <div class="function-card">
+                    <h4>Device Management</h4>
+                    <p>Controls hardware devices like printers</p>
+                </div>
+                <div class="function-card">
+                    <h4>Security Management</h4>
+                    <p>Protects system from unauthorized access</p>
+                </div>
+                <div class="function-card">
+                    <h4>Network Management</h4>
+                    <p>Handles internet and network connections</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Computing Environments -->
+        <div class="slide">
+            <h2>Computing Environments</h2>
+            <h3>Types of Computing Environments:</h3>
+            <ul>
+                <li><strong>Desktop Computing:</strong> Personal computers for individual use</li>
+                <li><strong>Server Computing:</strong> Powerful computers serving multiple users</li>
+                <li><strong>Mobile Computing:</strong> Smartphones and tablets</li>
+                <li><strong>Cloud Computing:</strong> Services delivered over the internet</li>
+                <li><strong>Embedded Systems:</strong> Computers built into other devices</li>
+            </ul>
+            <div class="example-box">
+                <h4>🔍 Examples:</h4>
+                <p><strong>Desktop:</strong> Windows PC at home<br>
+                <strong>Server:</strong> Google's web servers<br>
+                <strong>Mobile:</strong> Android phone<br>
+                <strong>Cloud:</strong> Netflix streaming service<br>
+                <strong>Embedded:</strong> Smart TV, car navigation system</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: OS Services -->
+        <div class="slide">
+            <h2>Operating System Services</h2>
+            <h3>Services for Users:</h3>
+            <ul>
+                <li><strong>Program Execution:</strong> Running applications</li>
+                <li><strong>I/O Operations:</strong> Reading/writing files</li>
+                <li><strong>File System Manipulation:</strong> Creating, deleting files</li>
+                <li><strong>Communications:</strong> Inter-process communication</li>
+                <li><strong>Error Detection:</strong> Finding and handling errors</li>
+            </ul>
+            <h3>Services for System:</h3>
+            <ul>
+                <li><strong>Resource Allocation:</strong> Distributing system resources</li>
+                <li><strong>Accounting:</strong> Tracking resource usage</li>
+                <li><strong>Protection & Security:</strong> Controlling access</li>
+            </ul>
+        </div>
+
+        <!-- Slide 8: User Interface -->
+        <div class="slide">
+            <h2>User and Operating System Interface</h2>
+            <h3>Types of User Interfaces:</h3>
+            <ul>
+                <li><strong>Command Line Interface (CLI):</strong> Text-based commands</li>
+                <li><strong>Graphical User Interface (GUI):</strong> Icons, windows, menus</li>
+                <li><strong>Touch Interface:</strong> Touch gestures on mobile devices</li>
+                <li><strong>Voice Interface:</strong> Voice commands</li>
+            </ul>
+            <div class="example-box">
+                <h4>🔍 Examples:</h4>
+                <p><strong>CLI:</strong> Windows Command Prompt, Linux Terminal<br>
+                <strong>GUI:</strong> Windows Desktop, macOS Finder<br>
+                <strong>Touch:</strong> iPhone home screen, Android interface<br>
+                <strong>Voice:</strong> Siri, Google Assistant</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: System Calls -->
+        <div class="slide">
+            <h2>System Calls</h2>
+            <div class="definition-box">
+                <h3>What are System Calls?</h3>
+                <p>System calls are programming interfaces that allow programs to request services from the operating system kernel.</p>
+            </div>
+            <h3>How System Calls Work:</h3>
+            <ul>
+                <li>Program makes a request to the OS</li>
+                <li>OS kernel processes the request</li>
+                <li>Kernel performs the operation</li>
+                <li>Result is returned to the program</li>
+            </ul>
+            <div class="example-box">
+                <h4>🔍 Simple Example:</h4>
+                <p>When a program wants to save a file:</p>
+                <p>1. Program calls "write()" system call<br>
+                2. OS receives the request<br>
+                3. OS writes data to the disk<br>
+                4. OS returns success/failure status</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Types of System Calls -->
+        <div class="slide">
+            <h2>Types of System Calls</h2>
+            <h3>1. Process Control:</h3>
+            <ul>
+                <li>create(), exit(), wait(), exec()</li>
+                <li>Example: Starting a new program</li>
+            </ul>
+            <h3>2. File Management:</h3>
+            <ul>
+                <li>open(), read(), write(), close()</li>
+                <li>Example: Opening and reading a text file</li>
+            </ul>
+            <h3>3. Device Management:</h3>
+            <ul>
+                <li>request(), release(), read(), write()</li>
+                <li>Example: Printing a document</li>
+            </ul>
+            <h3>4. Information Maintenance:</h3>
+            <ul>
+                <li>getpid(), alarm(), sleep()</li>
+                <li>Example: Getting current time</li>
+            </ul>
+            <h3>5. Communications:</h3>
+            <ul>
+                <li>pipe(), socket(), send(), receive()</li>
+                <li>Example: Sending email</li>
+            </ul>
+        </div>
+
+        <!-- Slide 11: OS Structure -->
+        <div class="slide">
+            <h2>Operating System Structure</h2>
+            <h3>Common OS Structures:</h3>
+            <ul>
+                <li><strong>Monolithic Structure:</strong> All OS components in single layer</li>
+                <li><strong>Layered Structure:</strong> OS divided into layers</li>
+                <li><strong>Microkernel:</strong> Minimal kernel with services as processes</li>
+                <li><strong>Modular Structure:</strong> Kernel with loadable modules</li>
+                <li><strong>Hybrid Structure:</strong> Combination of different approaches</li>
+            </ul>
+            <div class="example-box">
+                <h4>🔍 Examples:</h4>
+                <p><strong>Monolithic:</strong> Traditional Linux<br>
+                <strong>Layered:</strong> THE operating system<br>
+                <strong>Microkernel:</strong> Minix<br>
+                <strong>Modular:</strong> Modern Linux<br>
+                <strong>Hybrid:</strong> Windows NT, macOS</p>
+            </div>
+        </div>
+
+        <!-- Slide 12: Summary -->
+        <div class="slide">
+            <h2>Summary</h2>
+            <h3>Key Takeaways:</h3>
+            <ul>
+                <li>OS is the bridge between users and hardware</li>
+                <li>Main functions: Process, Memory, File, Device management</li>
+                <li>Provides various interfaces: CLI, GUI, Touch, Voice</li>
+                <li>System calls enable program-OS communication</li>
+                <li>Different structures suit different needs</li>
+            </ul>
+            <div class="example-box">
+                <h4>🔍 Remember:</h4>
+                <p>Every time you use a computer, smartphone, or smart device, you're interacting with an operating system that manages all the complex operations behind the scenes to make your experience smooth and efficient!</p>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <h3 style="color: #3498db;">Thank You!</h3>
+                <p>Questions & Discussion</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <span class="slide-counter">
+                <span id="slideNumber">1</span> / <span id="totalSlides">12</span>
+            </span>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('slideNumber').textContent = currentSlide + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(n) {
+            if (n > 0 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (n < 0 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
