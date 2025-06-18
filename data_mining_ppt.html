@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module 1: Database Systems & Data Mining</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 90%;
+            max-width: 1000px;
+            height: 90%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            padding: 40px;
+            position: relative;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .slide-title {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2em;
+            color: #666;
+            font-weight: 300;
+        }
+
+        .slide-content {
+            height: calc(100% - 120px);
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .slide-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(102, 126, 234, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .process-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .process-step {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+            position: relative;
+        }
+
+        .process-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -25px;
+            color: #667eea;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">15</span>
+        </div>
+
+        <!-- Slide 1: Title Slide -->
+        <div class="slide active">
+            <div class="slide-header">
+                <h1 class="slide-title">Module 1</h1>
+                <p class="slide-subtitle">Database Systems & Data Mining</p>
+            </div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <h2 style="color: white; border: none; padding: 0;">Course Overview</h2>
+                    <ul style="margin-top: 15px;">
+                        <li>Evolution of Database Systems</li>
+                        <li>Data Mining Fundamentals</li>
+                        <li>Data Preprocessing Techniques</li>
+                        <li>Frequent Pattern Mining</li>
+                        <li>Association Rule Mining</li>
+                    </ul>
+                </div>
+                <div class="info-box">
+                    <h3 style="color: white;">Learning Objectives</h3>
+                    <p>Understand the evolution of database systems, master data mining concepts, learn preprocessing techniques, and explore pattern mining algorithms.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Evolution of Database Systems -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Evolution of Database Systems</h1>
+            </div>
+            <div class="slide-content">
+                <div class="process-flow">
+                    <div class="process-step">File Systems</div>
+                    <div class="process-step">Hierarchical DB</div>
+                    <div class="process-step">Network DB</div>
+                    <div class="process-step">Relational DB</div>
+                    <div class="process-step">Object-Oriented</div>
+                </div>
+                
+                <h2>Key Milestones</h2>
+                <ul>
+                    <li><strong>1960s:</strong> File-based systems with limited data sharing</li>
+                    <li><strong>1970s:</strong> Hierarchical and Network models introduced</li>
+                    <li><strong>1980s:</strong> Relational model dominance (E.F. Codd)</li>
+                    <li><strong>1990s:</strong> Object-oriented and distributed databases</li>
+                    <li><strong>2000s:</strong> Data warehousing and OLAP systems</li>
+                    <li><strong>2010s:</strong> NoSQL and Big Data technologies</li>
+                </ul>
+
+                <div class="info-box">
+                    <h3 style="color: white;">Modern Trends</h3>
+                    <p>Cloud databases, NewSQL, Graph databases, In-memory computing, and Real-time analytics are shaping the future of database systems.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: What is Data Mining? -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">What is Data Mining?</h1>
+            </div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <h2 style="color: white; border: none; padding: 0;">Definition</h2>
+                    <p>Data Mining is the process of discovering interesting patterns, associations, and knowledge from large volumes of data stored in databases, data warehouses, or other repositories.</p>
+                </div>
+
+                <h2>Key Characteristics</h2>
+                <ul>
+                    <li><strong>Pattern Discovery:</strong> Identifies hidden patterns in data</li>
+                    <li><strong>Knowledge Extraction:</strong> Converts raw data into actionable insights</li>
+                    <li><strong>Automated Process:</strong> Uses algorithms for pattern recognition</li>
+                    <li><strong>Large-scale Analysis:</strong> Handles massive datasets efficiently</li>
+                </ul>
+
+                <div class="two-column">
+                    <div>
+                        <h3>Applications</h3>
+                        <ul>
+                            <li>Market Analysis</li>
+                            <li>Fraud Detection</li>
+                            <li>Customer Segmentation</li>
+                            <li>Risk Management</li>
+                            <li>Recommendation Systems</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Techniques</h3>
+                        <ul>
+                            <li>Classification</li>
+                            <li>Clustering</li>
+                            <li>Association Rules</li>
+                            <li>Regression</li>
+                            <li>Anomaly Detection</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Data Repositories -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Different Data Repositories</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h2>Traditional Repositories</h2>
+                        <ul>
+                            <li><strong>Databases:</strong> Structured data with ACID properties</li>
+                            <li><strong>Data Warehouses:</strong> Historical data for analysis</li>
+                            <li><strong>Data Marts:</strong> Subject-specific data subsets</li>
+                            <li><strong>File Systems:</strong> Unstructured file storage</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Modern Repositories</h2>
+                        <ul>
+                            <li><strong>Data Lakes:</strong> Raw data in native format</li>
+                            <li><strong>Cloud Storage:</strong> Scalable distributed storage</li>
+                            <li><strong>NoSQL Databases:</strong> Flexible schema design</li>
+                            <li><strong>Streaming Data:</strong> Real-time data flows</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <table class="comparison-table">
+                    <tr>
+                        <th>Repository Type</th>
+                        <th>Structure</th>
+                        <th>Use Case</th>
+                        <th>Examples</th>
+                    </tr>
+                    <tr>
+                        <td>Database</td>
+                        <td>Highly Structured</td>
+                        <td>Transactional</td>
+                        <td>MySQL, PostgreSQL</td>
+                    </tr>
+                    <tr>
+                        <td>Data Warehouse</td>
+                        <td>Structured</td>
+                        <td>Analytical</td>
+                        <td>Snowflake, Teradata</td>
+                    </tr>
+                    <tr>
+                        <td>Data Lake</td>
+                        <td>Semi/Unstructured</td>
+                        <td>Big Data Analytics</td>
+                        <td>Hadoop, AWS S3</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 5: Data Mining vs KDD -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Data Mining vs Knowledge Discovery</h1>
+            </div>
+            <div class="slide-content">
+                <div class="info-box">
+                    <h2 style="color: white; border: none; padding: 0;">Knowledge Discovery in Databases (KDD)</h2>
+                    <p>KDD is the overall process of discovering useful knowledge from data, while Data Mining is a specific step within KDD.</p>
+                </div>
+
+                <div class="process-flow" style="flex-direction: column; gap: 20px;">
+                    <div class="process-step" style="width: 80%;">1. Data Selection</div>
+                    <div class="process-step" style="width: 80%;">2. Data Preprocessing</div>
+                    <div class="process-step" style="width: 80%;">3. Data Transformation</div>
+                    <div class="process-step" style="width: 80%; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">4. Data Mining (Core Step)</div>
+                    <div class="process-step" style="width: 80%;">5. Pattern Evaluation</div>
+                    <div class="process-step" style="width: 80%;">6. Knowledge Presentation</div>
+                </div>
+
+                <table class="comparison-table">
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Data Mining</th>
+                        <th>KDD</th>
+                    </tr>
+                    <tr>
+                        <td>Scope</td>
+                        <td>Algorithm application</td>
+                        <td>Complete discovery process</td>
+                    </tr>
+                    <tr>
+                        <td>Focus</td>
+                        <td>Pattern extraction</td>
+                        <td>End-to-end knowledge discovery</td>
+                    </tr>
+                    <tr>
+                        <td>Duration</td>
+                        <td>Single step</td>
+                        <td>Multi-step iterative process</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Slide 6: Data Mining Issues -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Data Mining Issues</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h2>Technical Issues</h2>
+                        <ul>
+                            <li><strong>Scalability:</strong> Handling large datasets efficiently</li>
+                            <li><strong>Dimensionality:</strong> Curse of high-dimensional data</li>
+                            <li><strong>Data Quality:</strong> Noise, missing values, inconsistencies</li>
+                            <li><strong>Algorithm Selection:</strong> Choosing appropriate methods</li>
+                            <li><strong>Overfitting:</strong> Models too specific to training data</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Business Issues</h2>
+                        <ul>
+                            <li><strong>ROI Measurement:</strong> Quantifying mining benefits</li>
+                            <li><strong>Integration:</strong> Incorporating results into workflows</li>
+                            <li><strong>User Acceptance:</strong> Making results interpretable</li>
+                            <li><strong>Maintenance:</strong> Updating models over time</li>
+                            <li><strong>Expertise Gap:</strong> Need for skilled professionals</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3 style="color: #333;">Performance Challenges</h3>
+                    <ul style="color: #333;">
+                        <li>Memory limitations with large datasets</li>
+                        <li>Computational complexity of algorithms</li>
+                        <li>Real-time processing requirements</li>
+                        <li>Distributed computing coordination</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="color: white;">Solutions & Best Practices</h3>
+                    <p>Use sampling techniques, parallel processing, feature selection, cross-validation, and continuous model monitoring to address these challenges.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Social Implications -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Social Implications of Data Mining</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h2>Privacy Concerns</h2>
+                        <ul>
+                            <li><strong>Personal Data:</strong> Unauthorized use of private information</li>
+                            <li><strong>Profiling:</strong> Creating detailed user profiles</li>
+                            <li><strong>Tracking:</strong> Monitoring user behavior patterns</li>
+                            <li><strong>Data Breaches:</strong> Risk of sensitive data exposure</li>
+                        </ul>
+
+                        <h2>Ethical Issues</h2>
+                        <ul>
+                            <li><strong>Bias:</strong> Discriminatory algorithmic decisions</li>
+                            <li><strong>Transparency:</strong> Black-box decision making</li>
+                            <li><strong>Consent:</strong> Users unaware of data usage</li>
+                            <li><strong>Fairness:</strong> Equal treatment across groups</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Legal & Regulatory</h2>
+                        <ul>
+                            <li><strong>GDPR:</strong> European data protection regulation</li>
+                            <li><strong>CCPA:</strong> California Consumer Privacy Act</li>
+                            <li><strong>Right to Explanation:</strong> Understanding automated decisions</li>
+                            <li><strong>Data Ownership:</strong> Who controls the data?</li>
+                        </ul>
+
+                        <h2>Societal Impact</h2>
+                        <ul>
+                            <li><strong>Employment:</strong> Job displacement concerns</li>
+                            <li><strong>Digital Divide:</strong> Unequal access to benefits</li>
+                            <li><strong>Manipulation:</strong> Influencing behavior/opinions</li>
+                            <li><strong>Social Control:</strong> Surveillance implications</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3 style="color: white;">Responsible Data Mining</h3>
+                    <p>Implement privacy-preserving techniques, ensure algorithmic fairness, maintain transparency, obtain proper consent, and follow ethical guidelines in all data mining activities.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Information Retrieval & DSS -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Information Retrieval & Decision Support</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h2>Information Retrieval (IR)</h2>
+                        <ul>
+                            <li><strong>Definition:</strong> Finding relevant information from large collections</li>
+                            <li><strong>Process:</strong> Query → Search → Ranking → Retrieval</li>
+                            <li><strong>Techniques:</strong> Boolean, Vector Space, Probabilistic models</li>
+                            <li><strong>Evaluation:</strong> Precision, Recall, F-measure</li>
+                        </ul>
+
+                        <h3>IR Components</h3>
+                        <ul>
+                            <li>Document Collection</li>
+                            <li>Query Processing</li>
+                            <li>Matching Algorithm</li>
+                            <li>Ranking System</li>
+                            <li>User Interface</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Decision Support Systems (DSS)</h2>
+                        <ul>
+                            <li><strong>Purpose:</strong> Support managerial decision-making</li>
+                            <li><strong>Features:</strong> Interactive, flexible, user-friendly</li>
+                            <li><strong>Components:</strong> Data, Models, User Interface</li>
+                            <li><strong>Types:</strong> Model-driven, Data-driven, Knowledge-driven</li>
+                        </ul>
+
+                        <h3>DSS Architecture</h3>
+                        <ul>
+                            <li>Database Management</li>
+                            <li>Model Base Management</li>
+                            <li>User Interface</li>
+                            <li>Knowledge Base</li>
+                            <li>Communication System</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="color: white;">Integration with Data Mining</h3>
+                    <p>IR helps in data collection and preprocessing, while DSS uses data mining results for strategic decision-making. Both complement data mining in the knowledge discovery process.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Dimensional Modeling -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Dimensional Modeling</h1>
+            </div>
+            <div class="slide-content">
+                <div class="highlight-box">
+                    <h2 style="color: white; border: none; padding: 0;">Core Concept</h2>
+                    <p>Dimensional modeling is a logical design technique for structuring data to optimize query performance and user understanding in data warehouses.</p>
+                </div>
+
+                <div class="two-column">
+                    <div>
+                        <h2>Key Components</h2>
+                        <ul>
+                            <li><strong>Facts:</strong> Numerical measures/metrics</li>
+                            <li><strong>Dimensions:</strong> Descriptive attributes</li>
+                            <li><strong>Hierarchies:</strong> Drill-down paths</li>
+                            <li><strong>Grain:</strong> Level of detail in fact table</li>
+                        </ul>
+
+                        <h3>Schema Types</h3>
+                        <ul>
+                            <li><strong>Star Schema:</strong> Central fact table with dimension tables</li>
+                            <li><strong>Snowflake Schema:</strong> Normalized dimension tables</li>
+                            <li><strong>Galaxy Schema:</strong> Multiple fact tables</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Design Principles</h2>
+                        <ul>
+                            <li><strong>Business Process Focus:</strong> Model real business activities</li>
+                            <li><strong>Grain Declaration:</strong> Define atomic level clearly</li>
+                            <li><strong>Dimension Selection:</strong> Choose relevant attributes</li>
+                            <li><strong>Fact Identification:</strong> Select measurable metrics</li>
+                        </ul>
+
+                        <h3>Benefits</h3>
+                        <ul>
+                            <li>Intuitive for business users</li>
+                            <li>Optimized for analytical queries</li>
+                            <li>Supports OLAP operations</li>
+                            <li>Facilitates data mining</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3 style="color: #333;">Design Considerations</h3>
+                    <p style="color: #333;">Consider slowly changing dimensions, handling many-to-many relationships, managing large dimensions, and ensuring consistent grain across fact tables.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Data Preprocessing Overview -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Data Preprocessing</h1>
+            </div>
+            <div class="slide-content">
+                <div class="info-box">
+                    <h2 style="color: white; border: none; padding: 0;">Why Preprocessing?</h2>
+                    <p>Real-world data is often incomplete, inconsistent, noisy, and large. Preprocessing transforms raw data into a format suitable for mining algorithms.</p>
+                </div>
+
+                <div class="process-flow">
+                    <div class="process-step">Data Cleaning</div>
+                    <div class="process-step">Data Integration</div>
+                    <div class="process-step">Data Transformation</div>
+                    <div class="process-step">Data Reduction</div>
+                </div>
+
+                <h2>Major Preprocessing Tasks</h2>
+                <ul>
+                    <li><strong>Data Cleaning:</strong> Handle missing values, noise, and outliers</li>
+                    <li><strong>Data Integration:</strong> Combine data from multiple sources</li>
+                    <li><strong>Data Transformation:</strong> Normalize and aggregate data</li>
+                    <li><strong>Data Reduction:</strong> Reduce dimensionality and size</li>
+                    <li><strong>Data Discretization:</strong> Convert continuous to categorical</li>
+                </ul>
+
+                <div class="two-column">
+                    <div>
+                        <h3>Quality Issues</h3>
+                        <ul>
+                            <li>Missing values</li>
+                            <li>Duplicate records</li>
+                            <li>Inconsistent data</li>
+                            <li>Outliers and noise</li>
+                            <li>Format inconsistencies</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>Preprocessing Impact</h3>
+                        <ul>
+                            <li>Improved data quality</li>
+                            <li>Better mining results</li>
+                            <li>Reduced processing time</li>
+                            <li>Enhanced interpretability</li>
+                            <li>Increased accuracy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Data Cleaning & Integration -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Data Cleaning & Integration</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h2>Data Cleaning</h2>
+                        <h3>Missing Values</h3>
+                        <ul>
+                            <li><strong>Ignore:</strong> Remove records with missing values</li>
+                            <li><strong>Fill Manually:</strong> Domain expert input</li>
+                            <li><strong>Global Constant:</strong> Use placeholder like "Unknown"</li>
+                            <li><strong>Attribute Mean:</strong> Use average for numerical</li>
+                            <li><strong>Most Probable:</strong> Regression, Bayesian inference</li>
+                        </ul>
+
+                        <h3>Noise Handling</h3>
+                        <ul>
+                            <li><strong>Binning:</strong> Smooth by bin means/boundaries</li>
+                            <li><strong>Regression:</strong> Fit data to functions</li>
+                            <li><strong>Clustering:</strong> Detect and remove outliers</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Data Integration</h2>
+                        <h3>Schema Integration</h3>
+                        <ul>
+                            <li><strong>Entity Identification:</strong> Match real-world entities</li>
+                            <li><strong>Attribute Matching:</strong> Identify equivalent attributes</li>
+                            <li><strong>Schema Mapping:</strong> Define transformation rules</li>
+                        </ul>
+
+                        <h3>Challenges</h3>
+                        <ul>
+                            <li><strong>Naming Conflicts:</strong> Same attribute, different names</li>
+                            <li><strong>Structural Conflicts:</strong> Different representations</li>
+                            <li><strong>Data Value Conflicts:</strong> Different units, formats</li>
+                            <li><strong>Redundancy:</strong> Duplicate information</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3 style="color: white;">Data Summarization</h3>
+                    <p>Statistical measures (mean, median, mode), data visualization, and correlation analysis help understand data characteristics and guide cleaning decisions.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Data Transformation & Reduction -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Data Transformation & Reduction</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h2>Data Transformation</h2>
+                        <h3>Normalization</h3>
+                        <ul>
+                            <li><strong>Min-Max:</strong> Scale to [0,1] range</li>
+                            <li><strong>Z-Score:</strong> Mean=0, std dev=1</li>
+                            <li><strong>Decimal Scaling:</strong> Move decimal point</li>
+                        </ul>
+
+                        <h3>Aggregation</h3>
+                        <ul>
+                            <li>Combine multiple attributes</li>
+                            <li>Create summary statistics</li>
+                            <li>Reduce data dimensionality</li>
+                            <li>Improve mining efficiency</li>
+                        </ul>
+
+                        <h3>Attribute Construction</h3>
+                        <ul>
+                            <li>Feature engineering</li>
+                            <li>Derived attributes</li>
+                            <li>Domain-specific features</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Data Reduction</h2>
+                        <h3>Dimensionality Reduction</h3>
+                        <ul>
+                            <li><strong>PCA:</strong> Principal Component Analysis</li>
+                            <li><strong>Attribute Selection:</strong> Remove irrelevant features</li>
+                            <li><strong>Feature Extraction:</strong> Create new features</li>
+                            <li><strong>Wavelet Transform:</strong> Multi-resolution analysis</li>
+                        </ul>
+
+                        <h3>Numerosity Reduction</h3>
+                        <ul>
+                            <li><strong>Sampling:</strong> Random, stratified, systematic</li>
+                            <li><strong>Histograms:</strong> Data distribution approximation</li>
+                            <li><strong>Clustering:</strong> Replace clusters with representatives</li>
+                            <li><strong>Regression:</strong> Model-based reduction</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="color: white;">Compression Techniques</h3>
+                    <p>Lossless compression (exact reconstruction) vs lossy compression (approximate reconstruction). Choose based on accuracy requirements and storage constraints.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Data Discretization -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Data Discretization & Concept Hierarchy</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h2>Data Discretization</h2>
+                        <p>Convert continuous attributes into discrete categories for easier processing and interpretation.</p>
+
+                        <h3>Binning Methods</h3>
+                        <ul>
+                            <li><strong>Equal-Width:</strong> Divide range into equal intervals</li>
+                            <li><strong>Equal-Frequency:</strong> Same number of values per bin</li>
+                            <li><strong>Entropy-Based:</strong> Minimize information loss</li>
+                        </ul>
+
+                        <h3>Clustering-Based</h3>
+                        <ul>
+                            <li>Use clustering algorithms</li>
+                            <li>Each cluster becomes a category</li>
+                            <li>Maintains natural groupings</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Concept Hierarchy</h2>
+                        <p>Organize data at different levels of abstraction for multi-level analysis.</p>
+
+                        <h3>Types</h3>
+                        <ul>
+                            <li><strong>Schema Hierarchy:</strong> Total order on attributes</li>
+                            <li><strong>Set Grouping:</strong> Partition low-level concepts</li>
+                        </ul>
+
+                        <h3>Generation Methods</h3>
+                        <ul>
+                            <li><strong>Specification:</strong> Expert-defined rules</li>
+                            <li><strong>Automatic:</strong> Statistical analysis</li>
+                            <li><strong>Top-down:</strong> Split high-level concepts</li>
+                            <li><strong>Bottom-up:</strong> Merge low-level concepts</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3 style="color: #333;">Discretization Challenges</h3>
+                    <ul style="color: #333;">
+                        <li>Determining optimal number of bins</li>
+                        <li>Handling skewed data distributions</li>
+                        <li>Preserving important patterns</li>
+                        <li>Managing information loss</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h3 style="color: white;">Benefits</h3>
+                    <p>Improved algorithm performance, reduced complexity, better interpretability, and support for categorical mining algorithms.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Frequent Pattern Mining -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Mining Frequent Patterns & Associations</h1>
+            </div>
+            <div class="slide-content">
+                <div class="info-box">
+                    <h2 style="color: white; border: none; padding: 0;">Basic Concepts</h2>
+                    <p>Frequent pattern mining discovers items, subsequences, or substructures that appear frequently in a dataset.</p>
+                </div>
+
+                <div class="two-column">
+                    <div>
+                        <h2>Key Definitions</h2>
+                        <ul>
+                            <li><strong>Itemset:</strong> Set of items (products)</li>
+                            <li><strong>Transaction:</strong> Collection of items</li>
+                            <li><strong>Support:</strong> Frequency of occurrence</li>
+                            <li><strong>Frequent Itemset:</strong> Support ≥ minimum threshold</li>
+                            <li><strong>Association Rule:</strong> X → Y (if X then Y)</li>
+                        </ul>
+
+                        <h3>Measures</h3>
+                        <ul>
+                            <li><strong>Support:</strong> P(X ∪ Y)</li>
+                            <li><strong>Confidence:</strong> P(Y|X)</li>
+                            <li><strong>Lift:</strong> P(Y|X)/P(Y)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Applications</h2>
+                        <ul>
+                            <li><strong>Market Basket Analysis:</strong> Customer purchase patterns</li>
+                            <li><strong>Web Usage Mining:</strong> User navigation patterns</li>
+                            <li><strong>Bioinformatics:</strong> Gene sequence patterns</li>
+                            <li><strong>Text Mining:</strong> Frequent word combinations</li>
+                        </ul>
+
+                        <h3>Pattern Types</h3>
+                        <ul>
+                            <li>Frequent itemsets</li>
+                            <li>Sequential patterns</li>
+                            <li>Structural patterns</li>
+                            <li>Correlation patterns</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3 style="color: white;">Mining Process</h3>
+                    <p>1. Find all frequent itemsets 2. Generate association rules from frequent itemsets 3. Evaluate rules using confidence and other measures</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Mining Algorithms & Conclusion -->
+        <div class="slide">
+            <div class="slide-header">
+                <h1 class="slide-title">Mining Algorithms & Advanced Topics</h1>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h2>Frequent Itemset Algorithms</h2>
+                        <ul>
+                            <li><strong>Apriori:</strong> Level-wise candidate generation</li>
+                            <li><strong>FP-Growth:</strong> Frequent Pattern tree approach</li>
+                            <li><strong>Eclat:</strong> Vertical data format</li>
+                            <li><strong>CHARM:</strong> Closed itemset mining</li>
+                        </ul>
+
+                        <h3>Apriori Principle</h3>
+                        <p>If an itemset is frequent, all its subsets are also frequent. Conversely, if an itemset is infrequent, all its supersets are infrequent.</p>
+
+                        <h3>FP-Growth Advantages</h3>
+                        <ul>
+                            <li>No candidate generation</li>
+                            <li>Compressed data structure</li>
+                            <li>Faster than Apriori</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Advanced Topics</h2>
+                        <h3>Association Rule Types</h3>
+                        <ul>
+                            <li><strong>Multi-level:</strong> Different abstraction levels</li>
+                            <li><strong>Multi-dimensional:</strong> Multiple attributes</li>
+                            <li><strong>Quantitative:</strong> Numerical attributes</li>
+                            <li><strong>Negative:</strong> Absence of items</li>
+                        </ul>
+
+                        <h3>Correlation Analysis</h3>
+                        <ul>
+                            <li>All-confidence measure</li>
+                            <li>Coherence measure</li>
+                            <li>Cosine measure</li>
+                            <li>Kulczynski measure</li>
+                        </ul>
+
+                        <h3>Constraint-Based Mining</h3>
+                        <ul>
+                            <li>Anti-monotonic constraints</li>
+                            <li>Monotonic constraints</li>
+                            <li>Succinct constraints</li>
+                            <li>Convertible constraints</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h2 style="color: white; border: none; padding: 0;">Module Summary</h2>
+                    <p>We covered database evolution, data mining fundamentals, preprocessing techniques, and frequent pattern mining. These concepts form the foundation for advanced data mining applications and real-world knowledge discovery projects.</p>
+                </div>
+
+                <div class="info-box">
+                    <h3 style="color: white;">Next Steps</h3>
+                    <p>Apply these concepts in practical projects, explore specific algorithms in detail, and understand how they integrate with modern big data technologies.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <button class="btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (direction === -1 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                showSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+
+        // Touch/swipe support for mobile
+        let startX = 0;
+        let endX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            startX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            endX = e.changedTouches[0].screenX;
+            if (startX - endX > 50) {
+                changeSlide(1); // Swipe left - next slide
+            } else if (endX - startX > 50) {
+                changeSlide(-1); // Swipe right - previous slide
+            }
+        });
+    </script>
+</body>
+</html>
