@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scala for Python Developers</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .slide {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        h2 {
+            color: #ffd700;
+            font-size: 2em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ffd700;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            color: #87ceeb;
+            font-size: 1.5em;
+            margin: 20px 0 15px 0;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .python-code, .scala-code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid;
+        }
+        
+        .python-code {
+            border-left-color: #3776ab;
+        }
+        
+        .scala-code {
+            border-left-color: #dc322f;
+        }
+        
+        .python-code::before {
+            content: "🐍 Python";
+            display: block;
+            font-weight: bold;
+            color: #3776ab;
+            margin-bottom: 10px;
+        }
+        
+        .scala-code::before {
+            content: "⚡ Scala";
+            display: block;
+            font-weight: bold;
+            color: #dc322f;
+            margin-bottom: 10px;
+        }
+        
+        ul {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        li {
+            margin: 10px 0;
+            padding-left: 10px;
+        }
+        
+        .highlight {
+            background: rgba(255, 215, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffd700;
+            margin: 15px 0;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .slide {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Slide 1: Title -->
+        <div class="slide" data-slide="1">
+            <div class="slide-number">1/12</div>
+            <h1>🐍 ➡️ ⚡ Scala for Python Developers</h1>
+            <div style="text-align: center; font-size: 1.3em; line-height: 1.8;">
+                <p>Learn Scala by comparing it with Python</p>
+                <p>Same concepts, different syntax!</p>
+                <div class="highlight">
+                    <strong>Goal:</strong> Make Scala easy to understand for Python developers
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: High Level Similarities -->
+        <div class="slide" data-slide="2">
+            <div class="slide-number">2/12</div>
+            <h2>🤝 What's Similar?</h2>
+            <ul>
+                <li><strong>High-level languages</strong> - No pointers or manual memory management</li>
+                <li><strong>Clean syntax</strong> - Both are easy to read and write</li>
+                <li><strong>Functional programming</strong> - Both support functions as values</li>
+                <li><strong>Object-oriented</strong> - Classes, objects, inheritance</li>
+                <li><strong>Comprehensions</strong> - List comprehensions in Python = for comprehensions in Scala</li>
+                <li><strong>Big data ready</strong> - Both work great with Apache Spark</li>
+                <li><strong>Rich libraries</strong> - Tons of useful packages available</li>
+            </ul>
+            <div class="highlight">
+                Think of Scala as Python's statically-typed cousin!
+            </div>
+        </div>
+
+        <!-- Slide 3: High Level Differences -->
+        <div class="slide" data-slide="3">
+            <div class="slide-number">3/12</div>
+            <h2>🔄 What's Different?</h2>
+            <div class="comparison">
+                <div>
+                    <h3>🐍 Python</h3>
+                    <ul>
+                        <li>Dynamic typing</li>
+                        <li>Interpreted</li>
+                        <li>Runs directly</li>
+                        <li>Mutable by default</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>⚡ Scala</h3>
+                    <ul>
+                        <li>Static typing (but feels dynamic!)</li>
+                        <li>Compiled to JVM bytecode</li>
+                        <li>Runs on Java Virtual Machine</li>
+                        <li>Immutable by default</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight">
+                <strong>Key insight:</strong> Everything in Scala returns a value (even if/else, try/catch)
+            </div>
+        </div>
+
+        <!-- Slide 4: Comments and Variables -->
+        <div class="slide" data-slide="4">
+            <div class="slide-number">4/12</div>
+            <h2>💬 Comments & Variables</h2>
+            
+            <h3>Comments</h3>
+            <div class="comparison">
+                <div class="python-code"># This is a comment</div>
+                <div class="scala-code">// This is a comment
+/* Multi-line 
+   comment */</div>
+            </div>
+
+            <h3>Creating Variables</h3>
+            <div class="comparison">
+                <div class="python-code">x = 1
+name = "Alice"
+numbers = [1, 2, 3]</div>
+                <div class="scala-code">val x = 1
+val name = "Alice"
+val numbers = List(1, 2, 3)</div>
+            </div>
+            
+            <div class="highlight">
+                <strong>val</strong> = immutable (like final in Java)<br>
+                <strong>var</strong> = mutable (can be changed)
+            </div>
+        </div>
+
+        <!-- Slide 5: Data Structures -->
+        <div class="slide" data-slide="5">
+            <div class="slide-number">5/12</div>
+            <h2>📊 Data Structures</h2>
+            
+            <h3>Lists</h3>
+            <div class="comparison">
+                <div class="python-code">numbers = [1, 2, 3]
+print(numbers[0])  # 1</div>
+                <div class="scala-code">val numbers = List(1, 2, 3)
+println(numbers(0))  // 1</div>
+            </div>
+
+            <h3>Dictionaries/Maps</h3>
+            <div class="comparison">
+                <div class="python-code">movies = {
+    "Inception": 8.8,
+    "Matrix": 8.7
+}</div>
+                <div class="scala-code">val movies = Map(
+    "Inception" -> 8.8,
+    "Matrix" -> 8.7
+)</div>
+            </div>
+
+            <h3>Sets & Tuples</h3>
+            <div class="comparison">
+                <div class="python-code">unique = {1, 2, 3}
+point = (10, 20)</div>
+                <div class="scala-code">val unique = Set(1, 2, 3)
+val point = (10, 20)</div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Classes -->
+        <div class="slide" data-slide="6">
+            <div class="slide-number">6/12</div>
+            <h2>🏗️ Classes</h2>
+            
+            <h3>Simple Class</h3>
+            <div class="comparison">
+                <div class="python-code">class Person:
+    def __init__(self, name):
+        self.name = name
+    
+    def greet(self):
+        print(f"Hi, I'm {self.name}")
+
+p = Person("Alice")
+p.greet()</div>
+                <div class="scala-code">class Person(var name: String):
+    def greet() = 
+        println(s"Hi, I'm $name")
+
+val p = Person("Alice")
+p.greet()</div>
+            </div>
+
+            <div class="highlight">
+                Scala constructors are built into the class definition!
+            </div>
+        </div>
+
+        <!-- Slide 7: Case Classes -->
+        <div class="slide" data-slide="7">
+            <div class="slide-number">7/12</div>
+            <h2>📦 Case Classes (Data Classes)</h2>
+            
+            <div class="comparison">
+                <div class="python-code">from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Person:
+    name: str
+    age: int
+
+p = Person("Bob", 25)
+print(p.name)  # Bob</div>
+                <div class="scala-code">case class Person(name: String, age: Int)
+
+val p = Person("Bob", 25)
+println(p.name)  // Bob
+
+// Get a copy with changes
+val older = p.copy(age = 26)</div>
+            </div>
+
+            <div class="highlight">
+                Case classes give you: constructors, getters, toString, equals, and copy methods for free!
+            </div>
+        </div>
+
+        <!-- Slide 8: Control Structures -->
+        <div class="slide" data-slide="8">
+            <div class="slide-number">8/12</div>
+            <h2>🎛️ Control Structures</h2>
+            
+            <h3>If/Else</h3>
+            <div class="comparison">
+                <div class="python-code">if age < 18:
+    status = "minor"
+else:
+    status = "adult"</div>
+                <div class="scala-code">val status = if age < 18 then 
+    "minor" 
+else 
+    "adult"</div>
+            </div>
+
+            <h3>For Loops</h3>
+            <div class="comparison">
+                <div class="python-code">for i in range(1, 4):
+    print(i)</div>
+                <div class="scala-code">for i <- 1 to 3 do
+    println(i)</div>
+            </div>
+
+            <div class="highlight">
+                Scala's if/else returns a value - no need for separate assignment!
+            </div>
+        </div>
+
+        <!-- Slide 9: Pattern Matching -->
+        <div class="slide" data-slide="9">
+            <div class="slide-number">9/12</div>
+            <h2>🎯 Pattern Matching (Super Switch)</h2>
+            
+            <div class="comparison">
+                <div class="python-code"># Python 3.10+ pattern matching
+match day:
+    case 1:
+        day_name = "Monday"
+    case 2:
+        day_name = "Tuesday"
+    case _:
+        day_name = "Other"</div>
+                <div class="scala-code">val dayName = day match
+    case 1 => "Monday"
+    case 2 => "Tuesday"
+    case _ => "Other"</div>
+            </div>
+
+            <div class="comparison">
+                <div class="python-code"># Multiple values
+match number:
+    case 1 | 3 | 5:
+        result = "odd"
+    case 2 | 4 | 6:
+        result = "even"</div>
+                <div class="scala-code">val result = number match
+    case 1 | 3 | 5 => "odd"
+    case 2 | 4 | 6 => "even"</div>
+            </div>
+
+            <div class="highlight">
+                Pattern matching is much more powerful in Scala - you can match on types, extract values, and more!
+            </div>
+        </div>
+
+        <!-- Slide 10: List Operations -->
+        <div class="slide" data-slide="10">
+            <div class="slide-number">10/12</div>
+            <h2>📋 List Operations</h2>
+            
+            <h3>Map (Transform)</h3>
+            <div class="comparison">
+                <div class="python-code">numbers = [1, 2, 3]
+doubled = [x * 2 for x in numbers]
+# or
+doubled = list(map(lambda x: x * 2, numbers))</div>
+                <div class="scala-code">val numbers = List(1, 2, 3)
+val doubled = numbers.map(_ * 2)
+// or with for comprehension
+val doubled = for n <- numbers yield n * 2</div>
+            </div>
+
+            <h3>Filter</h3>
+            <div class="comparison">
+                <div class="python-code">evens = [x for x in numbers if x % 2 == 0]
+# or
+evens = list(filter(lambda x: x % 2 == 0, numbers))</div>
+                <div class="scala-code">val evens = numbers.filter(_ % 2 == 0)
+// or with for comprehension
+val evens = for n <- numbers if n % 2 == 0 yield n</div>
+            </div>
+
+            <div class="highlight">
+                The underscore (_) in Scala is like a placeholder for "the current item"
+            </div>
+        </div>
+
+        <!-- Slide 11: Unique Scala Features -->
+        <div class="slide" data-slide="11">
+            <div class="slide-number">11/12</div>
+            <h2>⭐ Cool Scala-Only Features</h2>
+            
+            <h3>🔧 Extension Methods</h3>
+            <div class="scala-code">extension (s: String)
+    def isPalindrome: Boolean = s == s.reverse
+
+"racecar".isPalindrome  // true</div>
+
+            <h3>🎭 Traits (Like Mixins)</h3>
+            <div class="scala-code">trait CanFly:
+    def fly() = "Flying!"
+
+trait CanSwim:
+    def swim() = "Swimming!"
+
+class Duck extends CanFly, CanSwim</div>
+
+            <h3>📊 Enums</h3>
+            <div class="scala-code">enum Color:
+    case Red, Green, Blue
+
+enum Planet(mass: Double, radius: Double):
+    case Earth extends Planet(5.976e24, 6.378e6)</div>
+        </div>
+
+        <!-- Slide 12: Summary -->
+        <div class="slide" data-slide="12">
+            <div class="slide-number">12/12</div>
+            <h2>🎯 Key Takeaways</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div>
+                    <h3>✅ Easy Transition</h3>
+                    <ul>
+                        <li>Similar concepts</li>
+                        <li>Clean syntax</li>
+                        <li>Same programming patterns</li>
+                        <li>Rich ecosystem</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>🚀 New Superpowers</h3>
+                    <ul>
+                        <li>Static typing with inference</li>
+                        <li>Pattern matching</li>
+                        <li>Immutability by default</li>
+                        <li>JVM performance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="highlight" style="text-align: center; font-size: 1.2em;">
+                <strong>Bottom Line:</strong> If you know Python, you can learn Scala! 
+                <br>It's like Python with superpowers! 💪
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <h3>🎓 Ready to start your Scala journey?</h3>
+                <p>You already know most of the concepts - now just learn the syntax!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">← Previous</button>
+        <button class="nav-btn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 12;
+
+        function showSlide(n) {
+            // Hide all slides
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => {
+                slide.style.display = 'none';
+            });
+
+            // Show current slide
+            const targetSlide = document.querySelector(`[data-slide="${n}"]`);
+            if (targetSlide) {
+                targetSlide.style.display = 'block';
+                targetSlide.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            currentSlide = n;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Initialize - show first slide
+        showSlide(1);
+    </script>
+</body>
+</html>
