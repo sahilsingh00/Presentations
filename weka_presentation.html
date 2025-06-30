@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Weka - Key Features and Applications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow: hidden;
+        }
+        
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 60px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .slide.active {
+            display: flex;
+        }
+        
+        .slide h1 {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .slide h2 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            color: #FFD700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .slide h3 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #87CEEB;
+        }
+        
+        .slide p, .slide li {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            max-width: 900px;
+        }
+        
+        .slide ul {
+            text-align: left;
+            max-width: 800px;
+        }
+        
+        .slide li {
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1000px;
+            margin-top: 20px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-card h4 {
+            font-size: 1.5rem;
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            margin-top: 20px;
+        }
+        
+        .pros, .cons {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: left;
+        }
+        
+        .pros h4 {
+            color: #90EE90;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .cons h4 {
+            color: #FFB6C1;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .algorithm-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin-top: 20px;
+        }
+        
+        .algorithm-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+        }
+        
+        .algorithm-card h4 {
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            background: rgba(255, 215, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #FFD700;
+            margin: 20px 0;
+        }
+        
+        .emoji {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">15</span>
+        </div>
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <h1>🔍 Introduction to WEKA</h1>
+            <h3>Waikato Environment for Knowledge Analysis</h3>
+            <p style="font-size: 1.6rem; margin-top: 30px;">Your Gateway to Machine Learning & Data Mining</p>
+            <div class="highlight">
+                <p><strong>🎯 What you'll learn:</strong> Key features, applications, and how to use this powerful open-source tool</p>
+            </div>
+        </div>
+        
+        <!-- Slide 2: What is WEKA? -->
+        <div class="slide">
+            <h2>🤔 What is WEKA?</h2>
+            <div class="highlight">
+                <p><span class="emoji">🔬</span><strong>WEKA</strong> = <strong>W</strong>aikato <strong>E</strong>nvironment for <strong>K</strong>nowledge <strong>A</strong>nalysis</p>
+            </div>
+            <ul>
+                <li><strong>📚 Open-source software</strong> for data mining and machine learning</li>
+                <li><strong>🏫 Developed</strong> at University of Waikato, New Zealand</li>
+                <li><strong>🎯 Purpose:</strong> Analyze large datasets and apply machine learning algorithms</li>
+                <li><strong>👥 Popular among:</strong> Students, researchers, and data scientists</li>
+                <li><strong>💡 Best for:</strong> Learning ML concepts and quick data analysis</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 3: Core Capabilities -->
+        <div class="slide">
+            <h2>🚀 What Can WEKA Do?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🏷️ Classification</h4>
+                    <p>Predict categories (spam/not spam, disease/healthy)</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Regression</h4>
+                    <p>Predict numerical values (house prices, stock prices)</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔗 Clustering</h4>
+                    <p>Group similar data points together</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🛒 Association Rules</h4>
+                    <p>Find patterns (people who buy X also buy Y)</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Key Features -->
+        <div class="slide">
+            <h2>⭐ Key Features of WEKA</h2>
+            <ul>
+                <li><strong>🖥️ User-Friendly GUI:</strong> No programming needed - point and click interface</li>
+                <li><strong>🤖 Rich Algorithm Library:</strong> 100+ machine learning algorithms included</li>
+                <li><strong>🔧 Data Preprocessing:</strong> Clean, transform, and prepare your data easily</li>
+                <li><strong>📊 Visualization Tools:</strong> See your data with charts, graphs, and plots</li>
+                <li><strong>📁 Multiple File Formats:</strong> Works with CSV, Excel, JSON, and more</li>
+                <li><strong>🔌 Extensible:</strong> Add new features and algorithms as needed</li>
+                <li><strong>💻 Cross-Platform:</strong> Runs on Windows, Mac, and Linux</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 5: Installation Requirements -->
+        <div class="slide">
+            <h2>💾 Installation & Requirements</h2>
+            <div class="highlight">
+                <h3>Simple Setup Process!</h3>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🖥️ Operating System</h4>
+                    <p>✅ Windows<br>✅ macOS<br>✅ Linux</p>
+                </div>
+                <div class="feature-card">
+                    <h4>☕ Java Requirement</h4>
+                    <p>Java 8 or higher<br>(Free to download)</p>
+                </div>
+            </div>
+            <p style="margin-top: 30px;"><strong>💡 Pro Tip:</strong> WEKA is completely free and open-source!</p>
+        </div>
+        
+        <!-- Slide 6: Data Formats -->
+        <div class="slide">
+            <h2>📄 Supported Data Formats</h2>
+            <div class="algorithm-types">
+                <div class="algorithm-card">
+                    <h4>⭐ ARFF</h4>
+                    <p>WEKA's native format - includes data descriptions</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>📊 CSV</h4>
+                    <p>Common spreadsheet format - easy to use</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>🌐 JSON</h4>
+                    <p>Web-friendly format for complex data</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>📋 Excel</h4>
+                    <p>Direct import from Excel files</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>🗄️ Database</h4>
+                    <p>Connect directly to databases</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>🔗 URLs</h4>
+                    <p>Load data from web sources</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 7: WEKA Explorer Interface -->
+        <div class="slide">
+            <h2>🗺️ WEKA Explorer - Your Control Center</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🔧 Preprocess Tab</h4>
+                    <p>Load and clean your data</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏷️ Classify Tab</h4>
+                    <p>Build prediction models</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔗 Cluster Tab</h4>
+                    <p>Group similar data points</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🛒 Associate Tab</h4>
+                    <p>Find data patterns and rules</p>
+                </div>
+            </div>
+            <div class="feature-card" style="max-width: 400px; margin-top: 20px;">
+                <h4>📊 Visualize Tab</h4>
+                <p>Create charts and graphs</p>
+            </div>
+        </div>
+        
+        <!-- Slide 8: Algorithm Types -->
+        <div class="slide">
+            <h2>🤖 Types of Algorithms in WEKA</h2>
+            <div class="algorithm-types">
+                <div class="algorithm-card">
+                    <h4>🧠 Bayes</h4>
+                    <p>Naive Bayes, BayesNet - probability-based predictions</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>📐 Functions</h4>
+                    <p>Linear/Logistic Regression - mathematical models</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>😴 Lazy</h4>
+                    <p>K-Nearest Neighbor - learn from similar examples</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>🔗 Meta</h4>
+                    <p>Ensemble methods - combining multiple algorithms</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>📏 Rules</h4>
+                    <p>OneR, JRip - simple if-then rules</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>🌳 Trees</h4>
+                    <p>Decision Trees, Random Forest - tree-like decisions</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 9: Advantages -->
+        <div class="slide">
+            <h2>✅ Why Choose WEKA?</h2>
+            <ul>
+                <li><strong>🎯 Comprehensive Toolset:</strong> Everything you need in one package</li>
+                <li><strong>👌 Easy to Use:</strong> GUI makes complex tasks simple</li>
+                <li><strong>💰 Completely Free:</strong> Open-source with no licensing costs</li>
+                <li><strong>📚 Great for Learning:</strong> Perfect for students and beginners</li>
+                <li><strong>🔄 Cross-Platform:</strong> Works on any operating system</li>
+                <li><strong>📖 Well Documented:</strong> Lots of tutorials and help available</li>
+                <li><strong>👥 Strong Community:</strong> Active user community for support</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 10: Limitations -->
+        <div class="slide">
+            <h2>⚠️ WEKA Limitations</h2>
+            <ul>
+                <li><strong>💾 Memory Constraints:</strong> Loads all data into memory - not great for very large datasets</li>
+                <li><strong>🔗 Single Table Only:</strong> Can't handle multiple related tables directly</li>
+                <li><strong>📅 No Time Series:</strong> Limited support for sequential/time-based data</li>
+                <li><strong>⚡ Speed:</strong> May be slower than specialized tools for large datasets</li>
+                <li><strong>🎨 Basic Visualizations:</strong> Not as advanced as dedicated visualization tools</li>
+            </ul>
+            <div class="highlight">
+                <p><strong>💡 Bottom Line:</strong> Great for learning and medium-sized datasets, but may need other tools for big data projects</p>
+            </div>
+        </div>
+        
+        <!-- Slide 11: Applications -->
+        <div class="slide">
+            <h2>🌟 Real-World Applications</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>🎓 Education</h4>
+                    <p>Teaching ML concepts in universities and schools</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔬 Research</h4>
+                    <p>Testing new algorithms and data analysis techniques</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏢 Business</h4>
+                    <p>Customer segmentation and market analysis</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏥 Healthcare</h4>
+                    <p>Medical diagnosis and treatment prediction</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 12: Extension Packages -->
+        <div class="slide">
+            <h2>🧩 Extension Packages</h2>
+            <p>Expand WEKA's capabilities with additional packages:</p>
+            <div class="algorithm-types">
+                <div class="algorithm-card">
+                    <h4>🌊 Knowledge Flow</h4>
+                    <p>Visual workflow designer</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>📊 Big Data</h4>
+                    <p>Handle larger datasets</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>⏰ Time Series</h4>
+                    <p>Forecasting and time analysis</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>🧪 Experimenter</h4>
+                    <p>Compare different algorithms</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>☁️ Distributed</h4>
+                    <p>Multi-machine processing</p>
+                </div>
+                <div class="algorithm-card">
+                    <h4>🐘 Hadoop</h4>
+                    <p>Big data integration</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 13: Getting Started -->
+        <div class="slide">
+            <h2>🚀 Getting Started with WEKA</h2>
+            <div class="highlight">
+                <h3>Simple 5-Step Process:</h3>
+            </div>
+            <ul style="font-size: 1.6rem;">
+                <li><strong>1️⃣ Install Java</strong> (version 8 or higher)</li>
+                <li><strong>2️⃣ Download WEKA</strong> from official website</li>
+                <li><strong>3️⃣ Load your data</strong> (CSV, Excel, etc.)</li>
+                <li><strong>4️⃣ Choose an algorithm</strong> from the library</li>
+                <li><strong>5️⃣ Analyze results</strong> and visualize findings</li>
+            </ul>
+            <div class="highlight">
+                <p><strong>💡 Pro Tip:</strong> Start with the built-in sample datasets to practice!</p>
+            </div>
+        </div>
+        
+        <!-- Slide 14: Best Practices -->
+        <div class="slide">
+            <h2>💡 Best Practices & Tips</h2>
+            <ul>
+                <li><strong>🧹 Clean Your Data First:</strong> Remove duplicates, handle missing values</li>
+                <li><strong>📊 Explore Before Modeling:</strong> Use visualization to understand your data</li>
+                <li><strong>🎯 Start Simple:</strong> Try basic algorithms before complex ones</li>
+                <li><strong>✅ Validate Results:</strong> Use cross-validation to test model performance</li>
+                <li><strong>📚 Learn Continuously:</strong> Try different algorithms and compare results</li>
+                <li><strong>🔄 Experiment:</strong> Don't be afraid to try different approaches</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 15: Conclusion -->
+        <div class="slide">
+            <h2>🎯 Key Takeaways</h2>
+            <div class="highlight">
+                <h3>WEKA is Perfect For:</h3>
+            </div>
+            <ul>
+                <li><strong>🎓 Learning:</strong> Best tool for understanding ML concepts</li>
+                <li><strong>🔬 Quick Analysis:</strong> Fast prototyping and testing</li>
+                <li><strong>📊 Medium Datasets:</strong> Ideal for most business and research needs</li>
+                <li><strong>👥 Team Projects:</strong> Easy to share and collaborate</li>
+            </ul>
+            <div class="highlight">
+                <p><strong>🚀 Ready to Start?</strong> Download WEKA today and begin your machine learning journey!</p>
+            </div>
+            <p style="font-size: 2rem; margin-top: 30px;">Thank You! 🙏</p>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousSlide()">⬅️ Previous</button>
+            <button class="nav-btn" onclick="nextSlide()">Next ➡️</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+        }
+        
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+        
+        // Click navigation
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.nav-btn')) return;
+            if (e.clientX > window.innerWidth / 2) {
+                nextSlide();
+            } else {
+                previousSlide();
+            }
+        });
+    </script>
+</body>
+</html>
