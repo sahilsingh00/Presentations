@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Preprocessing - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            min-height: 100vh;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            scroll-snap-align: start;
+        }
+
+        .presentation-container {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #fff, #f0f8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            color: #ffd700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #87ceeb;
+        }
+
+        p, li {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            max-width: 1000px;
+        }
+
+        .code-container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #ffd700;
+            text-align: left;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .code {
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .explanation {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .scroll-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-dot.active {
+            background: #ffd700;
+            transform: scale(1.3);
+        }
+
+        .scroll-hint {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            animation: bounce 2s infinite;
+            z-index: 1000;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            z-index: 1000;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 215, 0, 0.3) 100%);
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        ul {
+            text-align: left;
+            max-width: 800px;
+        }
+
+        .example-box {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(135, 206, 235, 0.5);
+        }
+
+        .step-by-step {
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title Slide -->
+        <div class="slide">
+            <h1>📊 Data Preprocessing</h1>
+            <h3>Complete Guide with Real-World Examples</h3>
+            <div class="explanation">
+                <p><strong>What you'll learn:</strong></p>
+                <p>• Understanding data preprocessing fundamentals</p>
+                <p>• Handling missing data with practical examples</p>
+                <p>• Data cleaning and transformation techniques</p>
+                <p>• Feature scaling and encoding methods</p>
+                <p>• Real Python code with step-by-step explanations</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: What is Data Preprocessing -->
+        <div class="slide">
+            <h2>🔍 What is Data Preprocessing?</h2>
+            <div class="explanation">
+                <p><strong>Data preprocessing</strong> is the process of cleaning and transforming raw data into a format suitable for machine learning algorithms.</p>
+            </div>
+            
+            <div class="example-box">
+                <h3>Real-World Example: E-commerce Dataset</h3>
+                <p>Imagine you have customer data from an online store:</p>
+                <ul>
+                    <li>Missing customer ages</li>
+                    <li>Inconsistent product categories ("Electronics" vs "electronics")</li>
+                    <li>Different price formats ($100 vs 100.00)</li>
+                    <li>Text reviews that need to be converted to numbers</li>
+                </ul>
+            </div>
+
+            <div class="step-by-step">
+                <p><strong>Why is it important?</strong></p>
+                <p>• Raw data is often messy and incomplete</p>
+                <p>• ML algorithms need clean, consistent data</p>
+                <p>• Poor data leads to poor model performance</p>
+                <p>• 80% of data science work is preprocessing!</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: Handling Missing Data -->
+        <div class="slide">
+            <h2>🔧 Handling Missing Data</h2>
+            
+            <div class="code-container">
+                <div class="code">import pandas as pd
+import numpy as np
+
+# Create sample dataset with missing values
+data = {
+    'Name': ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'],
+    'Age': [25, np.nan, 30, 35, np.nan],
+    'Salary': [50000, 60000, np.nan, 70000, 55000],
+    'City': ['NYC', 'LA', 'Chicago', np.nan, 'Boston']
+}
+
+df = pd.DataFrame(data)
+print("Original Data:")
+print(df)
+print("\nMissing values:")
+print(df.isnull().sum())</div>
+            </div>
+
+            <div class="explanation">
+                <p><strong>Step-by-step explanation:</strong></p>
+                <p>1. We import pandas and numpy libraries</p>
+                <p>2. Create a dictionary with sample data including NaN (missing) values</p>
+                <p>3. Convert to DataFrame and check for missing values</p>
+                <p>4. Use <span class="highlight">isnull().sum()</span> to count missing values per column</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Missing Data Solutions -->
+        <div class="slide">
+            <h2>💡 Missing Data Solutions</h2>
+            
+            <div class="code-container">
+                <div class="code"># Method 1: Drop rows with missing values
+df_dropped = df.dropna()
+print("After dropping missing values:")
+print(df_dropped)
+
+# Method 2: Fill with mean (for numerical columns)
+df['Age'].fillna(df['Age'].mean(), inplace=True)
+print("\nAfter filling Age with mean:")
+print(df['Age'])
+
+# Method 3: Fill with mode (for categorical columns)
+df['City'].fillna(df['City'].mode()[0], inplace=True)
+print("\nAfter filling City with mode:")
+print(df)</div>
+            </div>
+
+            <div class="explanation">
+                <p><strong>Three common approaches:</strong></p>
+                <p>1. <span class="highlight">dropna()</span> - Removes rows with any missing values</p>
+                <p>2. <span class="highlight">fillna(mean)</span> - Fills numerical missing values with average</p>
+                <p>3. <span class="highlight">fillna(mode)</span> - Fills categorical missing values with most frequent value</p>
+            </div>
+        </div>
+
+        <!-- Slide 5: Data Cleaning & Transformation -->
+        <div class="slide">
+            <h2>🧹 Data Cleaning & Transformation</h2>
+            
+            <div class="code-container">
+                <div class="code"># Sample messy data
+messy_data = {
+    'Product': ['  laptop  ', 'PHONE', 'tablet', 'LAPTOP '],
+    'Price': ['$1000', '500', '$800.50', '1200'],
+    'Rating': ['4.5★', '3.2', '4.8★★', '3.9']
+}
+
+messy_df = pd.DataFrame(messy_data)
+print("Messy Data:")
+print(messy_df)
+
+# Clean the data
+messy_df['Product'] = messy_df['Product'].str.strip().str.lower()
+messy_df['Price'] = messy_df['Price'].str.replace('$', '').astype(float)
+messy_df['Rating'] = messy_df['Rating'].str.extract('(\d+\.\d+)').astype(float)
+
+print("\nCleaned Data:")
+print(messy_df)</div>
+            </div>
+
+            <div class="explanation">
+                <p><strong>Cleaning steps explained:</strong></p>
+                <p>1. <span class="highlight">str.strip()</span> - Removes extra spaces</p>
+                <p>2. <span class="highlight">str.lower()</span> - Converts to lowercase for consistency</p>
+                <p>3. <span class="highlight">str.replace()</span> - Removes special characters like '$'</p>
+                <p>4. <span class="highlight">str.extract()</span> - Extracts numbers from text using regex</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Feature Scaling -->
+        <div class="slide">
+            <h2>⚖️ Feature Scaling</h2>
+            
+            <div class="code-container">
+                <div class="code">from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
+# Sample data with different scales
+data = {
+    'Age': [25, 30, 35, 40, 45],
+    'Salary': [30000, 50000, 70000, 90000, 120000],
+    'Experience': [2, 5, 8, 12, 15]
+}
+
+df_scale = pd.DataFrame(data)
+print("Original Data:")
+print(df_scale)
+
+# StandardScaler (Z-score normalization)
+scaler = StandardScaler()
+scaled_data = scaler.fit_transform(df_scale)
+df_standardized = pd.DataFrame(scaled_data, columns=df_scale.columns)
+
+print("\nStandardized Data (mean=0, std=1):")
+print(df_standardized)</div>
+            </div>
+
+            <div class="explanation">
+                <p><strong>Why scale features?</strong></p>
+                <p>• Different features have different ranges (Age: 25-45, Salary: 30K-120K)</p>
+                <p>• ML algorithms can be biased toward larger values</p>
+                <p>• <span class="highlight">StandardScaler</span> makes mean=0 and std=1</p>
+                <p>• Ensures all features contribute equally to the model</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Encoding Categorical Data -->
+        <div class="slide">
+            <h2>🏷️ Encoding Categorical Data</h2>
+            
+            <div class="code-container">
+                <div class="code">from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+
+# Sample categorical data
+cat_data = {
+    'Color': ['Red', 'Blue', 'Green', 'Red', 'Blue'],
+    'Size': ['Small', 'Medium', 'Large', 'Medium', 'Small'],
+    'Preferred': ['Yes', 'No', 'Yes', 'Yes', 'No']
+}
+
+df_cat = pd.DataFrame(cat_data)
+print("Original Categorical Data:")
+print(df_cat)
+
+# Label Encoding
+le = LabelEncoder()
+df_cat['Size_Encoded'] = le.fit_transform(df_cat['Size'])
+
+# One-Hot Encoding
+df_encoded = pd.get_dummies(df_cat, columns=['Color'], prefix='Color')
+
+print("\nAfter Encoding:")
+print(df_encoded)</div>
+            </div>
+
+            <div class="explanation">
+                <p><strong>Two main encoding methods:</strong></p>
+                <p>1. <span class="highlight">Label Encoding</span> - Converts categories to numbers (0,1,2...)</p>
+                <p>2. <span class="highlight">One-Hot Encoding</span> - Creates binary columns for each category</p>
+                <p>• Use Label Encoding for ordinal data (Small < Medium < Large)</p>
+                <p>• Use One-Hot for nominal data (Red, Blue, Green have no order)</p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Complete Pipeline Example -->
+        <div class="slide">
+            <h2>🚀 Complete Preprocessing Pipeline</h2>
+            
+            <div class="code-container">
+                <div class="code"># Complete preprocessing function
+def preprocess_data(df):
+    # Step 1: Handle missing values
+    numeric_cols = df.select_dtypes(include=[np.number]).columns
+    categorical_cols = df.select_dtypes(include=['object']).columns
+    
+    # Fill numeric missing values with mean
+    for col in numeric_cols:
+        df[col].fillna(df[col].mean(), inplace=True)
+    
+    # Fill categorical missing values with mode
+    for col in categorical_cols:
+        df[col].fillna(df[col].mode()[0], inplace=True)
+    
+    # Step 2: Clean text data
+    for col in categorical_cols:
+        df[col] = df[col].str.strip().str.lower()
+    
+    # Step 3: Encode categorical variables
+    df_encoded = pd.get_dummies(df, columns=categorical_cols)
+    
+    # Step 4: Scale numerical features
+    scaler = StandardScaler()
+    numeric_cols_new = df_encoded.select_dtypes(include=[np.number]).columns
+    df_encoded[numeric_cols_new] = scaler.fit_transform(df_encoded[numeric_cols_new])
+    
+    return df_encoded
+
+# Apply to our data
+final_data = preprocess_data(df.copy())
+print("Final Preprocessed Data:")
+print(final_data.head())</div>
+            </div>
+
+            <div class="explanation">
+                <p><strong>Complete pipeline includes:</strong></p>
+                <p>✅ Missing value handling | ✅ Data cleaning | ✅ Categorical encoding | ✅ Feature scaling</p>
+                <p><span class="highlight">Ready for machine learning!</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-dot active" onclick="scrollToSlide(0)"></div>
+        <div class="scroll-dot" onclick="scrollToSlide(1)"></div>
+        <div class="scroll-dot" onclick="scrollToSlide(2)"></div>
+        <div class="scroll-dot" onclick="scrollToSlide(3)"></div>
+        <div class="scroll-dot" onclick="scrollToSlide(4)"></div>
+        <div class="scroll-dot" onclick="scrollToSlide(5)"></div>
+        <div class="scroll-dot" onclick="scrollToSlide(6)"></div>
+        <div class="scroll-dot" onclick="scrollToSlide(7)"></div>
+    </div>
+
+    <div class="scroll-hint">
+        🖱️ Scroll down or use navigation buttons | ⌨️ Use arrow keys
+    </div>
+
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / 8
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn" onclick="changeSlide(-1)">← Previous</button>
+        <button class="nav-btn" id="next-btn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const scrollDots = document.querySelectorAll('.scroll-dot');
+
+        function updateSlideCounter() {
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+        }
+
+        function updateScrollDots() {
+            scrollDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function scrollToSlide(slideIndex) {
+            if (slideIndex >= 0 && slideIndex < totalSlides) {
+                currentSlide = slideIndex;
+                slides[slideIndex].scrollIntoView({ behavior: 'smooth' });
+                updateSlideCounter();
+                updateScrollDots();
+            }
+        }
+
+        function changeSlide(direction) {
+            const newSlide = currentSlide + direction;
+            if (newSlide >= 0 && newSlide < totalSlides) {
+                scrollToSlide(newSlide);
+            }
+        }
+
+        // Detect which slide is currently in view during scroll
+        function updateCurrentSlideOnScroll() {
+            const slideElements = Array.from(slides);
+            const viewportHeight = window.innerHeight;
+            
+            for (let i = 0; i < slideElements.length; i++) {
+                const rect = slideElements[i].getBoundingClientRect();
+                if (rect.top <= viewportHeight / 2 && rect.bottom >= viewportHeight / 2) {
+                    if (currentSlide !== i) {
+                        currentSlide = i;
+                        updateSlideCounter();
+                        updateScrollDots();
+                    }
+                    break;
+                }
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                changeSlide(-1);
+            }
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                changeSlide(1);
+            }
+        });
+
+        // Scroll detection
+        window.addEventListener('scroll', updateCurrentSlideOnScroll);
+
+        // Hide scroll hint after 5 seconds
+        setTimeout(() => {
+            const scrollHint = document.querySelector('.scroll-hint');
+            if (scrollHint) {
+                scrollHint.style.opacity = '0';
+                setTimeout(() => scrollHint.remove(), 500);
+            }
+        }, 5000);
+
+        // Initialize
+        updateSlideCounter();
+        updateScrollDots();
+    </script>
+</body>
+</html>
