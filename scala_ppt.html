@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Scala - Detailed</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide {
+            display: none;
+            padding: 30px;
+            height: calc(100vh - 120px);
+            flex-direction: column;
+            justify-content: flex-start;
+            text-align: center;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .slide h1 {
+            font-size: 2.8em;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slide h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #87ceeb;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .slide ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .code-example {
+            background: rgba(0,0,0,0.4);
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 850px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            text-align: left;
+            white-space: pre-line;
+            line-height: 1.5;
+        }
+
+        .code-comment {
+            color: #90EE90;
+            font-style: italic;
+        }
+
+        .code-keyword {
+            color: #FFB6C1;
+            font-weight: bold;
+        }
+
+        .code-string {
+            color: #FFD700;
+        }
+
+        .highlight {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.05);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 1.1em;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-box {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .intro-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            justify-content: center;
+        }
+
+        .content-slide {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .explanation-box {
+            background: rgba(255,255,255,0.1);
+            border-left: 5px solid #ffd700;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .output-box {
+            background: rgba(0,100,0,0.3);
+            border: 2px solid #90EE90;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px auto;
+            max-width: 600px;
+            font-family: 'Courier New', monospace;
+            color: #90EE90;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">12</span>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active intro-slide">
+            <h1>🚀 Introduction to Scala</h1>
+            <h3>A Complete Guide to Modern Programming</h3>
+            <p style="font-size: 1.6em; margin-top: 40px;">Scalable • Functional • Object-Oriented</p>
+            <p style="font-size: 1.2em; color: #ffd700;">Created by Martin Odersky at EPFL in 2003</p>
+            <p style="font-size: 1em; margin-top: 30px;">Used by Twitter, LinkedIn, Netflix, Airbnb, and many more!</p>
+        </div>
+
+        <!-- Slide 2: What is Scala? -->
+        <div class="slide content-slide">
+            <h2>What is Scala? 🤔</h2>
+            <div class="explanation-box">
+                <p><span class="highlight">Scala</span> = <span class="highlight">"Scalable Language"</span></p>
+                <p>A modern programming language that combines the best of both worlds:</p>
+                <ul>
+                    <li><strong>Object-Oriented Programming (OOP)</strong> - Classes, objects, inheritance</li>
+                    <li><strong>Functional Programming (FP)</strong> - Functions as first-class citizens</li>
+                </ul>
+            </div>
+            
+            <div class="two-column">
+                <div>
+                    <h3>Key Characteristics:</h3>
+                    <ul>
+                        <li>Runs on Java Virtual Machine (JVM)</li>
+                        <li>Statically typed with type inference</li>
+                        <li>Concise and expressive syntax</li>
+                        <li>Highly scalable applications</li>
+                    </ul>
+                </div>
+                <div class="code-example">
+<span class="code-comment">// Your first Scala program</span>
+<span class="code-keyword">object</span> HelloWorld {
+  <span class="code-keyword">def</span> main(args: Array[String]): Unit = {
+    println(<span class="code-string">"Hello, Scala World!"</span>)
+    println(<span class="code-string">"Welcome to functional programming!"</span>)
+  }
+}
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Setting Up Scala -->
+        <div class="slide content-slide">
+            <h2>Setting Up Scala Environment 🛠️</h2>
+            
+            <div class="explanation-box">
+                <h3>Installation Steps:</h3>
+                <p><strong>1. Install Java (JDK 8 or higher)</strong></p>
+                <p><strong>2. Install Scala</strong></p>
+                <ul>
+                    <li>Download from: scala-lang.org</li>
+                    <li>Or use package managers: brew install scala (Mac) or apt-get install scala (Linux)</li>
+                </ul>
+                <p><strong>3. Choose your IDE:</strong></p>
+                <ul>
+                    <li>IntelliJ IDEA with Scala plugin (Recommended)</li>
+                    <li>Visual Studio Code with Metals extension</li>
+                    <li>Eclipse with Scala IDE</li>
+                </ul>
+            </div>
+
+            <div class="code-example">
+<span class="code-comment">// Check if Scala is installed</span>
+$ scala -version
+
+<span class="code-comment">// Start Scala REPL (Read-Eval-Print Loop)</span>
+$ scala
+Welcome to Scala 2.13.8
+
+scala> println(<span class="code-string">"Hello from REPL!"</span>)
+            </div>
+        </div>
+
+        <!-- Slide 4: Variables and Data Types -->
+        <div class="slide content-slide">
+            <h2>Variables and Data Types 📊</h2>
+            
+            <div class="explanation-box">
+                <p><strong>Two types of variables in Scala:</strong></p>
+                <ul>
+                    <li><span class="highlight">val</span> - Immutable (cannot be changed after assignment)</li>
+                    <li><span class="highlight">var</span> - Mutable (can be changed)</li>
+                </ul>
+            </div>
+
+            <div class="code-example">
+<span class="code-comment">// Immutable variables (Preferred in functional programming)</span>
+<span class="code-keyword">val</span> name: String = <span class="code-string">"John Doe"</span>
+<span class="code-keyword">val</span> age: Int = 25
+<span class="code-keyword">val</span> height: Double = 5.9
+<span class="code-keyword">val</span> isStudent: Boolean = true
+
+<span class="code-comment">// Type inference - Scala can guess the type</span>
+<span class="code-keyword">val</span> city = <span class="code-string">"New York"</span>        <span class="code-comment">// String inferred</span>
+<span class="code-keyword">val</span> population = 8000000    <span class="code-comment">// Int inferred</span>
+
+<span class="code-comment">// Mutable variables</span>
+<span class="code-keyword">var</span> score = 0
+score = 100                    <span class="code-comment">// This is allowed</span>
+
+<span class="code-comment">// name = "Jane"               // This would cause ERROR!</span>
+            </div>
+
+            <div class="output-box">
+Output:
+name: String = John Doe
+age: Int = 25
+score: Int = 100
+            </div>
+        </div>
+
+        <!-- Slide 5: Functions in Detail -->
+        <div class="slide content-slide">
+            <h2>Functions - The Heart of Scala 💖</h2>
+            
+            <div class="explanation-box">
+                <p>Functions in Scala are <strong>first-class citizens</strong> - they can be:</p>
+                <ul>
+                    <li>Assigned to variables</li>
+                    <li>Passed as parameters</li>
+                    <li>Returned from other functions</li>
+                </ul>
+            </div>
+
+            <div class="code-example">
+<span class="code-comment">// Basic function definition</span>
+<span class="code-keyword">def</span> greet(name: String): String = {
+  <span class="code-keyword">val</span> greeting = <span class="code-string">s"Hello, $name! Welcome to Scala."</span>
+  <span class="code-keyword">return</span> greeting
+}
+
+<span class="code-comment">// Shorter version (return is optional)</span>
+<span class="code-keyword">def</span> greetShort(name: String): String = 
+  <span class="code-string">s"Hello, $name!"</span>
+
+<span class="code-comment">// Function with multiple parameters</span>
+<span class="code-keyword">def</span> calculateArea(length: Double, width: Double): Double = {
+  <span class="code-keyword">val</span> area = length * width
+  println(<span class="code-string">s"Calculating area: $length x $width"</span>)
+  area
+}
+
+<span class="code-comment">// Calling functions</span>
+<span class="code-keyword">val</span> message = greet(<span class="code-string">"Alice"</span>)
+<span class="code-keyword">val</span> roomArea = calculateArea(10.5, 8.0)
+            </div>
+
+            <div class="output-box">
+Output:
+message: String = Hello, Alice! Welcome to Scala.
+Calculating area: 10.5 x 8.0
+roomArea: Double = 84.0
+            </div>
+        </div>
+
+        <!-- Slide 6: Object-Oriented Programming -->
+        <div class="slide content-slide">
+            <h2>Object-Oriented Programming 🏗️</h2>
+            
+            <div class="explanation-box">
+                <p>Scala is a <strong>pure object-oriented language</strong> - everything is an object!</p>
+                <p>Even numbers like 1, 2, 3 are objects with methods.</p>
+            </div>
+
+            <div class="code-example">
+<span class="code-comment">// Class definition with primary constructor</span>
+<span class="code-keyword">class</span> Person(<span class="code-keyword">val</span> name: String, <span class="code-keyword">var</span> age: Int) {
+  
+  <span class="code-comment">// Class methods</span>
+  <span class="code-keyword">def</span> introduce(): String = {
+    <span class="code-string">s"Hi, I'm $name and I'm $age years old"</span>
+  }
+  
+  <span class="code-keyword">def</span> haveBirthday(): Unit = {
+    age += 1
+    println(<span class="code-string">s"Happy Birthday! $name is now $age"</span>)
+  }
+  
+  <span class="code-keyword">def</span> canVote(): Boolean = {
+    age >= 18
+  }
+}
+
+<span class="code-comment">// Creating objects and using them</span>
+<span class="code-keyword">val</span> person1 = <span class="code-keyword">new</span> Person(<span class="code-string">"Bob"</span>, 17)
+<span class="code-keyword">val</span> person2 = <span class="code-keyword">new</span> Person(<span class="code-string">"Alice"</span>, 25)
+
+println(person1.introduce())
+println(<span class="code-string">s"Can Bob vote? ${person1.canVote()}"</span>)
+person1.haveBirthday()
+println(<span class="code-string">s"Can Bob vote now? ${person1.canVote()}"</span>)
+            </div>
+
+            <div class="output-box">
+Output:
+Hi, I'm Bob and I'm 17 years old
+Can Bob vote? false
+Happy Birthday! Bob is now 18
+Can Bob vote now? true
+            </div>
+        </div>
+
+        <!-- Slide 7: Collections and Lists -->
+        <div class="slide content-slide">
+            <h2>Collections - Working with Data 📋</h2>
+            
+            <div class="explanation-box">
+                <p>Scala has rich collection library with immutable collections by default.</p>
+                <p><strong>Lists</strong> are the most commonly used collection type.</p>
+            </div>
+
+            <div class="code-example">
+<span class="code-comment">// Creating lists</span>
+<span class="code-keyword">val</span> numbers = List(1, 2, 3, 4, 5)
+<span class="code-keyword">val</span> names = List(<span class="code-string">"Alice"</span>, <span class="code-string">"Bob"</span>, <span class="code-string">"Charlie"</span>)
+<span class="code-keyword">val</span> mixedList = List(1, <span class="code-string">"hello"</span>, 3.14, true)
+
+<span class="code-comment">// Basic list operations</span>
+println(<span class="code-string">s"First number: ${numbers.head}"</span>)
+println(<span class="code-string">s"Rest of numbers: ${numbers.tail}"</span>)
+println(<span class="code-string">s"List length: ${numbers.length}"</span>)
+println(<span class="code-string">s"Is list empty? ${numbers.isEmpty}"</span>)
+
+<span class="code-comment">// Adding elements (creates new list)</span>
+<span class="code-keyword">val</span> moreNumbers = 0 :: numbers    <span class="code-comment">// Add to front</span>
+<span class="code-keyword">val</span> evenMoreNumbers = numbers :+ 6 <span class="code-comment">// Add to end</span>
+
+<span class="code-comment">// Combining lists</span>
+<span class="code-keyword">val</span> combined = List(1, 2) ++ List(3, 4)
+            </div>
+
+            <div class="output-box">
+Output:
+First number: 1
+Rest of numbers: List(2, 3, 4, 5)
+List length: 5
+Is list empty? false
+moreNumbers: List(0, 1, 2, 3, 4, 5)
+combined: List(1, 2, 3, 4)
+            </div>
+        </div>
+
+        <!-- Slide 8: Functional Programming Magic -->
+        <div class="slide content-slide">
+            <h2>Functional Programming Magic ✨</h2>
+            
+            <div class="explanation-box">
+                <p>Higher-order functions that work on collections:</p>
+                <ul>
+                    <li><span class="highlight">map</span> - Transform each element</li>
+                    <li><span class="highlight">filter</span> - Keep elements that match condition</li>
+                    <li><span class="highlight">reduce</span> - Combine all elements into one</li>
+                </ul>
+            </div>
+
+            <div class="code-example">
+<span class="code-keyword">val</span> numbers = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+<span class="code-comment">// MAP: Transform each element</span>
+<span class="code-keyword">val</span> doubled = numbers.map(x => x * 2)
+<span class="code-keyword">val</span> squared = numbers.map(num => num * num)
+println(<span class="code-string">s"Original: $numbers"</span>)
+println(<span class="code-string">s"Doubled:  $doubled"</span>)
+println(<span class="code-string">s"Squared:  $squared"</span>)
+
+<span class="code-comment">// FILTER: Keep only elements that match condition</span>
+<span class="code-keyword">val</span> evenNumbers = numbers.filter(x => x % 2 == 0)
+<span class="code-keyword">val</span> bigNumbers = numbers.filter(_ > 5)  <span class="code-comment">// Shorthand syntax</span>
+println(<span class="code-string">s"Even numbers: $evenNumbers"</span>)
+println(<span class="code-string">s"Numbers > 5:  $bigNumbers"</span>)
+
+<span class="code-comment">// REDUCE: Combine all elements</span>
+<span class="code-keyword">val</span> sum = numbers.reduce((a, b) => a + b)
+<span class="code-keyword">val</span> product = numbers.reduce(_ * _)        <span class="code-comment">// Shorthand</span>
+println(<span class="code-string">s"Sum of all: $sum"</span>)
+println(<span class="code-string">s"Product:    $product"</span>)
+            </div>
+
+            <div class="output-box">
+Output:
+Original: List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+Doubled:  List(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)
+Even numbers: List(2, 4, 6, 8, 10)
+Sum of all: 55
+            </div>
+        </div>
+
+        <!-- Slide 9: Pattern Matching -->
+        <div class="slide content-slide">
+            <h2>Pattern Matching - Scala's Superpower 🦸‍♂️</h2>
+            
+            <div class="explanation-box">
+                <p><strong>Pattern Matching</strong> is like switch-case but much more powerful!</p>
+                <p>It can match on values, types, data structures, and even extract data.</p>
+            </div>
+
+            <div class="code-example">
+<span class="code-comment">// Simple pattern matching</span>
+<span class="code-keyword">def</span> describeNumber(x: Int): String = x <span class="code-keyword">match</span> {
+  <span class="code-keyword">case</span> 0 => <span class="code-string">"Zero"</span>
+  <span class="code-keyword">case</span> 1 => <span class="code-string">"One"</span>
+  <span class="code-keyword">case</span> 2 => <span class="code-string">"Two"</span>
+  <span class="code-keyword">case</span> x <span class="code-keyword">if</span> x > 10 => <span class="code-string">s"Big number: $x"</span>
+  <span class="code-keyword">case</span> _ => <span class="code-string">s"Some other number: $x"</span>  <span class="code-comment">// Default case</span>
+}
+
+<span class="code-comment">// Pattern matching with lists</span>
+<span class="code-keyword">def</span> describeList(list: List[Int]): String = list <span class="code-keyword">match</span> {
+  <span class="code-keyword">case</span> List() => <span class="code-string">"Empty list"</span>
+  <span class="code-keyword">case</span> List(x) => <span class="code-string">s"List with one element: $x"</span>
+  <span class="code-keyword">case</span> List(x, y) => <span class="code-string">s"List with two elements: $x, $y"</span>
+  <span class="code-keyword">case</span> head :: tail => <span class="code-string">s"List starting with $head"</span>
+}
+
+<span class="code-comment">// Testing pattern matching</span>
+println(describeNumber(0))
+println(describeNumber(15))
+println(describeList(List()))
+println(describeList(List(1, 2, 3, 4)))
+            </div>
+
+            <div class="output-box">
+Output:
+Zero
+Big number: 15
+Empty list
+List starting with 1
+            </div>
+        </div>
+
+        <!-- Slide 10: Case Classes -->
+        <div class="slide content-slide">
+            <h2>Case Classes - Data Containers 📦</h2>
+            
+            <div class="explanation-box">
+                <p><strong>Case Classes</strong> are special classes perfect for holding data.</p>
+                <p>They automatically provide: constructor parameters, toString, equals, copy methods.</p>
+            </div>
+
+            <div class="code-example">
+<span class="code-comment">// Define case classes</span>
+<span class="code-keyword">case class</span> Student(
+  name: String, 
+  age: Int, 
+  grade: String, 
+  gpa: Double
+)
+
+<span class="code-keyword">case class</span> Course(
+  title: String, 
+  credits: Int, 
+  instructor: String
+)
+
+<span class="code-comment">// Creating instances (no 'new' keyword needed)</span>
+<span class="code-keyword">val</span> student1 = Student(<span class="code-string">"Alice Johnson"</span>, 20, <span class="code-string">"Sophomore"</span>, 3.8)
+<span class="code-keyword">val</span> student2 = Student(<span class="code-string">"Bob Smith"</span>, 19, <span class="code-string">"Freshman"</span>, 3.5)
+<span class="code-keyword">val</span> course = Course(<span class="code-string">"Computer Science 101"</span>, 4, <span class="code-string">"Dr. Brown"</span>)
+
+<span class="code-comment">// Accessing fields</span>
+println(<span class="code-string">s"Student: ${student1.name}, GPA: ${student1.gpa}"</span>)
+
+<span class="code-comment">// Copy with modifications</span>
+<span class="code-keyword">val</span> updatedStudent = student1.copy(age = 21, gpa = 3.9)
+println(<span class="code-string">s"Updated: $updatedStudent"</span>)
+
+<span class="code-comment">// Pattern matching with case classes</span>
+<span class="code-keyword">def</span> evaluateStudent(student: Student): String = student <span class="code-keyword">match</span> {
+  <span class="code-keyword">case</span> Student(name, _, _, gpa) <span class="code-keyword">if</span> gpa >= 3.5 => 
+    <span class="code-string">s"$name is doing great!"</span>
+  <span class="code-keyword">case</span> Student(name, _, _, _) => 
+    <span class="code-string">s"$name needs to study more"</span>
+}
+            </div>
+
+            <div class="output-box">
+Output:
+Student: Alice Johnson, GPA: 3.8
+Updated: Student(Alice Johnson,21,Sophomore,3.9)
+Alice Johnson is doing great!
+            </div>
+        </div>
+
+        <!-- Slide 11: Real-World Applications -->
+        <div class="slide content-slide">
+            <h2>Real-World Applications 🌍</h2>
+            
+            <div class="explanation-box">
+                <h3>Where is Scala Used?</h3>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-box">
+                    <h3>🌐 Web Development</h3>
+                    <p><strong>Play Framework</strong></p>
+                    <p>High-performance web applications</p>
+                    <p>Used by: LinkedIn, Coursera</p>
+                </div>
+                <div class="feature-box">
+                    <h3>📊 Big Data</h3>
+                    <p><strong>Apache Spark</strong></p>
+                    <p>Distributed data processing</p>
+                    <p>Used by: Netflix, Uber, Airbnb</p>
+                </div>
+                <div class="feature-box">
+                    <h3>💰 Financial Services</h3>
+                    <p><strong>Trading Systems</strong></p>
+                    <p>High-frequency trading platforms</p>
+                    <p>Used by: Goldman Sachs, Morgan Stanley</p>
+                </div>
+                <div class="feature-box">
+                    <h3>🔗 Distributed Systems</h3>
+                    <p><strong>Akka Framework</strong></p>
+                    <p>Actor-based concurrent systems</p>
+                    <p>Used by: Twitter, PayPal</p>
+                </div>
+            </div>
+
+            <div class="code-example">
+<span class="code-comment">// Example: Simple data processing pipeline</span>
+<span class="code-keyword">val</span> salesData = List(
+  (<span class="code-string">"Product A"</span>, 100, 29.99),
+  (<span class="code-string">"Product B"</span>, 50, 19.99),
+  (<span class="code-string">"Product C"</span>, 75, 39.99)
+)
+
+<span class="code-comment">// Calculate total revenue using functional programming</span>
+<span class="code-keyword">val</span> totalRevenue = salesData
+  .map { <span class="code-keyword">case</span> (product, quantity, price) => 
+    quantity * price 
+  }
+  .reduce(_ + _)
+
+println(<span class="code-string">s"Total Revenue: $$${totalRevenue}"</span>)
+            </div>
+
+            <div class="output-box">
+Output:
+Total Revenue: $7997.25
+            </div>
+        </div>
+
+        <!-- Slide 12: Thank You -->
+        <div class="slide intro-slide">
+            <h1>Thank You! 🙏</h1>
+            <h3>You're Ready to Start Your Scala Journey!</h3>
+            
+            <div class="explanation-box" style="max-width: 600px;">
+                <h3>Next Steps:</h3>
+                <ul style="text-align: left;">
+                    <li>🌐 Visit: <span class="highlight">scala-lang.org</span></li>
+                    <li>📚 Try: <span class="highlight">Scala Exercises</span> online</li>
+                    <li>🎯 Practice: <span class="highlight">Coursera Scala Course</span></li>
+                    <li>💻 Build: Your first Scala project!</li>
+                </ul>
+            </div>
+            
+            <p style="font-size: 1.4em; margin-top: 30px; color: #ffd700;">
+                "The best way to learn Scala is to write Scala code!"
+            </p>
+            <p style="font-size: 1.2em;">
+                Happy Coding! 👨‍💻👩‍💻
+            </p>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousSlide()">← Previous</button>
+            <button class="nav-btn" onclick="nextSlide()">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        // Set total slides counter
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            // Hide all slides
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+                slide.style.display = 'none';
+            });
+            
+            // Calculate current slide index
+            if (n >= totalSlides) {
+                currentSlide = 0;
+            } else if (n < 0) {
+                currentSlide = totalSlides - 1;
+            } else {
+                currentSlide = n;
+            }
+            
+            // Show current slide
+            slides[currentSlide].classList.add('active');
+            slides[currentSlide].style.display = 'flex';
+            
+            // Update counter
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            }
+        });
+
+        // Initialize presentation
+        window.addEventListener('load', function() {
+            showSlide(0);
+        });
+    </script>
+</body>
+</html>
