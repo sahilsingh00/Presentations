@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Cleaning & Transformation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow: hidden;
+        }
+        
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            display: none;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        h2 {
+            font-size: 2em;
+            color: #34495e;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        h3 {
+            font-size: 1.4em;
+            color: #2980b9;
+            margin: 20px 0 10px 0;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .excel-formula {
+            background: #27ae60;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .example-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #fd7e14;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(102, 126, 234, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #2c3e50;
+        }
+        
+        .table-example {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table-example th, .table-example td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .table-example th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .table-example tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        
+        .intro-icons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        .icon-box {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .icon-box h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="slide-counter">1 / 8</div>
+            <h1>Data Cleaning & Transformation</h1>
+            <div class="intro-icons">
+                <div class="icon-box">
+                    <h3>📊 Excel</h3>
+                    <p>Formulas & Functions</p>
+                </div>
+                <div class="icon-box">
+                    <h3>🗄️ SQL</h3>
+                    <p>Queries & Operations</p>
+                </div>
+                <div class="icon-box">
+                    <h3>🧹 Clean Data</h3>
+                    <p>Quality & Consistency</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <h3>Essential Techniques for Data Quality</h3>
+                <p style="font-size: 1.2em; color: #666; margin-top: 20px;">
+                    Master the art of preparing data for analysis
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 2: What is Data Cleaning -->
+        <div class="slide">
+            <div class="slide-counter">2 / 8</div>
+            <h2>What is Data Cleaning?</h2>
+            <div class="example-box">
+                <h3>Data cleaning is the process of:</h3>
+                <ul>
+                    <li><strong>Identifying and correcting errors</strong> in datasets</li>
+                    <li><strong>Removing duplicates</strong> and irrelevant data</li>
+                    <li><strong>Handling missing values</strong> appropriately</li>
+                    <li><strong>Standardizing formats</strong> across the dataset</li>
+                    <li><strong>Ensuring data consistency</strong> and accuracy</li>
+                </ul>
+            </div>
+            
+            <h3>Common Data Issues:</h3>
+            <table class="table-example">
+                <tr>
+                    <th>Issue Type</th>
+                    <th>Example</th>
+                    <th>Impact</th>
+                </tr>
+                <tr>
+                    <td>Missing Values</td>
+                    <td>NULL, blank cells, N/A</td>
+                    <td>Incomplete analysis</td>
+                </tr>
+                <tr>
+                    <td>Duplicates</td>
+                    <td>Same record multiple times</td>
+                    <td>Skewed results</td>
+                </tr>
+                <tr>
+                    <td>Inconsistent Formats</td>
+                    <td>2023-01-15 vs 01/15/2023</td>
+                    <td>Processing errors</td>
+                </tr>
+                <tr>
+                    <td>Invalid Data</td>
+                    <td>Age = -5, Phone = "abc"</td>
+                    <td>Incorrect conclusions</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Slide 3: Excel Data Cleaning -->
+        <div class="slide">
+            <div class="slide-counter">3 / 8</div>
+            <h2>Excel Data Cleaning Techniques</h2>
+            
+            <h3>1. Remove Duplicates</h3>
+            <div class="example-box">
+                <strong>Method:</strong> Data → Data Tools → Remove Duplicates
+                <br><strong>Or use formula:</strong>
+                <div class="excel-formula">
+                    =IF(COUNTIF($A$2:A2,A2)>1,"Duplicate","Unique")
+                </div>
+            </div>
+
+            <h3>2. Handle Missing Values</h3>
+            <div class="excel-formula">
+                <!-- Fill with average -->
+                =IF(ISBLANK(A2),AVERAGE($A$2:$A$100),A2)
+                
+                <!-- Fill with previous value -->
+                =IF(ISBLANK(A2),A1,A2)
+            </div>
+
+            <h3>3. Clean Text Data</h3>
+            <div class="excel-formula">
+                <!-- Remove extra spaces -->
+                =TRIM(A2)
+                
+                <!-- Convert to proper case -->
+                =PROPER(A2)
+                
+                <!-- Remove special characters -->
+                =SUBSTITUTE(SUBSTITUTE(A2,"!",""),"@","")
+            </div>
+
+            <h3>4. Standardize Dates</h3>
+            <div class="excel-formula">
+                =TEXT(A2,"yyyy-mm-dd")
+            </div>
+        </div>
+
+        <!-- Slide 4: Excel Advanced Cleaning -->
+        <div class="slide">
+            <div class="slide-counter">4 / 8</div>
+            <h2>Excel Advanced Cleaning Examples</h2>
+            
+            <h3>Example Dataset: Customer Information</h3>
+            <table class="table-example">
+                <tr>
+                    <th>Original Data</th>
+                    <th>Issues</th>
+                    <th>Cleaned Data</th>
+                </tr>
+                <tr>
+                    <td>john  DOE</td>
+                    <td>Mixed case, extra spaces</td>
+                    <td>John Doe</td>
+                </tr>
+                <tr>
+                    <td>555-123-4567</td>
+                    <td>Inconsistent phone format</td>
+                    <td>(555) 123-4567</td>
+                </tr>
+                <tr>
+                    <td>12/25/2023</td>
+                    <td>Date format inconsistency</td>
+                    <td>2023-12-25</td>
+                </tr>
+            </table>
+
+            <h3>Data Validation Formula</h3>
+            <div class="excel-formula">
+                <!-- Email validation -->
+                =IF(AND(ISERROR(FIND("@",A2))=FALSE,
+                       ISERROR(FIND(".",A2))=FALSE,
+                       LEN(A2)>5),
+                   "Valid Email","Invalid Email")
+            </div>
+
+            <h3>Extract and Clean Phone Numbers</h3>
+            <div class="excel-formula">
+                =REGEX(A2,"[0-9]{3}-[0-9]{3}-[0-9]{4}")
+            </div>
+
+            <h3>Find and Replace with Wildcards</h3>
+            <div class="example-box">
+                <strong>Find:</strong> *@gmail.com<br>
+                <strong>Replace:</strong> *@company.com<br>
+                <strong>Use:</strong> Ctrl+H → Check "Use wildcards"
+            </div>
+        </div>
+
+        <!-- Slide 5: SQL Data Cleaning Basics -->
+        <div class="slide">
+            <div class="slide-counter">5 / 8</div>
+            <h2>SQL Data Cleaning Basics</h2>
+            
+            <h3>1. Handle NULL Values</h3>
+            <div class="code-block">
+-- Replace NULL with default value
+SELECT 
+    customer_id,
+    COALESCE(phone_number, 'No Phone') AS phone,
+    ISNULL(email, 'no-email@company.com') AS email
+FROM customers;
+
+-- Filter out NULL values
+SELECT * 
+FROM orders 
+WHERE order_date IS NOT NULL 
+  AND customer_id IS NOT NULL;
+            </div>
+
+            <h3>2. Remove Duplicates</h3>
+            <div class="code-block">
+-- Using DISTINCT
+SELECT DISTINCT 
+    customer_id, 
+    customer_name, 
+    email
+FROM customers;
+
+-- Using ROW_NUMBER() to remove duplicates
+WITH ranked_customers AS (
+    SELECT *,
+           ROW_NUMBER() OVER (
+               PARTITION BY email 
+               ORDER BY customer_id
+           ) as rn
+    FROM customers
+)
+SELECT customer_id, customer_name, email
+FROM ranked_customers
+WHERE rn = 1;
+            </div>
+        </div>
+
+        <!-- Slide 6: SQL Advanced Cleaning -->
+        <div class="slide">
+            <div class="slide-counter">6 / 8</div>
+            <h2>SQL Advanced Cleaning & Transformation</h2>
+            
+            <h3>3. Clean Text Data</h3>
+            <div class="code-block">
+-- Clean and standardize text
+SELECT 
+    customer_id,
+    UPPER(TRIM(customer_name)) AS clean_name,
+    REPLACE(REPLACE(phone, '-', ''), ' ', '') AS clean_phone,
+    LOWER(TRIM(email)) AS clean_email
+FROM customers;
+
+-- Remove special characters
+SELECT 
+    REGEXP_REPLACE(customer_name, '[^a-zA-Z0-9 ]', '') AS clean_name
+FROM customers;
+            </div>
+
+            <h3>4. Standardize Dates</h3>
+            <div class="code-block">
+-- Convert different date formats
+SELECT 
+    order_id,
+    CAST(order_date AS DATE) AS standardized_date,
+    FORMAT(order_date, 'yyyy-MM-dd') AS formatted_date
+FROM orders;
+
+-- Handle invalid dates
+SELECT 
+    order_id,
+    CASE 
+        WHEN ISDATE(order_date) = 1 
+        THEN CAST(order_date AS DATE)
+        ELSE NULL 
+    END AS valid_date
+FROM orders;
+            </div>
+        </div>
+
+        <!-- Slide 7: Data Transformation Examples -->
+        <div class="slide">
+            <div class="slide-counter">7 / 8</div>
+            <h2>Data Transformation Examples</h2>
+            
+            <h3>SQL: Create Age Categories</h3>
+            <div class="code-block">
+SELECT 
+    customer_id,
+    age,
+    CASE 
+        WHEN age < 18 THEN 'Minor'
+        WHEN age BETWEEN 18 AND 30 THEN 'Young Adult'
+        WHEN age BETWEEN 31 AND 50 THEN 'Adult'
+        WHEN age > 50 THEN 'Senior'
+        ELSE 'Unknown'
+    END AS age_category
+FROM customers;
+            </div>
+
+            <h3>SQL: Split Full Names</h3>
+            <div class="code-block">
+SELECT 
+    customer_id,
+    full_name,
+    SUBSTRING(full_name, 1, CHARINDEX(' ', full_name) - 1) AS first_name,
+    SUBSTRING(full_name, CHARINDEX(' ', full_name) + 1, LEN(full_name)) AS last_name
+FROM customers
+WHERE CHARINDEX(' ', full_name) > 0;
+            </div>
+
+            <h3>Excel: Transform Data</h3>
+            <div class="excel-formula">
+                <!-- Create age groups -->
+                =IF(B2<18,"Minor",IF(B2<=30,"Young Adult",IF(B2<=50,"Adult","Senior")))
+                
+                <!-- Extract domain from email -->
+                =RIGHT(A2,LEN(A2)-FIND("@",A2))
+            </div>
+        </div>
+
+        <!-- Slide 8: Best Practices -->
+        <div class="slide">
+            <div class="slide-counter">8 / 8</div>
+            <h2>Best Practices & Summary</h2>
+            
+            <div class="example-box">
+                <h3>🔍 Data Cleaning Checklist</h3>
+                <ul>
+                    <li><strong>Backup original data</strong> before cleaning</li>
+                    <li><strong>Document all transformations</strong> performed</li>
+                    <li><strong>Validate results</strong> after each cleaning step</li>
+                    <li><strong>Use consistent naming conventions</strong></li>
+                    <li><strong>Test with sample data</strong> first</li>
+                </ul>
+            </div>
+
+            <h3>🛠️ Tool Selection Guide</h3>
+            <table class="table-example">
+                <tr>
+                    <th>Use Excel When:</th>
+                    <th>Use SQL When:</th>
+                </tr>
+                <tr>
+                    <td>Small to medium datasets (&lt;1M rows)</td>
+                    <td>Large datasets (&gt;1M rows)</td>
+                </tr>
+                <tr>
+                    <td>Visual data exploration needed</td>
+                    <td>Complex transformations required</td>
+                </tr>
+                <tr>
+                    <td>One-time cleaning tasks</td>
+                    <td>Repeatable, automated processes</td>
+                </tr>
+                <tr>
+                    <td>Business users prefer Excel</td>
+                    <td>Data stored in databases</td>
+                </tr>
+            </table>
+
+            <div class="example-box">
+                <h3>💡 Key Takeaways</h3>
+                <ul>
+                    <li>Clean data is the foundation of reliable analysis</li>
+                    <li>Choose the right tool for your data size and complexity</li>
+                    <li>Always validate your cleaning results</li>
+                    <li>Document your process for reproducibility</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">← Previous</button>
+        <span class="nav-btn" id="slideInfo">1 / 8</span>
+        <button class="nav-btn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            updateNavigation();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function updateNavigation() {
+            document.getElementById('slideInfo').textContent = `${currentSlide + 1} / ${totalSlides}`;
+            
+            const prevBtn = document.querySelector('.navigation .nav-btn');
+            const nextBtn = document.querySelector('.navigation .nav-btn:last-child');
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Initialize
+        updateNavigation();
+    </script>
+</body>
+</html>
