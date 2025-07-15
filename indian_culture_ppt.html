@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Culture and Heritage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: 40px;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide h1 {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: slideInDown 1s ease-out;
+        }
+
+        .slide h2 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #34495e;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .slide h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .slide p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: center;
+            color: #34495e;
+            max-width: 900px;
+            margin: 0 auto 30px;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 1.2rem;
+            color: #34495e;
+            font-weight: bold;
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: rgba(52, 73, 94, 0.8);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(52, 73, 94, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-indicators {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(52, 73, 94, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #34495e;
+            transform: scale(1.2);
+        }
+
+        /* Slide 1 - Title Slide */
+        .slide1 {
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            text-align: center;
+        }
+
+        .slide1 .title-image {
+            width: 200px;
+            height: 200px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="%23ff9f43" stroke="%23e55039" stroke-width="4"/><path d="M60 100 L100 60 L140 100 L100 140 Z" fill="%23e55039"/><circle cx="100" cy="100" r="20" fill="%23ffa502"/></svg>') center/cover;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: rotate 10s linear infinite;
+        }
+
+        /* Slide 2 - Performing Arts */
+        .slide2 {
+            background: linear-gradient(135deg, #a8e6cf 0%, #88d8a3 100%);
+        }
+
+        .arts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .art-category {
+            background: rgba(255,255,255,0.9);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .art-category:hover {
+            transform: translateY(-5px);
+        }
+
+        .art-category h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .art-items {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .art-item {
+            background: #34495e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Slide 3 - Visual Arts */
+        .slide3 {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+        }
+
+        .visual-arts-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .visual-category {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .visual-category h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .subcategories {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .subcategory {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Slide 4 - Literature & Miscellaneous */
+        .slide4 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .final-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .final-category {
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .final-category h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .category-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .category-item {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide.active * {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide Indicators -->
+        <div class="slide-indicators">
+            <div class="indicator active" onclick="goToSlide(0)"></div>
+            <div class="indicator" onclick="goToSlide(1)"></div>
+            <div class="indicator" onclick="goToSlide(2)"></div>
+            <div class="indicator" onclick="goToSlide(3)"></div>
+        </div>
+
+        <!-- Slide 1: Title Slide -->
+        <div class="slide slide1 active">
+            <div class="title-image"></div>
+            <h1>Indian Culture and Heritage</h1>
+            <p>A comprehensive exploration of India's rich cultural tapestry spanning performing arts, visual arts, literature, and traditions that have shaped one of the world's most diverse civilizations.</p>
+            <div class="slide-number">1 / 4</div>
+        </div>
+
+        <!-- Slide 2: Performing Arts -->
+        <div class="slide slide2">
+            <h2>Performing Arts</h2>
+            <div class="arts-grid">
+                <div class="art-category">
+                    <h3>🎭 Dance</h3>
+                    <div class="art-items">
+                        <span class="art-item">Classical</span>
+                        <span class="art-item">Folk</span>
+                    </div>
+                </div>
+                <div class="art-category">
+                    <h3>🎵 Music</h3>
+                    <div class="art-items">
+                        <span class="art-item">Classical</span>
+                        <span class="art-item">Hindustani</span>
+                        <span class="art-item">Carnatic</span>
+                        <span class="art-item">Folk</span>
+                    </div>
+                </div>
+                <div class="art-category">
+                    <h3>🎪 Drama</h3>
+                    <div class="art-items">
+                        <span class="art-item">Traditional Theatre</span>
+                        <span class="art-item">Modern Drama</span>
+                    </div>
+                </div>
+                <div class="art-category">
+                    <h3>🎎 Puppetry</h3>
+                    <div class="art-items">
+                        <span class="art-item">Rod</span>
+                        <span class="art-item">Glove</span>
+                        <span class="art-item">Shadow</span>
+                        <span class="art-item">String</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">2 / 4</div>
+        </div>
+
+        <!-- Slide 3: Visual Arts -->
+        <div class="slide slide3">
+            <h2>Visual Arts</h2>
+            <div class="visual-arts-container">
+                <div class="visual-category">
+                    <h3>🏛️ Architecture</h3>
+                    <div class="subcategories">
+                        <span class="subcategory">Indian Architecture</span>
+                    </div>
+                </div>
+                <div class="visual-category">
+                    <h3>🗿 Sculpture</h3>
+                    <div class="subcategories">
+                        <span class="subcategory">Metal</span>
+                        <span class="subcategory">Stone</span>
+                        <span class="subcategory">Others</span>
+                    </div>
+                </div>
+                <div class="visual-category">
+                    <h3>🎨 Painting</h3>
+                    <div class="subcategories">
+                        <span class="subcategory">Prehistoric</span>
+                        <span class="subcategory">Classical</span>
+                        <span class="subcategory">Folk</span>
+                        <span class="subcategory">Modern</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">3 / 4</div>
+        </div>
+
+        <!-- Slide 4: Literature & Miscellaneous -->
+        <div class="slide slide4">
+            <h2>Literature & Miscellaneous</h2>
+            <div class="final-grid">
+                <div class="final-category">
+                    <h3>📚 Literature</h3>
+                    <div class="category-items">
+                        <span class="category-item">Vedic Literature</span>
+                        <span class="category-item">Buddhist & Other Religious</span>
+                        <span class="category-item">Others</span>
+                    </div>
+                </div>
+                <div class="final-category">
+                    <h3>🔮 Miscellaneous</h3>
+                    <div class="category-items">
+                        <span class="category-item">Religion</span>
+                        <span class="category-item">National</span>
+                        <span class="category-item">Institutions</span>
+                        <span class="category-item">Calendar</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">4 / 4</div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        function goToSlide(n) {
+            showSlide(n);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Auto-advance slides (optional)
+        let autoAdvance = false;
+        if (autoAdvance) {
+            setInterval(() => {
+                if (currentSlide < totalSlides - 1) {
+                    changeSlide(1);
+                } else {
+                    showSlide(0);
+                }
+            }, 5000);
+        }
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
