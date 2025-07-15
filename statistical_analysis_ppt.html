@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistical Analysis: R vs Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 80vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 60px;
+            display: none;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #34495e;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: #2980b9;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #7f8c8d;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .column {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #3498db;
+        }
+
+        .column.python {
+            border-left-color: #f39c12;
+        }
+
+        .column.r {
+            border-left-color: #e74c3c;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .python-code {
+            background: #3d4f5d;
+            border-left: 4px solid #f39c12;
+        }
+
+        .r-code {
+            background: #4a2c2a;
+            border-left: 4px solid #e74c3c;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        li:before {
+            content: "▸";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border-top: 4px solid #3498db;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .python-logo {
+            background: #f39c12;
+        }
+
+        .r-logo {
+            background: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">12</span>
+        </div>
+
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <h1>Statistical Analysis</h1>
+            <p class="subtitle">Using R and Python for Data Science</p>
+            <div style="text-align: center; margin-top: 60px;">
+                <div style="display: inline-block; margin: 0 40px;">
+                    <div class="logo r-logo">R</div>
+                    <h3>R Programming</h3>
+                </div>
+                <div style="display: inline-block; margin: 0 40px;">
+                    <div class="logo python-logo">🐍</div>
+                    <h3>Python</h3>
+                </div>
+            </div>
+            <div class="highlight" style="margin-top: 80px;">
+                <h3>Comprehensive Guide to Statistical Computing</h3>
+                <p>Explore the power of two leading languages for statistical analysis, data visualization, and machine learning.</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Introduction -->
+        <div class="slide">
+            <h2>Introduction to Statistical Analysis</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>📊 Data Exploration</h3>
+                    <p>Understand your data through descriptive statistics, visualizations, and summary measures.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔍 Hypothesis Testing</h3>
+                    <p>Test assumptions and draw conclusions about populations from sample data.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📈 Predictive Modeling</h3>
+                    <p>Build models to predict future outcomes and understand relationships between variables.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎯 Statistical Inference</h3>
+                    <p>Make informed decisions based on statistical evidence and confidence intervals.</p>
+                </div>
+            </div>
+            <div class="highlight">
+                <h3>Why Statistical Analysis Matters</h3>
+                <p>Statistical analysis transforms raw data into actionable insights, enabling evidence-based decision making across industries from healthcare to finance, marketing to research.</p>
+            </div>
+        </div>
+
+        <!-- Slide 3: R Overview -->
+        <div class="slide">
+            <h2>R Programming Language</h2>
+            <div class="two-column">
+                <div class="column r">
+                    <h3>Key Strengths</h3>
+                    <ul>
+                        <li>Designed specifically for statistical computing</li>
+                        <li>Extensive statistical libraries (CRAN)</li>
+                        <li>Superior data visualization with ggplot2</li>
+                        <li>Interactive development with RStudio</li>
+                        <li>Strong academic and research community</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>Core Libraries</h3>
+                    <ul>
+                        <li><strong>dplyr:</strong> Data manipulation</li>
+                        <li><strong>ggplot2:</strong> Data visualization</li>
+                        <li><strong>tidyr:</strong> Data tidying</li>
+                        <li><strong>caret:</strong> Machine learning</li>
+                        <li><strong>shiny:</strong> Interactive web apps</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="code-block r-code">
+# Sample R code for basic statistics
+library(dplyr)
+library(ggplot2)
+
+# Load and explore data
+data <- read.csv("dataset.csv")
+summary(data)
+
+# Create visualization
+ggplot(data, aes(x = variable1, y = variable2)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  theme_minimal()
+            </div>
+        </div>
+
+        <!-- Slide 4: Python Overview -->
+        <div class="slide">
+            <h2>Python for Statistical Analysis</h2>
+            <div class="two-column">
+                <div class="column python">
+                    <h3>Key Strengths</h3>
+                    <ul>
+                        <li>General-purpose programming language</li>
+                        <li>Rich ecosystem of scientific libraries</li>
+                        <li>Strong integration capabilities</li>
+                        <li>Popular in machine learning and AI</li>
+                        <li>Excellent for data engineering</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>Core Libraries</h3>
+                    <ul>
+                        <li><strong>pandas:</strong> Data manipulation</li>
+                        <li><strong>numpy:</strong> Numerical computing</li>
+                        <li><strong>matplotlib/seaborn:</strong> Visualization</li>
+                        <li><strong>scikit-learn:</strong> Machine learning</li>
+                        <li><strong>scipy:</strong> Statistical functions</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="code-block python-code">
+# Sample Python code for basic statistics
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load and explore data
+df = pd.read_csv('dataset.csv')
+print(df.describe())
+
+# Create visualization
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=df, x='variable1', y='variable2')
+sns.regplot(data=df, x='variable1', y='variable2', scatter=False)
+plt.show()
+            </div>
+        </div>
+
+        <!-- Slide 5: Comparison Table -->
+        <div class="slide">
+            <h2>R vs Python: Detailed Comparison</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>R</th>
+                        <th>Python</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Learning Curve</strong></td>
+                        <td>Steeper for programmers, easier for statisticians</td>
+                        <td>Gentler learning curve, beginner-friendly</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Statistical Functions</strong></td>
+                        <td>Built-in extensive statistical functions</td>
+                        <td>Requires additional libraries (scipy, statsmodels)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Visualization</strong></td>
+                        <td>Superior with ggplot2, highly customizable</td>
+                        <td>Good with matplotlib/seaborn, more code needed</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Good for statistical computing</td>
+                        <td>Better for large-scale data processing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Community</strong></td>
+                        <td>Strong academic and research focus</td>
+                        <td>Broader community, industry adoption</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Integration</strong></td>
+                        <td>Limited outside statistical domain</td>
+                        <td>Excellent integration with web, databases, APIs</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="highlight">
+                <h3>💡 Key Takeaway</h3>
+                <p>Choose R for pure statistical analysis and research; choose Python for broader data science applications and production systems.</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Descriptive Statistics -->
+        <div class="slide">
+            <h2>Descriptive Statistics</h2>
+            <div class="two-column">
+                <div class="column r">
+                    <h3>R Implementation</h3>
+                    <div class="code-block r-code">
+# Basic descriptive statistics in R
+data <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+# Central tendency
+mean(data)      # Mean
+median(data)    # Median
+mode(data)      # Mode
+
+# Variability
+sd(data)        # Standard deviation
+var(data)       # Variance
+range(data)     # Range
+IQR(data)       # Interquartile range
+
+# Summary statistics
+summary(data)
+                    </div>
+                </div>
+                <div class="column python">
+                    <h3>Python Implementation</h3>
+                    <div class="code-block python-code">
+# Basic descriptive statistics in Python
+import numpy as np
+import pandas as pd
+from scipy import stats
+
+data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+df = pd.DataFrame(data, columns=['values'])
+
+# Central tendency
+np.mean(data)           # Mean
+np.median(data)         # Median
+stats.mode(data)        # Mode
+
+# Variability
+np.std(data)            # Standard deviation
+np.var(data)            # Variance
+np.ptp(data)            # Range
+np.percentile(data, 75) - np.percentile(data, 25)  # IQR
+
+# Summary statistics
+df.describe()
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Data Visualization -->
+        <div class="slide">
+            <h2>Data Visualization</h2>
+            <div class="two-column">
+                <div class="column r">
+                    <h3>R with ggplot2</h3>
+                    <div class="code-block r-code">
+library(ggplot2)
+
+# Scatter plot
+ggplot(data, aes(x = x_var, y = y_var)) +
+  geom_point(color = "steelblue") +
+  geom_smooth(method = "lm") +
+  labs(title = "Scatter Plot",
+       x = "X Variable",
+       y = "Y Variable") +
+  theme_minimal()
+
+# Histogram
+ggplot(data, aes(x = variable)) +
+  geom_histogram(bins = 30, 
+                 fill = "skyblue", 
+                 alpha = 0.7) +
+  theme_minimal()
+
+# Box plot
+ggplot(data, aes(x = factor, y = value)) +
+  geom_boxplot(fill = "lightgreen") +
+  theme_minimal()
+                    </div>
+                </div>
+                <div class="column python">
+                    <h3>Python with matplotlib/seaborn</h3>
+                    <div class="code-block python-code">
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Scatter plot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(data=df, x='x_var', y='y_var')
+sns.regplot(data=df, x='x_var', y='y_var', 
+            scatter=False)
+plt.title('Scatter Plot')
+plt.show()
+
+# Histogram
+plt.figure(figsize=(10, 6))
+plt.hist(df['variable'], bins=30, 
+         color='skyblue', alpha=0.7)
+plt.title('Histogram')
+plt.show()
+
+# Box plot
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df, x='factor', y='value')
+plt.title('Box Plot')
+plt.show()
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Hypothesis Testing -->
+        <div class="slide">
+            <h2>Hypothesis Testing</h2>
+            <div class="two-column">
+                <div class="column r">
+                    <h3>R Statistical Tests</h3>
+                    <div class="code-block r-code">
+# One-sample t-test
+t.test(data, mu = 0)
+
+# Two-sample t-test
+t.test(group1, group2)
+
+# Chi-square test
+chisq.test(contingency_table)
+
+# ANOVA
+anova_result <- aov(value ~ factor, data = df)
+summary(anova_result)
+
+# Correlation test
+cor.test(x, y, method = "pearson")
+
+# Normality test
+shapiro.test(data)
+
+# Non-parametric tests
+wilcox.test(group1, group2)  # Mann-Whitney U
+kruskal.test(value ~ factor, data = df)  # Kruskal-Wallis
+                    </div>
+                </div>
+                <div class="column python">
+                    <h3>Python Statistical Tests</h3>
+                    <div class="code-block python-code">
+from scipy import stats
+import statsmodels.api as sm
+
+# One-sample t-test
+stats.ttest_1samp(data, 0)
+
+# Two-sample t-test
+stats.ttest_ind(group1, group2)
+
+# Chi-square test
+stats.chi2_contingency(contingency_table)
+
+# ANOVA
+from statsmodels.stats.anova import anova_lm
+model = sm.OLS(y, X).fit()
+anova_lm(model)
+
+# Correlation test
+stats.pearsonr(x, y)
+
+# Normality test
+stats.shapiro(data)
+
+# Non-parametric tests
+stats.mannwhitneyu(group1, group2)  # Mann-Whitney U
+stats.kruskal(group1, group2, group3)  # Kruskal-Wallis
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Linear Regression -->
+        <div class="slide">
+            <h2>Linear Regression</h2>
+            <div class="two-column">
+                <div class="column r">
+                    <h3>R Linear Modeling</h3>
+                    <div class="code-block r-code">
+# Simple linear regression
+model <- lm(y ~ x, data = df)
+summary(model)
+
+# Multiple linear regression
+model2 <- lm(y ~ x1 + x2 + x3, data = df)
+summary(model2)
+
+# Model diagnostics
+plot(model)
+par(mfrow = c(2, 2))
+plot(model)
+
+# Predictions
+predictions <- predict(model, newdata = new_data)
+
+# Model comparison
+anova(model1, model2)
+
+# Stepwise regression
+step_model <- step(model2)
+                    </div>
+                </div>
+                <div class="column python">
+                    <h3>Python Linear Modeling</h3>
+                    <div class="code-block python-code">
+import statsmodels.api as sm
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score, mean_squared_error
+
+# Simple linear regression (statsmodels)
+X = sm.add_constant(df['x'])
+model = sm.OLS(df['y'], X).fit()
+print(model.summary())
+
+# Multiple linear regression (scikit-learn)
+X = df[['x1', 'x2', 'x3']]
+y = df['y']
+model = LinearRegression()
+model.fit(X, y)
+
+# Model evaluation
+y_pred = model.predict(X)
+print(f'R²: {r2_score(y, y_pred)}')
+print(f'MSE: {mean_squared_error(y, y_pred)}')
+
+# Feature importance
+print(model.coef_)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Machine Learning -->
+        <div class="slide">
+            <h2>Machine Learning Applications</h2>
+            <div class="two-column">
+                <div class="column r">
+                    <h3>R Machine Learning</h3>
+                    <div class="code-block r-code">
+library(caret)
+library(randomForest)
+
+# Data preparation
+set.seed(123)
+training_index <- createDataPartition(df$target, 
+                                     p = 0.8, 
+                                     list = FALSE)
+train_data <- df[training_index, ]
+test_data <- df[-training_index, ]
+
+# Random Forest
+rf_model <- randomForest(target ~ ., 
+                        data = train_data,
+                        ntree = 100)
+
+# Predictions
+predictions <- predict(rf_model, test_data)
+
+# Model evaluation
+confusionMatrix(predictions, test_data$target)
+
+# Cross-validation
+cv_results <- train(target ~ ., 
+                   data = train_data,
+                   method = "rf",
+                   trControl = trainControl(method = "cv", 
+                                          number = 5))
+                    </div>
+                </div>
+                <div class="column python">
+                    <h3>Python Machine Learning</h3>
+                    <div class="code-block python-code">
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+# Data preparation
+X = df.drop('target', axis=1)
+y = df['target']
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)
+
+# Random Forest
+rf_model = RandomForestClassifier(n_estimators=100, 
+                                 random_state=42)
+rf_model.fit(X_train, y_train)
+
+# Predictions
+y_pred = rf_model.predict(X_test)
+
+# Model evaluation
+print(f'Accuracy: {accuracy_score(y_test, y_pred)}')
+print(classification_report(y_test, y_pred))
+
+# Cross-validation
+cv_scores = cross_val_score(rf_model, X, y, cv=5)
+print(f'CV Score: {cv_scores.mean():.3f} (+/- {cv_scores.std() * 2:.3f})')
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Best Practices -->
+        <div class="slide">
+            <h2>Best Practices for Statistical Analysis</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🔍 Data Quality</h3>
+                    <ul>
+                        <li>Check for missing values and outliers</li>
+                        <li>Validate data types and formats</li>
+                        <li>Understand your data distribution</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Exploratory Data Analysis</h3>
+                    <ul>
+                        <li>Start with summary statistics</li>
+                        <li>Create meaningful visualizations</li>
+                        <li>Identify patterns and relationships</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>🧪 Statistical Testing</h3>
+                    <ul>
+                        <li>Choose appropriate tests for your data</li>
+                        <li>Check assumptions before testing</li>
+                        <li>Consider multiple testing corrections</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>📈 Model Validation</h3>
+                    <ul>
+                        <li>Use cross-validation techniques</li>
+                        <li>Test on unseen data</li>
+                        <li>Avoid overfitting</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight">
+                <h3>🎯 Key Recommendations</h3>
+                <p><strong>Documentation:</strong> Always document your analysis process and assumptions.</p>
+                <p><strong>Reproducibility:</strong> Write code that others can understand and reproduce.</p>
+                <p><strong>Interpretation:</strong> Focus on practical significance, not just statistical significance.</p>
+            </div>
+        </div>
+
+        <!-- Slide 12: Conclusion -->
+        <div class="slide">
+            <h2>Conclusion & Next Steps</h2>
+            <div class="two-column">
+                <div class="column">
+                    <h3>🎯 When to Choose R</h3>
+                    <ul>
+                        <li>Academic research and publications</li>
+                        <li>Complex statistical modeling</li>
+                        <li>Advanced data visualization</li>
+                        <li>Specialized statistical packages</li>
+                        <li>Interactive data analysis</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <h3>🐍 When to Choose Python</h3>
+                    <ul>
+                        <li>Production data science systems</li>
+                        <li>Machine learning and AI</li>
+                        <li>Large-scale data processing</li>
+                        <li>Web development integration</li>
+                        <li>Cross-functional teams</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight">
+                <h3>🚀 Learning Path</h3>
+                <p><strong>Beginners:</strong> Start with Python for general data science, then learn R for specialized statistics.</p>
+                <p><strong>Statisticians:</strong> Master R first, then add Python for broader applications.</p>
+                <p><strong>Engineers:</strong> Begin with Python, incorporate R for specific analytical needs.</p>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <h3>Thank You!</h3>
+                <p style="font-size: 1.2rem; color: #7f8c8d;">Questions & Discussion</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (direction === -1 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                changeSlide(1);
+            } else if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
