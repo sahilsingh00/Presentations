@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .presentation-container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        .slide {
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin-bottom: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            z-index: 1;
+        }
+        
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1000px;
+            width: 100%;
+        }
+        
+        .slide:nth-child(even) {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+        
+        .slide:nth-child(3n) {
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+        
+        h2 {
+            font-size: 2.8rem;
+            color: #34495e;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        h3 {
+            font-size: 2rem;
+            color: #2980b9;
+            margin-bottom: 25px;
+        }
+        
+        p, li {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        li {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        li::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 30px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 30px 0;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            overflow-x: auto;
+        }
+        
+        .code-block .comment {
+            color: #95a5a6;
+        }
+        
+        .code-block .keyword {
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .code-block .string {
+            color: #e74c3c;
+        }
+        
+        .code-block .number {
+            color: #f39c12;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .title-slide {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .title-slide h1 {
+            color: white;
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .title-slide p {
+            color: #ecf0f1;
+            font-size: 1.5rem;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .column {
+            padding: 20px;
+        }
+        
+        .data-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .data-type-card {
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .data-type-card h4 {
+            color: #2980b9;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .operator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .operator-card {
+            background: rgba(255,255,255,0.8);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            background: rgba(0,0,0,0.1);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 20px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .code-block {
+                font-size: 0.9rem;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide title-slide">
+            <div class="slide-content">
+                <h1>C Programming Fundamentals</h1>
+                <p>A Comprehensive Guide to Learning C</p>
+                <p style="margin-top: 40px; font-size: 1.2rem;">Master the Foundation of System Programming</p>
+            </div>
+            <div class="slide-number">1</div>
+        </div>
+
+        <!-- Slide 2: What is C? -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>What is C?</h2>
+                <div class="highlight">
+                    <p>C is a general-purpose, procedural programming language developed by Dennis Ritchie at Bell Labs in 1972.</p>
+                </div>
+                <ul>
+                    <li>Low-level programming language with high-level features</li>
+                    <li>Foundation for many modern programming languages</li>
+                    <li>Widely used in system programming and embedded systems</li>
+                    <li>Portable across different platforms</li>
+                    <li>Efficient and fast execution</li>
+                </ul>
+            </div>
+            <div class="slide-number">2</div>
+        </div>
+
+        <!-- Slide 3: Why Learn C? -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Why Learn C?</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li>Understanding of computer fundamentals</li>
+                            <li>Memory management control</li>
+                            <li>Fast execution speed</li>
+                            <li>Extensive standard library</li>
+                            <li>Platform independent</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Applications</h3>
+                        <ul>
+                            <li>Operating Systems (Linux, Windows)</li>
+                            <li>Embedded Systems</li>
+                            <li>Device Drivers</li>
+                            <li>Database Systems</li>
+                            <li>Compilers and Interpreters</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">3</div>
+        </div>
+
+        <!-- Slide 4: Basic Structure -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Basic Structure of a C Program</h2>
+                <div class="code-block">
+<span class="comment">// Include header files</span>
+<span class="keyword">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+
+<span class="comment">// Main function - program execution starts here</span>
+<span class="keyword">int</span> main() {
+    <span class="comment">// Program statements</span>
+    printf(<span class="string">"Hello, World!\n"</span>);
+    
+    <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// Return success status</span>
+}
+                </div>
+                <div class="highlight">
+                    <p><strong>Key Components:</strong> Preprocessor directives, main function, statements, and return value</p>
+                </div>
+            </div>
+            <div class="slide-number">4</div>
+        </div>
+
+        <!-- Slide 5: Data Types -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Data Types in C</h2>
+                <div class="data-types-grid">
+                    <div class="data-type-card">
+                        <h4>int</h4>
+                        <p>Integer numbers<br>Size: 4 bytes<br>Range: -2³¹ to 2³¹-1</p>
+                    </div>
+                    <div class="data-type-card">
+                        <h4>float</h4>
+                        <p>Floating-point numbers<br>Size: 4 bytes<br>Precision: 6 decimal places</p>
+                    </div>
+                    <div class="data-type-card">
+                        <h4>double</h4>
+                        <p>Double precision<br>Size: 8 bytes<br>Precision: 15 decimal places</p>
+                    </div>
+                    <div class="data-type-card">
+                        <h4>char</h4>
+                        <p>Single character<br>Size: 1 byte<br>Range: -128 to 127</p>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="keyword">int</span> age = <span class="number">25</span>;
+<span class="keyword">float</span> height = <span class="number">5.8</span>;
+<span class="keyword">double</span> pi = <span class="number">3.14159265359</span>;
+<span class="keyword">char</span> grade = <span class="string">'A'</span>;
+                </div>
+            </div>
+            <div class="slide-number">5</div>
+        </div>
+
+        <!-- Slide 6: Variables -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Variables and Constants</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Variable Declaration</h3>
+                        <div class="code-block">
+<span class="keyword">int</span> number;
+<span class="keyword">float</span> price = <span class="number">19.99</span>;
+<span class="keyword">char</span> letter;
+<span class="keyword">double</span> result;
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3>Constants</h3>
+                        <div class="code-block">
+<span class="keyword">const int</span> MAX_SIZE = <span class="number">100</span>;
+<span class="keyword">#define</span> PI <span class="number">3.14159</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight">
+                    <p><strong>Rules for Variable Names:</strong> Must start with letter or underscore, can contain letters, digits, and underscores, case-sensitive</p>
+                </div>
+            </div>
+            <div class="slide-number">6</div>
+        </div>
+
+        <!-- Slide 7: Operators -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Operators in C</h2>
+                <div class="operator-grid">
+                    <div class="operator-card">
+                        <h4>Arithmetic</h4>
+                        <p>+, -, *, /, %</p>
+                    </div>
+                    <div class="operator-card">
+                        <h4>Relational</h4>
+                        <p>&lt;, &gt;, &lt;=, &gt;=, ==, !=</p>
+                    </div>
+                    <div class="operator-card">
+                        <h4>Logical</h4>
+                        <p>&amp;&amp;, ||, !</p>
+                    </div>
+                    <div class="operator-card">
+                        <h4>Assignment</h4>
+                        <p>=, +=, -=, *=, /=</p>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="keyword">int</span> a = <span class="number">10</span>, b = <span class="number">20</span>, result;
+
+result = a + b;     <span class="comment">// Addition</span>
+result = a * b;     <span class="comment">// Multiplication</span>
+result = b % a;     <span class="comment">// Modulus</span>
+
+<span class="keyword">if</span> (a &lt; b &amp;&amp; a != <span class="number">0</span>) {
+    printf(<span class="string">"Condition is true"</span>);
+}
+                </div>
+            </div>
+            <div class="slide-number">7</div>
+        </div>
+
+        <!-- Slide 8: Input/Output -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Input/Output Operations</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Output - printf()</h3>
+                        <div class="code-block">
+printf(<span class="string">"Hello World"</span>);
+printf(<span class="string">"Age: %d"</span>, age);
+printf(<span class="string">"Price: %.2f"</span>, price);
+printf(<span class="string">"Grade: %c"</span>, grade);
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3>Input - scanf()</h3>
+                        <div class="code-block">
+<span class="keyword">int</span> num;
+<span class="keyword">float</span> val;
+<span class="keyword">char</span> ch;
+
+scanf(<span class="string">"%d"</span>, &amp;num);
+scanf(<span class="string">"%f"</span>, &amp;val);
+scanf(<span class="string">"%c"</span>, &amp;ch);
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight">
+                    <p><strong>Format Specifiers:</strong> %d (int), %f (float), %c (char), %s (string), %lf (double)</p>
+                </div>
+            </div>
+            <div class="slide-number">8</div>
+        </div>
+
+        <!-- Slide 9: Control Structures - Conditional -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Control Structures - Conditional</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>if-else Statement</h3>
+                        <div class="code-block">
+<span class="keyword">int</span> marks = <span class="number">85</span>;
+
+<span class="keyword">if</span> (marks &gt;= <span class="number">90</span>) {
+    printf(<span class="string">"Grade A"</span>);
+} <span class="keyword">else if</span> (marks &gt;= <span class="number">80</span>) {
+    printf(<span class="string">"Grade B"</span>);
+} <span class="keyword">else</span> {
+    printf(<span class="string">"Grade C"</span>);
+}
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3>switch Statement</h3>
+                        <div class="code-block">
+<span class="keyword">char</span> grade = <span class="string">'B'</span>;
+
+<span class="keyword">switch</span> (grade) {
+    <span class="keyword">case</span> <span class="string">'A'</span>:
+        printf(<span class="string">"Excellent"</span>);
+        <span class="keyword">break</span>;
+    <span class="keyword">case</span> <span class="string">'B'</span>:
+        printf(<span class="string">"Good"</span>);
+        <span class="keyword">break</span>;
+    <span class="keyword">default</span>:
+        printf(<span class="string">"Average"</span>);
+}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">9</div>
+        </div>
+
+        <!-- Slide 10: Control Structures - Loops -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Control Structures - Loops</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>for Loop</h3>
+                        <div class="code-block">
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">10</span>; i++) {
+    printf(<span class="string">"%d "</span>, i);
+}
+                        </div>
+                        <h3>while Loop</h3>
+                        <div class="code-block">
+<span class="keyword">int</span> i = <span class="number">1</span>;
+<span class="keyword">while</span> (i &lt;= <span class="number">5</span>) {
+    printf(<span class="string">"%d "</span>, i);
+    i++;
+}
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h3>do-while Loop</h3>
+                        <div class="code-block">
+<span class="keyword">int</span> i = <span class="number">1</span>;
+<span class="keyword">do</span> {
+    printf(<span class="string">"%d "</span>, i);
+    i++;
+} <span class="keyword">while</span> (i &lt;= <span class="number">5</span>);
+                        </div>
+                        <div class="highlight">
+                            <p><strong>Key Difference:</strong> do-while executes at least once, while for and while may not execute at all</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">10</div>
+        </div>
+
+        <!-- Slide 11: Functions -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Functions</h2>
+                <div class="highlight">
+                    <p>Functions are reusable blocks of code that perform specific tasks</p>
+                </div>
+                <div class="code-block">
+<span class="comment">// Function declaration</span>
+<span class="keyword">int</span> add(<span class="keyword">int</span> a, <span class="keyword">int</span> b);
+
+<span class="comment">// Function definition</span>
+<span class="keyword">int</span> add(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+    <span class="keyword">return</span> a + b;
+}
+
+<span class="comment">// Function call</span>
+<span class="keyword">int</span> main() {
+    <span class="keyword">int</span> result = add(<span class="number">5</span>, <span class="number">3</span>);
+    printf(<span class="string">"Sum: %d"</span>, result);
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+                </div>
+                <ul>
+                    <li>Return type: Data type of value returned</li>
+                    <li>Parameters: Input values passed to function</li>
+                    <li>Function body: Code that executes when called</li>
+                </ul>
+            </div>
+            <div class="slide-number">11</div>
+        </div>
+
+        <!-- Slide 12: Arrays -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Arrays</h2>
+                <div class="highlight">
+                    <p>Arrays store multiple values of the same data type in contiguous memory locations</p>
+                </div>
+                <div class="code-block">
+<span class="comment">// Array declaration and initialization</span>
+<span class="keyword">int</span> numbers[<span class="number">5</span>] = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
+<span class="keyword">char</span> name[<span class="number">20</span>] = <span class="string">"John"</span>;
+
+<span class="comment">// Accessing array elements</span>
+printf(<span class="string">"First number: %d"</span>, numbers[<span class="number">0</span>]);
+numbers[<span class="number">2</span>] = <span class="number">10</span>; <span class="comment">// Modifying element</span>
+
+<span class="comment">// Loop through array</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) {
+    printf(<span class="string">"%d "</span>, numbers[i]);
+}
+                </div>
+                <ul>
+                    <li>Array indexing starts from 0</li>
+                    <li>Array size must be specified at declaration</li>
+                    <li>Elements are accessed using square brackets</li>
+                </ul>
+            </div>
+            <div class="slide-number">12</div>
+        </div>
+
+        <!-- Slide 13: Strings -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Strings</h2>
+                <div class="highlight">
+                    <p>Strings are arrays of characters terminated by null character ('\0')</p>
+                </div>
+                <div class="code-block">
+<span class="comment">// String declaration methods</span>
+<span class="keyword">char</span> str1[<span class="number">20</span>] = <span class="string">"Hello"</span>;
+<span class="keyword">char</span> str2[] = <span class="string">"World"</span>;
+<span class="keyword">char</span> str3[<span class="number">10</span>];
+
+<span class="comment">// String input/output</span>
+printf(<span class="string">"Enter name: "</span>);
+scanf(<span class="string">"%s"</span>, str3);
+printf(<span class="string">"Hello, %s!"</span>, str3);
+
+<span class="comment">// String functions (need #include &lt;string.h&gt;)</span>
+strlen(str1);           <span class="comment">// Length of string</span>
+strcpy(str3, str1);     <span class="comment">// Copy string</span>
+strcat(str1, str2);     <span class="comment">// Concatenate strings</span>
+strcmp(str1, str2);     <span class="comment">// Compare strings</span>
+                </div>
+            </div>
+            <div class="slide-number">13</div>
+        </div>
+
+        <!-- Slide 14: Pointers -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Pointers</h2>
+                <div class="highlight">
+                    <p>Pointers store memory addresses of variables</p>
+                </div>
+                <div class="code-block">
+<span class="keyword">int</span> num = <span class="number">25</span>;
+<span class="keyword">int</span> *ptr;           <span class="comment">// Declare pointer</span>
+
+ptr = &amp;num;         <span class="comment">// Store address of num</span>
+
+printf(<span class="string">"Value: %d"</span>, num);        <span class="comment">// Prints: 25</span>
+printf(<span class="string">"Address: %p"</span>, &amp;num);    <span class="comment">// Address of num</span>
+printf(<span class="string">"Pointer: %p"</span>, ptr);     <span class="comment">// Same address</span>
+printf(<span class="string">"Value via pointer: %d"</span>, *ptr); <span class="comment">// Prints: 25</span>
+
+*ptr = <span class="number">30</span>;          <span class="comment">// Change value through pointer</span>
+printf(<span class="string">"New value: %d"</span>, num);   <span class="comment">// Prints: 30</span>
+                </div>
+                <ul>
+                    <li>& operator: Address-of operator</li>
+                    <li>* operator: Dereference operator</li>
+                    <li>Pointers enable dynamic memory allocation</li>
+                </ul>
+            </div>
+            <div class="slide-number">14</div>
+        </div>
+
+        <!-- Slide 15: Structures -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Structures</h2>
+                <div class="highlight">
+                    <p>Structures group related data of different types together</p>
+                </div>
+                <div class="code-block">
+<span class="comment">// Structure definition</span>
+<span class="keyword">struct</span> Student {
+    <span class="keyword">int</span> id;
+    <span class="keyword">char</span> name[<span class="number">50</span>];
+    <span class="keyword">float</span> marks;
+};
+
+<span class="comment">// Structure variable declaration</span>
+<span class="keyword">struct</span> Student s1;
+<span class="keyword">struct</span> Student s2 = {<span class="number">101</span>, <span class="string">"Alice"</span>, <span class="number">95.5</span>};
+
+<span class="comment">// Accessing structure members</span>
+s1.id = <span class="number">102</span>;
+strcpy(s1.name, <span class="string">"Bob"</span>);
+s1.marks = <span class="number">87.0</span>;
+
+printf(<span class="string">"Student: %s, ID: %d, Marks: %.1f"</span>, 
+       s1.name, s1.id, s1.marks);
+                </div>
+            </div>
+            <div class="slide-number">15</div>
+        </div>
+
+        <!-- Slide 16: File Handling -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>File Handling</h2>
+                <div class="highlight">
+                    <p>C provides functions to read from and write to files</p>
+                </div>
+                <div class="code-block">
+<span class="comment">// File operations</span>
+FILE *file;
+
+<span class="comment">// Writing to file</span>
+file = fopen(<span class="string">"data.txt"</span>, <span class="string">"w"</span>);
+<span class="keyword">if</span> (file != NULL) {
+    fprintf(file, <span class="string">"Hello, File!"</span>);
+    fclose(file);
+}
+
+<span class="comment">// Reading from file</span>
+file = fopen(<span class="string">"data.txt"</span>, <span class="string">"r"</span>);
+<span class="keyword">if</span> (file != NULL) {
+    <span class="keyword">char</span> buffer[<span class="number">100</span>];
+    fgets(buffer, <span class="number">100</span>, file);
+    printf(<span class="string">"File content: %s"</span>, buffer);
+    fclose(file);
+}
+                </div>
+                <ul>
+                    <li>File modes: "r" (read), "w" (write), "a" (append)</li>
+                    <li>Always check if file opened successfully</li>
+                    <li>Remember to close files after use</li>
+                </ul>
+            </div>
+            <div class="slide-number">16</div>
+        </div>
+
+        <!-- Slide 17: Memory Management -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Dynamic Memory Management</h2>
+                <div class="highlight">
+                    <p>C provides functions for runtime memory allocation and deallocation</p>
+                </div>
+                <div class="code-block">
+<span class="comment">// Include stdlib.h for memory functions</span>
+<span class="keyword">#include</span> <span class="string">&lt;stdlib.h&gt;</span>
+
+<span class="comment">// Dynamic memory allocation</span>
+<span class="keyword">int</span> *ptr = (<span class="keyword">int</span>*)malloc(<span class="number">5</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));
+
+<span class="keyword">if</span> (ptr != NULL) {
+    <span class="comment">// Use allocated memory</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) {
+        ptr[i] = i + <span class="number">1</span>;
+    }
+    
+    <span class="comment">// Free allocated memory</span>
+    free(ptr);
+    ptr = NULL;
+}
+
+<span class="comment">// Other memory functions</span>
+<span class="keyword">int</span> *arr = (<span class="keyword">int</span>*)calloc(<span class="number">10</span>, <span class="keyword">sizeof</span>(<span class="keyword">int</span>)); <span class="comment">// Initialized to 0</span>
+arr = (<span class="keyword">int</span>*)realloc(arr, <span class="number">20</span> * <span class="keyword">sizeof</span>(<span class="keyword">int</span>)); <span class="comment">// Resize</span>
+                </div>
+            </div>
+            <div class="slide-number">17</div>
+        </div>
+
+        <!-- Slide 18: Preprocessor Directives -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Preprocessor Directives</h2>
+                <div class="highlight">
+                    <p>Preprocessor directives are processed before compilation begins</p>
+                </div>
+                <div class="code-block">
+<span class="comment">// Header file inclusion</span>
+<span class="keyword">#include</span> <span class="string">&lt;stdio.h&gt;</span>     <span class="comment">// System header</span>
+<span class="keyword">#include</span> <span class="string">"myheader.h"</span>  <span class="comment">// User-defined header</span>
+
+<span class="comment">// Macro definitions</span>
+<span class="keyword">#define</span> PI <span class="number">3.14159</span>
+<span class="keyword">#define</span> MAX(a,b) ((a) &gt; (b) ? (a) : (b))
+
+<span class="comment">// Conditional compilation</span>
+<span class="keyword">#ifdef</span> DEBUG
+    printf(<span class="string">"Debug mode enabled"</span>);
+<span class="keyword">#endif</span>
+
+<span class="comment">// Usage</span>
+<span class="keyword">double</span> area = PI * radius * radius;
+<span class="keyword">int</span> maximum = MAX(<span class="number">10</span>, <span class="number">20</span>);
+                </div>
+                <ul>
+                    <li>#include: Include header files</li>
+                    <li>#define: Define macros and constants</li>
+                    <li>#ifdef, #ifndef: Conditional compilation</li>
+                </ul>
+            </div>
+            <div class="slide-number">18</div>
+        </div>
+
+        <!-- Slide 19: Common Programming Practices -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Best Programming Practices</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Code Organization</h3>
+                        <ul>
+                            <li>Use meaningful variable names</li>
+                            <li>Add comments to explain complex logic</li>
+                            <li>Indent code properly</li>
+                            <li>Break large functions into smaller ones</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Error Handling</h3>
+                        <ul>
+                            <li>Check return values of functions</li>
+                            <li>Validate input data</li>
+                            <li>Handle file operations carefully</li>
+                            <li>Free dynamically allocated memory</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="comment">// Good practice example</span>
+<span class="keyword">int</span> calculateArea(<span class="keyword">int</span> length, <span class="keyword">int</span> width) {
+    <span class="comment">// Input validation</span>
+    <span class="keyword">if</span> (length &lt;= <span class="number">0</span> || width &lt;= <span class="number">0</span>) {
+        printf(<span class="string">"Error: Invalid dimensions"</span>);
+        <span class="keyword">return</span> -<span class="number">1</span>;
+    }
+    
+    <span class="keyword">return</span> length * width;
+}
+                </div>
+            </div>
+            <div class="slide-number">19</div>
+        </div>
+
+        <!-- Slide 20: Sample Program -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Complete Sample Program</h2>
+                <div class="highlight">
+                    <p>A simple program to manage student records</p>
+                </div>
+                <div class="code-block">
+<span class="keyword">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+<span class="keyword">#include</span> <span class="string">&lt;string.h&gt;</span>
+
+<span class="keyword">struct</span> Student {
+    <span class="keyword">int</span> id;
+    <span class="keyword">char</span> name[<span class="number">50</span>];
+    <span class="keyword">float</span> marks;
+};
+
+<span class="keyword">void</span> displayStudent(<span class="keyword">struct</span> Student s) {
+    printf(<span class="string">"ID: %d, Name: %s, Marks: %.2f\n"</span>, 
+           s.id, s.name, s.marks);
+}
+
+<span class="keyword">int</span> main() {
+    <span class="keyword">struct</span> Student students[<span class="number">3</span>];
+    
+    <span class="comment">// Input student data</span>
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) {
+        printf(<span class="string">"Enter student %d details:\n"</span>, i+<span class="number">1</span>);
+        printf(<span class="string">"ID: "</span>);
+        scanf(<span class="string">"%d"</span>, &amp;students[i].id);
+        printf(<span class="string">"Name: "</span>);
+        scanf(<span class="string">"%s"</span>, students[i].name);
+        printf(<span class="string">"Marks: "</span>);
+        scanf(<span class="string">"%f"</span>, &amp;students[i].marks);
+    }
+    
+    <span class="comment">// Display all students</span>
+    printf(<span class="string">"\nStudent Records:\n"</span>);
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) {
+        displayStudent(students[i]);
+    }
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+                </div>
+            </div>
+            <div class="slide-number">20</div>
+        </div>
+
+        <!-- Slide 21: Compilation Process -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>C Program Compilation</h2>
+                <div class="highlight">
+                    <p>Understanding how C programs are converted to executable files</p>
+                </div>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Compilation Steps</h3>
+                        <ul>
+                            <li><strong>Preprocessing:</strong> Handle directives (#include, #define)</li>
+                            <li><strong>Compilation:</strong> Convert to assembly language</li>
+                            <li><strong>Assembly:</strong> Convert to machine code</li>
+                            <li><strong>Linking:</strong> Combine with libraries</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>GCC Commands</h3>
+                        <div class="code-block">
+<span class="comment"># Compile and run</span>
+gcc program.c -o program
+./program
+
+<span class="comment"># Compile with warnings</span>
+gcc -Wall program.c -o program
+
+<span class="comment"># Debug version</span>
+gcc -g program.c -o program
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-number">21</div>
+        </div>
+
+        <!-- Slide 22: Common Errors -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Common Programming Errors</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Syntax Errors</h3>
+                        <ul>
+                            <li>Missing semicolons</li>
+                            <li>Unmatched braces</li>
+                            <li>Incorrect variable declarations</li>
+                            <li>Typos in keywords</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Runtime Errors</h3>
+                        <ul>
+                            <li>Array index out of bounds</li>
+                            <li>Division by zero</li>
+                            <li>Memory leaks</li>
+                            <li>Null pointer dereference</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="code-block">
+<span class="comment">// Common error examples</span>
+<span class="keyword">int</span> arr[<span class="number">5</span>];
+arr[<span class="number">10</span>] = <span class="number">5</span>;        <span class="comment">// Array bounds error</span>
+
+<span class="keyword">int</span> *ptr = NULL;
+*ptr = <span class="number">10</span>;          <span class="comment">// Null pointer dereference</span>
+
+<span class="keyword">int</span> result = <span class="number">10</span> / <span class="number">0</span>;  <span class="comment">// Division by zero</span>
+                </div>
+            </div>
+            <div class="slide-number">22</div>
+        </div>
+
+        <!-- Slide 23: Debugging Tips -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Debugging Techniques</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Debug Methods</h3>
+                        <ul>
+                            <li>Use printf() for output debugging</li>
+                            <li>Use debugger tools (gdb)</li>
+                            <li>Add assertions for validation</li>
+                            <li>Code review and testing</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Debug Example</h3>
+                        <div class="code-block">
+<span class="keyword">#include</span> <span class="string">&lt;assert.h&gt;</span>
+
+<span class="keyword">int</span> divide(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+    printf(<span class="string">"Debug: a=%d, b=%d\n"</span>, a, b);
+    
+    <span class="comment">// Assert to check condition</span>
+    assert(b != <span class="number">0</span>);
+    
+    <span class="keyword">return</span> a / b;
+}
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight">
+                    <p><strong>Debugging Tools:</strong> GDB debugger, Valgrind for memory errors, Static analysis tools</p>
+                </div>
+            </div>
+            <div class="slide-number">23</div>
+        </div>
+
+        <!-- Slide 24: Next Steps -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>Next Steps in C Programming</h2>
+                <div class="two-column">
+                    <div class="column">
+                        <h3>Advanced Topics</h3>
+                        <ul>
+                            <li>Advanced pointer concepts</li>
+                            <li>Function pointers</li>
+                            <li>Linked lists and data structures</li>
+                            <li>Multi-dimensional arrays</li>
+                            <li>Bitwise operations</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <h3>Practical Applications</h3>
+                        <ul>
+                            <li>System programming</li>
+                            <li>Embedded systems development</li>
+                            <li>Game development</li>
+                            <li>Algorithm implementation</li>
+                            <li>Database systems</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="highlight">
+                    <p><strong>Practice Resources:</strong> Online coding platforms, Programming contests, Open source projects</p>
+                </div>
+            </div>
+            <div class="slide-number">24</div>
+        </div>
+
+        <!-- Slide 25: Conclusion -->
+        <div class="slide title-slide">
+            <div class="slide-content">
+                <h1>Thank You!</h1>
+                <p>You've completed the C Programming Fundamentals</p>
+                <div style="margin-top: 40px;">
+                    <p style="font-size: 1.2rem;">Key Takeaways:</p>
+                    <ul style="text-align: left; font-size: 1.1rem; margin-top: 20px;">
+                        <li>C is a powerful, efficient programming language</li>
+                        <li>Understanding basics is crucial for advanced programming</li>
+                        <li>Practice regularly to master the concepts</li>
+                        <li>Apply good programming practices from the beginning</li>
+                    </ul>
+                </div>
+                <p style="margin-top: 40px; font-size: 1.2rem;">Happy Coding! 🚀</p>
+            </div>
+            <div class="slide-number">25</div>
+        </div>
+    </div>
+</body>
+</html>
