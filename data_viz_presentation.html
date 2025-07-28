@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Visualization - Power BI & Tableau</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .slide {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 30px 0;
+            padding: 60px;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .slide:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+        }
+
+        h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            font-weight: 600;
+            margin-bottom: 40px;
+            color: #2c3e50;
+            text-align: center;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+
+        p, li {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #4ecdc4;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(78, 205, 196, 0.1));
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-left-color: #ff6b6b;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 1.1em;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #e3f2fd;
+            transition: background-color 0.3s ease;
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .chart-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .chart-type {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .chart-type:hover {
+            border-color: #4ecdc4;
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .steps {
+            counter-reset: step-counter;
+            margin-top: 30px;
+        }
+
+        .step {
+            counter-increment: step-counter;
+            position: relative;
+            padding: 25px 25px 25px 80px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            border-left: 5px solid #4ecdc4;
+        }
+
+        .step::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-left: 5px solid #2196f3;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '💡';
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 24px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            margin: 5px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(0,0,0,0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 30px;
+                margin: 20px 0;
+            }
+            
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 2em; }
+            .two-column { grid-template-columns: 1fr; gap: 30px; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .chart-types { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title Slide -->
+        <div class="slide" id="slide1">
+            <div class="slide-counter">1/9</div>
+            <h1>Data Visualization</h1>
+            <p class="subtitle">Mastering Power BI & Tableau for Effective Data Storytelling</p>
+            <div style="text-align: center; margin-top: 60px;">
+                <div style="display: inline-block; margin: 0 30px;">
+                    <div class="icon">📊</div>
+                    <h3>Charts & Graphs</h3>
+                </div>
+                <div style="display: inline-block; margin: 0 30px;">
+                    <div class="icon">📈</div>
+                    <h3>Dashboards</h3>
+                </div>
+                <div style="display: inline-block; margin: 0 30px;">
+                    <div class="icon">🎯</div>
+                    <h3>Insights</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: What is Data Visualization -->
+        <div class="slide" id="slide2">
+            <div class="slide-counter">2/9</div>
+            <h2>What is Data Visualization?</h2>
+            <div class="two-column">
+                <div>
+                    <p>Data visualization is the graphical representation of information and data. It uses visual elements like charts, graphs, and maps to provide an accessible way to see and understand trends, outliers, and patterns in data.</p>
+                    
+                    <h3>Why It Matters:</h3>
+                    <p>• <strong>Quick Understanding:</strong> Visual data is processed 60,000x faster than text</p>
+                    <p>• <strong>Pattern Recognition:</strong> Easily spot trends and correlations</p>
+                    <p>• <strong>Decision Making:</strong> Transform data into actionable insights</p>
+                    <p>• <strong>Communication:</strong> Tell compelling stories with data</p>
+                </div>
+                <div>
+                    <div class="highlight-box">
+                        <h3>Key Benefits</h3>
+                        <p>✓ Improved comprehension and retention</p>
+                        <p>✓ Faster decision-making processes</p>
+                        <p>✓ Enhanced presentation impact</p>
+                        <p>✓ Better stakeholder engagement</p>
+                        <p>✓ Identification of business opportunities</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Introduction to Power BI -->
+        <div class="slide" id="slide3">
+            <div class="slide-counter">3/9</div>
+            <h2>Microsoft Power BI</h2>
+            <p class="subtitle">Business Intelligence Made Simple</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🔗 Data Connectivity</h3>
+                    <p>Connect to 100+ data sources including Excel, SQL Server, cloud services, and web APIs</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎨 Visual Creation</h3>
+                    <p>Drag-and-drop interface with 30+ built-in visualizations and custom visuals marketplace</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📱 Mobile Ready</h3>
+                    <p>Native mobile apps for iOS, Android, and Windows with offline capabilities</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🤝 Collaboration</h3>
+                    <p>Share dashboards, create workspaces, and collaborate in real-time</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔒 Enterprise Security</h3>
+                    <p>Row-level security, encryption, and Azure AD integration</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💰 Cost-Effective</h3>
+                    <p>Affordable pricing starting at $10/user/month with free tier available</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Introduction to Tableau -->
+        <div class="slide" id="slide4">
+            <div class="slide-counter">4/9</div>
+            <h2>Tableau</h2>
+            <p class="subtitle">See and Understand Your Data</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🎯 Advanced Analytics</h3>
+                    <p>Statistical functions, forecasting, clustering, and advanced calculations</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎨 Flexible Design</h3>
+                    <p>Pixel-perfect control over visualization design and layout</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚡ Performance</h3>
+                    <p>In-memory data engine for lightning-fast queries on large datasets</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🌐 Data Preparation</h3>
+                    <p>Built-in data preparation tools with Tableau Prep</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Interactive Dashboards</h3>
+                    <p>Highly interactive dashboards with actions, filters, and parameters</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎓 Learning Resources</h3>
+                    <p>Extensive training materials, community forums, and certification programs</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Power BI vs Tableau Comparison -->
+        <div class="slide" id="slide5">
+            <div class="slide-counter">5/9</div>
+            <h2>Power BI vs Tableau</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Power BI</th>
+                        <th>Tableau</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ease of Use</strong></td>
+                        <td>Very User-Friendly</td>
+                        <td>Steeper Learning Curve</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost</strong></td>
+                        <td>$10-20/user/month</td>
+                        <td>$70-840/user/month</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Sources</strong></td>
+                        <td>100+ Connectors</td>
+                        <td>250+ Connectors</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Visualization Types</strong></td>
+                        <td>30+ Built-in</td>
+                        <td>24+ Built-in (More Flexible)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Good (Improving)</td>
+                        <td>Excellent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Best For</strong></td>
+                        <td>Microsoft Ecosystem</td>
+                        <td>Advanced Analytics</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 6: Types of Charts and Graphs -->
+        <div class="slide" id="slide6">
+            <div class="slide-counter">6/9</div>
+            <h2>Types of Charts & Graphs</h2>
+            
+            <div class="chart-types">
+                <div class="chart-type">
+                    <h3>📊 Bar Charts</h3>
+                    <p>Compare categories or show changes over time</p>
+                </div>
+                <div class="chart-type">
+                    <h3>📈 Line Charts</h3>
+                    <p>Show trends and changes over time periods</p>
+                </div>
+                <div class="chart-type">
+                    <h3>🥧 Pie Charts</h3>
+                    <p>Display parts of a whole (use sparingly)</p>
+                </div>
+                <div class="chart-type">
+                    <h3>📉 Area Charts</h3>
+                    <p>Show cumulative totals and trends</p>
+                </div>
+                <div class="chart-type">
+                    <h3>🗺️ Maps</h3>
+                    <p>Geographic data visualization</p>
+                </div>
+                <div class="chart-type">
+                    <h3>🌡️ Heatmaps</h3>
+                    <p>Show data density and patterns</p>
+                </div>
+                <div class="chart-type">
+                    <h3>📊 Scatter Plots</h3>
+                    <p>Show relationships between variables</p>
+                </div>
+                <div class="chart-type">
+                    <h3>📋 Tables</h3>
+                    <p>Display detailed data with precise values</p>
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>Choosing the Right Chart</h3>
+                <p>The key to effective visualization is selecting the right chart type for your data story. Consider your audience, data type, and the message you want to convey.</p>
+            </div>
+        </div>
+
+        <!-- Slide 7: Creating Effective Dashboards -->
+        <div class="slide" id="slide7">
+            <div class="slide-counter">7/9</div>
+            <h2>Creating Effective Dashboards</h2>
+            
+            <div class="steps">
+                <div class="step">
+                    <h3>Define Your Audience & Goals</h3>
+                    <p>Understand who will use the dashboard and what decisions they need to make. This drives all design choices.</p>
+                </div>
+                <div class="step">
+                    <h3>Choose Key Metrics (KPIs)</h3>
+                    <p>Focus on 5-9 key metrics that matter most. Too many metrics create confusion and decision paralysis.</p>
+                </div>
+                <div class="step">
+                    <h3>Design for Hierarchy</h3>
+                    <p>Use size, color, and position to guide the eye. Most important information should be top-left.</p>
+                </div>
+                <div class="step">
+                    <h3>Enable Interactivity</h3>
+                    <p>Add filters, drill-downs, and cross-filtering to let users explore data on their own.</p>
+                </div>
+                <div class="step">
+                    <h3>Test & Iterate</h3>
+                    <p>Get feedback from actual users and continuously improve based on their needs and usage patterns.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Best Practices -->
+        <div class="slide" id="slide8">
+            <div class="slide-counter">8/9</div>
+            <h2>Best Practices</h2>
+            
+            <div class="two-column">
+                <div>
+                    <h3>✅ Do's</h3>
+                    <div class="feature-card">
+                        <p>• Keep it simple and focused</p>
+                        <p>• Use consistent colors and fonts</p>
+                        <p>• Label axes and provide context</p>
+                        <p>• Use white space effectively</p>
+                        <p>• Make it mobile-friendly</p>
+                        <p>• Test with real users</p>
+                        <p>• Update data regularly</p>
+                        <p>• Tell a clear story</p>
+                    </div>
+                </div>
+                <div>
+                    <h3>❌ Don'ts</h3>
+                    <div class="feature-card">
+                        <p>• Don't use too many colors</p>
+                        <p>• Avoid 3D effects and chartjunk</p>
+                        <p>• Don't truncate y-axis misleadingly</p>
+                        <p>• Avoid pie charts for comparisons</p>
+                        <p>• Don't overcrowd with data</p>
+                        <p>• Skip unnecessary animations</p>
+                        <p>• Don't use default color schemes</p>
+                        <p>• Avoid dual y-axes unless necessary</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="highlight-box" style="margin-top: 40px;">
+                <h3>Remember: Less is More</h3>
+                <p>The best visualizations are often the simplest ones. Your goal is to make complex data easy to understand, not to showcase every feature of your visualization tool.</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Thank You -->
+        <div class="slide" id="slide9">
+            <div class="slide-counter">9/9</div>
+            <div style="text-align: center; margin-top: 100px;">
+                <h1>Thank You!</h1>
+                <p class="subtitle">Questions & Discussion</p>
+                
+                <div style="margin-top: 80px;">
+                    <div style="display: inline-block; margin: 0 30px;">
+                        <div class="icon">💡</div>
+                        <h3>Start Exploring</h3>
+                        <p>Try Power BI Desktop (Free)</p>
+                    </div>
+                    <div style="display: inline-block; margin: 0 30px;">
+                        <div class="icon">📚</div>
+                        <h3>Keep Learning</h3>
+                        <p>Practice with real datasets</p>
+                    </div>
+                    <div style="display: inline-block; margin: 0 30px;">
+                        <div class="icon">🤝</div>
+                        <h3>Join Communities</h3>
+                        <p>Connect with other analysts</p>
+                    </div>
+                </div>
+                
+                <div class="highlight-box" style="margin-top: 60px;">
+                    <p style="font-size: 1.3em; margin: 0;"><strong>Remember:</strong> Great visualization is about turning data into insights, and insights into action!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">← Previous</button>
+        <button class="nav-btn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 9;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            if (n > totalSlides) currentSlide = 1;
+            if (n < 1) currentSlide = totalSlides;
+            
+            slides.forEach((slide, index) => {
+                slide.style.display = (index + 1 === currentSlide) ? 'block' : 'none';
+            });
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function previousSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Initialize - show first slide
+        showSlide(1);
+
+        // Add smooth scrolling for better mobile experience
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.addEventListener('click', function(e) {
+                if (e.target === slide) {
+                    nextSlide();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
