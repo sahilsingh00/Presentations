@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incite AI Pricing</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .post-container {
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .post-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tagline {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .pricing-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .plan {
+            flex: 1;
+            padding: 20px 15px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .plan:hover {
+            transform: translateY(-5px);
+        }
+        
+        .free-plan {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .pro-plan {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            position: relative;
+        }
+        
+        .pro-plan::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff6b6b;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 8px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        
+        .plan-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .plan-price {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .plan-features {
+            font-size: 10px;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+        
+        .key-benefits {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .benefits-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .benefits-list {
+            font-size: 10px;
+            color: #34495e;
+            line-height: 1.5;
+        }
+        
+        .cta {
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .cta-text {
+            font-size: 12px;
+            color: #2c3e50;
+            font-weight: 600;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .floating-chart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-chart:nth-child(1) {
+            top: 10%;
+            left: 85%;
+            animation-delay: 0s;
+        }
+        
+        .floating-chart:nth-child(2) {
+            top: 60%;
+            left: 5%;
+            animation-delay: 2s;
+        }
+        
+        .floating-chart:nth-child(3) {
+            top: 80%;
+            right: 10%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @media (max-width: 480px) {
+            .post-container {
+                width: 350px;
+                height: 350px;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="post-container">
+        <div class="floating-elements">
+            <div class="floating-chart"></div>
+            <div class="floating-chart"></div>
+            <div class="floating-chart"></div>
+        </div>
+        
+        <div class="header">
+            <div class="logo">INCITE AI</div>
+            <div class="tagline">Real-Time Investment Intelligence</div>
+        </div>
+        
+        <div class="pricing-section">
+            <div class="plan free-plan">
+                <div class="plan-name">FREE</div>
+                <div class="plan-price">$0</div>
+                <div class="plan-features">
+                    Limited daily chats<br>
+                    Basic stock analysis<br>
+                    Real-time data
+                </div>
+            </div>
+            
+            <div class="plan pro-plan">
+                <div class="plan-name">PRO</div>
+                <div class="plan-price">$15.99</div>
+                <div class="plan-features">
+                    Unlimited access<br>
+                    50k+ data points<br>
+                    Advanced analytics
+                </div>
+            </div>
+        </div>
+        
+        <div class="key-benefits">
+            <div class="benefits-title">🚀 PRO FEATURES</div>
+            <div class="benefits-list">
+                ✓ Semi-autonomous watchlist<br>
+                ✓ Real-time visuals & charts<br>
+                ✓ Premium data sources<br>
+                ✓ Early access to new features
+            </div>
+        </div>
+        
+        <div class="cta">
+            <div class="cta-text">START YOUR INVESTMENT JOURNEY TODAY</div>
+        </div>
+    </div>
+</body>
+</html>
