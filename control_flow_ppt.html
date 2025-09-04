@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Flow in Programming</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .presentation-container {
+            max-width: 900px;
+            width: 90%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            padding: 40px;
+            min-height: 600px;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #34495e;
+            font-size: 2em;
+            margin-bottom: 25px;
+            text-align: center;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border-left: 4px solid #3498db;
+        }
+
+        .example {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #27ae60;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .nav-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .nav-button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .slide-counter {
+            background: #34495e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        li:before {
+            content: "▶";
+            color: #3498db;
+            position: absolute;
+            left: 0;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #27ae60;
+        }
+
+        .title-slide {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-slide h1 {
+            color: white;
+            font-size: 3em;
+            border: none;
+            margin-bottom: 30px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Title Slide -->
+        <div class="slide active title-slide">
+            <h1>Control Flow in Programming</h1>
+            <div class="subtitle">Statements, Blocks, Conditionals, Loops, and Flow Control</div>
+            <div class="highlight" style="background: rgba(255,255,255,0.1); color: white;">
+                <p>Master the fundamental building blocks of program logic and execution flow</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Statements and Blocks -->
+        <div class="slide">
+            <h2>Statements and Blocks</h2>
+            <div class="example">
+                <strong>Statement:</strong> A single line of code that performs an action
+            </div>
+            <div class="code-block">
+int x = 10;          // Declaration statement
+x = x + 5;           // Assignment statement
+printf("Hello");     // Function call statement</div>
+            
+            <div class="example">
+                <strong>Block:</strong> A group of statements enclosed in curly braces { }
+            </div>
+            <div class="code-block">
+{
+    int a = 5;
+    int b = 10;
+    int sum = a + b;
+    printf("Sum: %d", sum);
+}</div>
+            <div class="highlight">
+                <strong>Key Point:</strong> Blocks create scope - variables declared inside are only accessible within that block.
+            </div>
+        </div>
+
+        <!-- Slide 3: if-else Statements -->
+        <div class="slide">
+            <h2>if-else Statements</h2>
+            <div class="example">
+                <strong>Basic if statement:</strong> Execute code only if condition is true
+            </div>
+            <div class="code-block">
+int age = 18;
+if (age >= 18) {
+    printf("You are eligible to vote");
+}</div>
+            
+            <div class="example">
+                <strong>if-else statement:</strong> Execute different code based on condition
+            </div>
+            <div class="code-block">
+int score = 85;
+if (score >= 60) {
+    printf("Passed");
+} else {
+    printf("Failed");
+}</div>
+        </div>
+
+        <!-- Slide 4: else-if and switch -->
+        <div class="slide">
+            <h2>else-if and switch Statements</h2>
+            <div class="example">
+                <strong>else-if ladder:</strong> Multiple conditions in sequence
+            </div>
+            <div class="code-block">
+int marks = 85;
+if (marks >= 90) {
+    printf("Grade A");
+} else if (marks >= 80) {
+    printf("Grade B");
+} else if (marks >= 70) {
+    printf("Grade C");
+} else {
+    printf("Grade D");
+}</div>
+            
+            <div class="example">
+                <strong>switch statement:</strong> Multiple choices based on a single variable
+            </div>
+            <div class="code-block">
+char grade = 'B';
+switch(grade) {
+    case 'A': printf("Excellent"); break;
+    case 'B': printf("Good"); break;
+    case 'C': printf("Average"); break;
+    default: printf("Invalid grade");
+}</div>
+        </div>
+
+        <!-- Slide 5: while and for Loops -->
+        <div class="slide">
+            <h2>while and for Loops</h2>
+            <div class="example">
+                <strong>while loop:</strong> Repeats while condition is true
+            </div>
+            <div class="code-block">
+int i = 1;
+while (i <= 5) {
+    printf("%d ", i);
+    i++;
+}
+// Output: 1 2 3 4 5</div>
+            
+            <div class="example">
+                <strong>for loop:</strong> Compact loop with initialization, condition, and increment
+            </div>
+            <div class="code-block">
+for (int i = 1; i <= 5; i++) {
+    printf("%d ", i);
+}
+// Output: 1 2 3 4 5</div>
+            
+            <div class="highlight">
+                <strong>Use for loop when:</strong> You know the exact number of iterations<br>
+                <strong>Use while loop when:</strong> The number of iterations depends on a condition
+            </div>
+        </div>
+
+        <!-- Slide 6: do-while Loop -->
+        <div class="slide">
+            <h2>do-while Loop</h2>
+            <div class="example">
+                <strong>do-while loop:</strong> Executes at least once, then checks condition
+            </div>
+            <div class="code-block">
+int num;
+do {
+    printf("Enter a positive number: ");
+    scanf("%d", &num);
+    if (num <= 0) {
+        printf("Invalid input!\n");
+    }
+} while (num <= 0);</div>
+            
+            <div class="highlight">
+                <strong>Key Difference:</strong>
+                <ul>
+                    <li><strong>while loop:</strong> Checks condition first, may not execute at all</li>
+                    <li><strong>do-while loop:</strong> Executes first, then checks condition</li>
+                </ul>
+            </div>
+            
+            <div class="example">
+                <strong>Perfect for:</strong> Input validation, menu systems, game loops
+            </div>
+        </div>
+
+        <!-- Slide 7: break and continue -->
+        <div class="slide">
+            <h2>break and continue Statements</h2>
+            <div class="example">
+                <strong>break:</strong> Exits the current loop immediately
+            </div>
+            <div class="code-block">
+for (int i = 1; i <= 10; i++) {
+    if (i == 5) {
+        break;  // Exit loop when i equals 5
+    }
+    printf("%d ", i);
+}
+// Output: 1 2 3 4</div>
+            
+            <div class="example">
+                <strong>continue:</strong> Skips current iteration, continues with next
+            </div>
+            <div class="code-block">
+for (int i = 1; i <= 5; i++) {
+    if (i == 3) {
+        continue;  // Skip when i equals 3
+    }
+    printf("%d ", i);
+}
+// Output: 1 2 4 5</div>
+            
+            <div class="highlight">
+                <strong>Remember:</strong> break exits the loop, continue skips to next iteration
+            </div>
+        </div>
+
+        <!-- Slide 8: goto and Labels -->
+        <div class="slide">
+            <h2>goto and Labels</h2>
+            <div class="example">
+                <strong>goto statement:</strong> Jumps to a labeled statement (use sparingly!)
+            </div>
+            <div class="code-block">
+#include <stdio.h>
+
+int main() {
+    int choice;
+    
+    menu:
+    printf("1. Add\n2. Subtract\n3. Exit\n");
+    printf("Enter choice: ");
+    scanf("%d", &choice);
+    
+    if (choice == 1) {
+        printf("Addition selected\n");
+        goto menu;
+    } else if (choice == 2) {
+        printf("Subtraction selected\n");
+        goto menu;
+    } else if (choice == 3) {
+        printf("Goodbye!\n");
+        goto end;
+    } else {
+        printf("Invalid choice!\n");
+        goto menu;
+    }
+    
+    end:
+    return 0;
+}</div>
+            
+            <div class="highlight" style="background: #ffe6e6; border-left-color: #e74c3c;">
+                <strong>⚠️ Warning:</strong> goto makes code hard to read and debug. Use loops and functions instead when possible!
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <div class="slide-counter">
+                <span id="slideNum">1</span> / 8
+            </div>
+            <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+            
+            document.getElementById('slideNum').textContent = n + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = (n === 0);
+            document.getElementById('nextBtn').disabled = (n === totalSlides - 1);
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            
+            if (currentSlide < 0) {
+                currentSlide = 0;
+            } else if (currentSlide >= totalSlides) {
+                currentSlide = totalSlides - 1;
+            }
+            
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                if (currentSlide < totalSlides - 1) {
+                    changeSlide(1);
+                }
+            } else if (event.key === 'ArrowLeft') {
+                if (currentSlide > 0) {
+                    changeSlide(-1);
+                }
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
