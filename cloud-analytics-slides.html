@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analytics in the Cloud - Comprehensive Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .slide {
+            display: none;
+            padding: 50px 40px;
+            text-align: center;
+            min-height: 650px;
+            position: relative;
+            background: white;
+            overflow-y: auto;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        .slide h1 {
+            color: #2c3e50;
+            font-size: 2.3em;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+        
+        .slide h2 {
+            color: #3498db;
+            font-size: 2em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .slide h3 {
+            color: #e74c3c;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .slide h4 {
+            color: #2980b9;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .slide p, .slide li {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #34495e;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        
+        .slide ul {
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+        
+        .slide li {
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+        
+        .comparison-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .comparison-box {
+            flex: 1;
+            min-width: 280px;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 10px 0;
+        }
+        
+        .traditional {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .cloud {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            border-left: 5px solid #27ae60;
+        }
+        
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .platform-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        
+        .platform-card.gcp {
+            border-top: 4px solid #4285f4;
+        }
+        
+        .platform-card.aws {
+            border-top: 4px solid #ff9900;
+        }
+        
+        .platform-card.azure {
+            border-top: 4px solid #0078d4;
+        }
+        
+        .example-container {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 25px 0;
+            text-align: left;
+        }
+        
+        .code-block {
+            background: rgba(0,0,0,0.8);
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .workflow-step {
+            background: #ecf0f1;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            text-align: left;
+        }
+        
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .benefit-item {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .challenge-item {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #ff9900;
+        }
+        
+        .navigation {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+        }
+        
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .slide-counter {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            background: #34495e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            margin: 10px;
+            padding: 20px;
+            background: #f1f2f6;
+            border-radius: 10px;
+            min-width: 150px;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .pricing-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        
+        .pricing-card {
+            background: white;
+            border: 2px solid #ecf0f1;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .pricing-card.recommended {
+            border-color: #3498db;
+            transform: scale(1.05);
+        }
+        
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / 9
+        </div>
+        
+        <!-- Slide 1: Title & Introduction -->
+        <div class="slide active">
+            <h1>☁️ Data Analytics in the Cloud</h1>
+            <p style="text-align: center; font-size: 1.3em; color: #7f8c8d; margin: 30px 0;">
+                Complete Guide to Modern Cloud-Based Data Analysis
+            </p>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number">85%</div>
+                    <p style="text-align: center;">of companies use cloud analytics</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">60%</div>
+                    <p style="text-align: center;">faster insights</p>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">40%</div>
+                    <p style="text-align: center;">cost reduction</p>
+                </div>
+            </div>
+            
+            <div class="platform-grid">
+                <div class="platform-card gcp">
+                    <h4>🔍 Google Cloud Platform</h4>
+                    <p>BigQuery, Dataflow, AI Platform</p>
+                </div>
+                <div class="platform-card aws">
+                    <h4>☁️ Amazon Web Services</h4>
+                    <p>S3, Redshift, EMR, QuickSight</p>
+                </div>
+                <div class="platform-card azure">
+                    <h4>🔷 Microsoft Azure</h4>
+                    <p>Synapse, Data Factory, Power BI</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 2: What is Cloud Data Analytics -->
+        <div class="slide">
+            <h2>What is Cloud Data Analytics?</h2>
+            
+            <p style="text-align: center; font-size: 1.2em; margin-bottom: 30px;">
+                Cloud data analytics is the process of examining, cleaning, transforming, and modeling data using cloud-based computing resources and services.
+            </p>
+            
+            <div class="comparison-container">
+                <div class="comparison-box traditional">
+                    <h3 style="color: #c0392b;">🏢 Traditional On-Premises</h3>
+                    <ul>
+                        <li>💰 High upfront costs ($50K - $500K+)</li>
+                        <li>⏰ Months to set up infrastructure</li>
+                        <li>👥 Need specialized IT team</li>
+                        <li>🔧 Manual software updates</li>
+                        <li>📈 Limited scalability</li>
+                        <li>🏠 Location-dependent access</li>
+                        <li>⚡ Electricity & maintenance costs</li>
+                        <li>🔒 You handle all security</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-box cloud">
+                    <h3 style="color: #27ae60;">☁️ Cloud-Based Analytics</h3>
+                    <ul>
+                        <li>💳 Pay-as-you-use model</li>
+                        <li>🚀 Start analyzing in minutes</li>
+                        <li>🎯 Focus on analysis, not infrastructure</li>
+                        <li>🔄 Automatic updates & patches</li>
+                        <li>📊 Scale from GB to PB instantly</li>
+                        <li>🌍 Access from anywhere</li>
+                        <li>♻️ Eco-friendly shared resources</li>
+                        <li>🛡️ Enterprise-grade security</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Major Cloud Platforms Deep Dive -->
+        <div class="slide">
+            <h2>Major Cloud Analytics Platforms</h2>
+            
+            <div class="platform-grid">
+                <div class="platform-card gcp">
+                    <h4>🔍 Google Cloud Platform (GCP)</h4>
+                    <p><strong>Best For:</strong> Big data processing, machine learning</p>
+                    <p><strong>Key Services:</strong></p>
+                    <ul>
+                        <li><strong>BigQuery:</strong> Serverless data warehouse</li>
+                        <li><strong>Dataflow:</strong> Stream/batch processing</li>
+                        <li><strong>AI Platform:</strong> Machine learning</li>
+                        <li><strong>Data Studio:</strong> Visualization</li>
+                    </ul>
+                    <p><strong>Pricing:</strong> $5 per TB processed</p>
+                    <p><strong>Best Feature:</strong> Lightning-fast SQL queries</p>
+                </div>
+                
+                <div class="platform-card aws">
+                    <h4>☁️ Amazon Web Services (AWS)</h4>
+                    <p><strong>Best For:</strong> Complete data pipelines, enterprise solutions</p>
+                    <p><strong>Key Services:</strong></p>
+                    <ul>
+                        <li><strong>S3:</strong> Data storage</li>
+                        <li><strong>Redshift:</strong> Data warehouse</li>
+                        <li><strong>EMR:</strong> Big data processing</li>
+                        <li><strong>QuickSight:</strong> Business intelligence</li>
+                    </ul>
+                    <p><strong>Pricing:</strong> Varies by service</p>
+                    <p><strong>Best Feature:</strong> Most comprehensive service catalog</p>
+                </div>
+                
+                <div class="platform-card azure">
+                    <h4>🔷 Microsoft Azure</h4>
+                    <p><strong>Best For:</strong> Enterprise integration, Microsoft ecosystem</p>
+                    <p><strong>Key Services:</strong></p>
+                    <ul>
+                        <li><strong>Synapse Analytics:</strong> Data warehouse</li>
+                        <li><strong>Data Factory:</strong> Data integration</li>
+                        <li><strong>Power BI:</strong> Business intelligence</li>
+                        <li><strong>Machine Learning:</strong> AI services</li>
+                    </ul>
+                    <p><strong>Pricing:</strong> Competitive with AWS</p>
+                    <p><strong>Best Feature:</strong> Seamless Microsoft Office integration</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Data Analytics Workflow -->
+        <div class="slide">
+            <h2>Cloud Analytics Workflow</h2>
+            
+            <div class="workflow-step">
+                <h4>📊 Step 1: Data Collection</h4>
+                <p><strong>Sources:</strong> Databases, APIs, files, IoT devices, social media</p>
+                <p><strong>Cloud Tools:</strong> AWS S3, Google Cloud Storage, Azure Data Lake</p>
+                <p><strong>Example:</strong> Collecting customer transaction data from e-commerce website</p>
+            </div>
+            
+            <div class="workflow-step">
+                <h4>🧹 Step 2: Data Processing & Cleaning</h4>
+                <p><strong>Tasks:</strong> Remove duplicates, fix formats, handle missing values</p>
+                <p><strong>Cloud Tools:</strong> AWS Glue, Google Dataflow, Azure Data Factory</p>
+                <p><strong>Example:</strong> Converting date formats and removing invalid email addresses</p>
+            </div>
+            
+            <div class="workflow-step">
+                <h4>💾 Step 3: Data Storage</h4>
+                <p><strong>Options:</strong> Data warehouses, data lakes, databases</p>
+                <p><strong>Cloud Tools:</strong> BigQuery, Redshift, Synapse Analytics</p>
+                <p><strong>Example:</strong> Storing processed data in organized tables</p>
+            </div>
+            
+            <div class="workflow-step">
+                <h4>🔍 Step 4: Data Analysis</h4>
+                <p><strong>Methods:</strong> SQL queries, statistical analysis, machine learning</p>
+                <p><strong>Cloud Tools:</strong> Built-in analytics engines, Jupyter notebooks</p>
+                <p><strong>Example:</strong> Finding trends in customer purchasing behavior</p>
+            </div>
+            
+            <div class="workflow-step">
+                <h4>📈 Step 5: Visualization & Reporting</h4>
+                <p><strong>Output:</strong> Dashboards, charts, automated reports</p>
+                <p><strong>Cloud Tools:</strong> Power BI, Tableau Online, Google Data Studio</p>
+                <p><strong>Example:</strong> Creating sales dashboard for management team</p>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Detailed Real-World Example -->
+        <div class="slide">
+            <h2>Real-World Example: E-Commerce Analytics</h2>
+            
+            <div class="example-container">
+                <h3>📱 Scenario: Online Retailer Analysis</h3>
+                <p><strong>Challenge:</strong> A growing e-commerce company needs to analyze 5 million customer orders, website traffic data, and social media mentions to optimize their business strategy.</p>
+                
+                <h4 style="margin-top: 25px;">🔍 Using Google BigQuery Solution:</h4>
+                
+                <p><strong>Step 1: Data Upload</strong></p>
+                <ul>
+                    <li>Upload CSV files: orders.csv, customers.csv, products.csv</li>
+                    <li>Connect to website analytics API</li>
+                    <li>Import social media data via streaming</li>
+                </ul>
+                
+                <p><strong>Step 2: Data Analysis with SQL</strong></p>
+                <div class="code-block">
+-- Find top 10 selling products by revenue<br>
+SELECT <br>
+&nbsp;&nbsp;p.product_name,<br>
+&nbsp;&nbsp;SUM(o.quantity * p.price) as total_revenue,<br>
+&nbsp;&nbsp;COUNT(*) as order_count<br>
+FROM orders o<br>
+JOIN products p ON o.product_id = p.id<br>
+WHERE o.order_date >= '2024-01-01'<br>
+GROUP BY p.product_name<br>
+ORDER BY total_revenue DESC<br>
+LIMIT 10;
+                </div>
+                
+                <p><strong>Results:</strong></p>
+                <ul>
+                    <li>⏱️ Query processes 5M records in 3 seconds</li>
+                    <li>💰 Identifies $2.3M revenue from top 10 products</li>
+                    <li>📊 Creates automatic dashboard updates</li>
+                    <li>🎯 Enables data-driven inventory decisions</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 6: Advanced Use Cases -->
+        <div class="slide">
+            <h2>Advanced Analytics Use Cases</h2>
+            
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <h4>🤖 Machine Learning & AI</h4>
+                    <p><strong>Applications:</strong></p>
+                    <ul>
+                        <li>Customer churn prediction</li>
+                        <li>Fraud detection</li>
+                        <li>Recommendation engines</li>
+                        <li>Price optimization</li>
+                    </ul>
+                    <p><strong>Tools:</strong> Google AI Platform, AWS SageMaker, Azure ML</p>
+                </div>
+                
+                <div class="platform-card">
+                    <h4>🔄 Real-Time Analytics</h4>
+                    <p><strong>Applications:</strong></p>
+                    <ul>
+                        <li>Live dashboard monitoring</li>
+                        <li>IoT sensor data processing</li>
+                        <li>Social media sentiment tracking</li>
+                        <li>Financial trading analysis</li>
+                    </ul>
+                    <p><strong>Tools:</strong> Google Dataflow, AWS Kinesis, Azure Stream Analytics</p>
+                </div>
+                
+                <div class="platform-card">
+                    <h4>📊 Big Data Processing</h4>
+                    <p><strong>Applications:</strong></p>
+                    <ul>
+                        <li>Processing petabytes of data</li>
+                        <li>Log file analysis</li>
+                        <li>Genomic data processing</li>
+                        <li>Climate modeling</li>
+                    </ul>
+                    <p><strong>Tools:</strong> Google Dataproc, AWS EMR, Azure HDInsight</p>
+                </div>
+            </div>
+            
+            <div class="example-container">
+                <h4>💡 Real Example: Netflix Recommendation System</h4>
+                <p>Netflix processes over 450 billion events daily using AWS cloud analytics to:</p>
+                <ul>
+                    <li>Analyze viewing patterns of 230+ million subscribers</li>
+                    <li>Generate personalized recommendations in real-time</li>
+                    <li>Optimize content delivery based on geographic data</li>
+                    <li>Predict which shows will be popular in different regions</li>
+                </ul>
+                <p><strong>Result:</strong> 80% of content watched comes from their recommendation algorithm!</p>
+            </div>
+        </div>
+        
+        <!-- Slide 7: Benefits & Advantages -->
+        <div class="slide">
+            <h2>Benefits of Cloud Analytics</h2>
+            
+            <div class="benefit-grid">
+                <div class="benefit-item">
+                    <h4>💰 Cost Efficiency</h4>
+                    <p>No upfront hardware costs</p>
+                    <p>Pay only for resources used</p>
+                    <p>Automatic scaling saves money</p>
+                    <p><strong>Example:</strong> Start at $10/month vs $50,000 upfront</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h4>⚡ Speed & Performance</h4>
+                    <p>Instant provisioning</p>
+                    <p>Parallel processing power</p>
+                    <p>Global content delivery</p>
+                    <p><strong>Example:</strong> Process 1TB data in minutes vs hours</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h4>📈 Unlimited Scalability</h4>
+                    <p>Handle any data volume</p>
+                    <p>Auto-scale based on demand</p>
+                    <p>Global infrastructure</p>
+                    <p><strong>Example:</strong> Scale from 1GB to 1PB automatically</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h4>🔒 Enterprise Security</h4>
+                    <p>Bank-level encryption</p>
+                    <p>Compliance certifications</p>
+                    <p>24/7 monitoring</p>
+                    <p><strong>Example:</strong> SOC 2, GDPR, HIPAA compliant</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h4>🌍 Global Accessibility</h4>
+                    <p>Work from anywhere</p>
+                    <p>Multi-device support</p>
+                    <p>Real-time collaboration</p>
+                    <p><strong>Example:</strong> Team in US, India, UK work together</p>
+                </div>
+                
+                <div class="benefit-item">
+                    <h4>🔧 Automatic Maintenance</h4>
+                    <p>Software updates handled</p>
+                    <p>Security patches applied</p>
+                    <p>Backup & recovery managed</p>
+                    <p><strong>Example:</strong> Zero downtime for maintenance</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 8: Challenges & Solutions -->
+        <div class="slide">
+            <h2>Challenges & How to Overcome Them</h2>
+            
+            <div class="challenge-item">
+                <h4>🔒 Challenge: Data Security & Privacy</h4>
+                <p><strong>Concerns:</strong> Storing sensitive data in third-party servers</p>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li>Use encryption at rest and in transit</li>
+                    <li>Implement role-based access controls</li>
+                    <li>Choose reputable cloud providers with certifications</li>
+                    <li>Regular security audits and compliance checks</li>
+                </ul>
+            </div>
+            
+            <div class="challenge-item">
+                <h4>💸 Challenge: Cost Management</h4>
+                <p><strong>Concerns:</strong> Unexpected bills from cloud usage</p>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li>Set up billing alerts and budgets</li>
+                    <li>Use cost optimization tools</li>
+                    <li>Regular usage monitoring and cleanup</li>
+                    <li>Choose appropriate service tiers</li>
+                </ul>
+            </div>
+            
+            <div class="challenge-item">
+                <h4>📡 Challenge: Internet Dependency</h4>
+                <p><strong>Concerns:</strong> Need reliable internet connection</p>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li>Use multiple internet connections</li>
+                    <li>Implement offline data caching</li>
+                    <li>Choose cloud regions close to your location</li>
+                    <li>Have backup connectivity plans</li>
+                </ul>
+            </div>
+            
+            <div class="challenge-item">
+                <h4>🎓 Challenge: Learning Curve</h4>
+                <p><strong>Concerns:</strong> New tools and technologies to master</p>
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                    <li>Start with user-friendly platforms</li>
+                    <li>Use free tiers and tutorials</li>
+                    <li>Invest in team training</li>
+                    <li>Hire cloud-experienced professionals</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 9: Getting Started Guide -->
+        <div class="slide">
+            <h2>Complete Getting Started Guide</h2>
+            
+            <div class="pricing-table">
+                <div class="pricing-card">
+                    <h4>🚀 Beginner</h4>
+                    <p><strong>Platform:</strong> Google BigQuery</p>
+                    <p><strong>Cost:</strong> Free tier (1TB/month)</p>
+                    <p><strong>Best For:</strong> Learning, small projects</p>
+                </div>
+                
+                <div class="pricing-card recommended">
+                    <h4>💼 Business</h4>
+                    <p><strong>Platform:</strong> AWS or Azure</p>
+                    <p><strong>Cost:</strong> $100-1000/month</p>
+                    <p><strong>Best For:</strong> Growing companies</p>
+                </div>
+                
+                <div class="pricing-card">
+                    <h4>🏢 Enterprise</h4>
+                    <p><strong>Platform:</strong> Multi-cloud strategy</p>
+                    <p><strong>Cost:</strong> $1000+/month</p>
+                    <p><strong>Best For:</strong> Large organizations</p>
+                </div>
+            </div>
+            
+            <div class="example-container">
+                <h4>📋 Step-by-Step Implementation Plan</h4>
+                
+                <p><strong>Week 1-2: Planning & Setup</strong></p>
+                <ul>
+                    <li>✅ Identify your data sources and analytics needs</li>
+                    <li>✅ Choose cloud platform based on requirements</li>
+                    <li>✅ Set up free accounts and explore interfaces</li>
+                    <li>✅ Create sample datasets for testing</li>
+                </ul>
+                
+                <p><strong>Week 3-4: Data Migration</strong></p>
+                <ul>
+                    <li>✅ Clean and prepare your data</li>
+                    <li>✅ Upload small datasets first</li>
+                    <li>✅ Test connectivity and access controls</li>
+                    <li>✅ Create backup and recovery procedures</li>
+                </ul>
+                
+                <p><strong>Week 5-6: Analysis & Visualization</strong></p>
+                <ul>
+                    <li>✅ Write basic SQL queries or use GUI tools</li>
+                    <li>✅ Create your first dashboard</li>
+                    <li>✅ Set up automated reports</li>
+                    <li>✅ Train team members on new tools</li>
+                </ul>
+                
+                <p><strong>🎯 Success Metrics:</strong></p>
+                <ul>
+                    <li>📊 Faster decision making (hours vs days)</li>
+                    <li>💰 Cost savings compared to traditional methods</li>
+                    <li>🎯 Improved business insights and accuracy</li>
+                    <li>👥 Team adoption and satisfaction rates</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (direction === -1 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
